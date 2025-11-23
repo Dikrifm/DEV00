@@ -429,7 +429,8 @@
 
         <!-- Error State -->
         <div class="error" id="error" style="display: none;"></div>
-
+        <!-- Hero Section -->
+        <div id="hero-container"></div>
         <!-- Dynamic Banner -->
         <div id="banner-container"></div>
 
@@ -438,6 +439,8 @@
 
         <!-- Products Will Appear Here -->
         <div id="product-list"></div>
+        <!-- FAQ Section -->
+        <div id="faq-global-container"></div>
     </div>
 
     <!-- FOOTER -->
@@ -455,7 +458,66 @@
             <div style="font-size: 0.75em; color: #666;" id="notifTime">1 menit lalu</div>
         </div>
     </div>
+/* === HERO SECTION === */
+.hero-section {
+    background: linear-gradient(135deg, var(--banner-bg-1), var(--banner-bg-2));
+    color: white;
+    padding: 25px 20px;
+    border-radius: 16px;
+    margin-bottom: 25px;
+    text-align: center;
+}
 
+.headline {
+    font-size: 1.4em;
+    font-weight: 900;
+    margin-bottom: 10px;
+    line-height: 1.3;
+}
+
+.subheadline {
+    font-size: 0.95em;
+    opacity: 0.9;
+    line-height: 1.4;
+}
+
+/* === FAQ SECTION === */
+.faq-section {
+    margin: 30px 0 20px 0;
+}
+
+.faq-title {
+    font-size: 1.3em;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--text);
+}
+
+.faq-grid {
+    display: grid;
+    gap: 12px;
+}
+
+.faq-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.faq-question {
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text);
+    font-size: 0.95em;
+}
+
+.faq-answer {
+    color: var(--text-sec);
+    font-size: 0.85em;
+    line-height: 1.5;
+}
     <script>
         // ==================== KONFIGURASI ====================
         const CONFIG = {
@@ -665,7 +727,8 @@
                     ).join('');
                 }
             }
-
+            
+            renderGlobalSections(settings);
             startTimer();
         }
 
@@ -1034,6 +1097,55 @@ function startFallbackNotifications() {
                 showError('Gagal memuat halaman: ' + error.message);
             }
         }
+        // ==================== GLOBAL HERO & FAQ RENDER ====================
+function renderGlobalSections(settings) {
+    // HERO SECTION
+    const heroContainer = document.getElementById('hero-container');
+    if (heroContainer && settings.headline) {
+        heroContainer.innerHTML = `
+            <div class="hero-section">
+                <div class="headline">${settings.headline}</div>
+                ${settings.subheadline ? `<div class="subheadline">${settings.subheadline}</div>` : ''}
+            </div>
+        `;
+    }
+    
+    // GLOBAL FAQ SECTION  
+    const faqContainer = document.getElementById('faq-global-container');
+    if (faqContainer && settings.faq_garansi) {
+        faqContainer.innerHTML = `
+            <div class="faq-section">
+                <div class="faq-title">❓ PERTANYAAN UMUM</div>
+                <div class="faq-grid">
+                    ${settings.faq_garansi ? `
+                        <div class="faq-item">
+                            <div class="faq-question">${settings.faq_garansi}</div>
+                            <div class="faq-answer">${settings.faq_garansi_detail || 'Garansi resmi distributor'}</div>
+                        </div>
+                    ` : ''}
+                    ${settings.faq_pengembalian ? `
+                        <div class="faq-item">
+                            <div class="faq-question">${settings.faq_pengembalian}</div>
+                            <div class="faq-answer">${settings.faq_pengembalian_detail || 'Kebijakan pengembalian mudah'}</div>
+                        </div>
+                    ` : ''}
+                    ${settings.faq_kompatibilitas ? `
+                        <div class="faq-item">
+                            <div class="faq-question">${settings.faq_kompatibilitas}</div>
+                            <div class="faq-answer">${settings.faq_kompatibilitas_detail || 'Kompatibel dengan berbagai device'}</div>
+                        </div>
+                    ` : ''}
+                    ${settings.faq_ongkir ? `
+                        <div class="faq-item">
+                            <div class="faq-question">${settings.faq_ongkir}</div>
+                            <div class="faq-answer">${settings.faq_ongkir_detail || 'Gratis ongkir ke seluruh Indonesia'}</div>
+                        </div>
+                    ` : ''}
+                </div>
+            </div>
+        `;
+    }
+}
 
         // Start when page loads
         document.addEventListener('DOMContentLoaded', function() {
