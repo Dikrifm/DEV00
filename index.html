@@ -3,135 +3,264 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEBUG MODE: CEK STOK 🛠️</title>
+    <title>FLASH SALE 🔥</title>
     <style>
-        body { background: #0f172a; color: white; font-family: sans-serif; padding: 20px; }
-        .container { max-width: 480px; margin: 0 auto; }
+        /* === 1. VARIABEL WARNA (THEME ENGINE) === */
+        :root {
+            /* Dark Mode (Default) */
+            --bg: #0f172a;
+            --card: #1e293b;
+            --text: #ffffff;
+            --text-sec: #94a3b8;
+            --border: #334155;
+            --shadow: rgba(0,0,0,0.5);
+            
+            /* Warna Dinamis */
+            --price-now: #4ade80;
+            --stock-bg: #334155;
+            
+            /* Header Default */
+            --header-1: #991b1b;
+            --header-2: #7f1d1d;
+        }
+
+        [data-theme="light"] {
+            /* Light Mode */
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #0f172a;
+            --text-sec: #64748b;
+            --border: #e2e8f0;
+            --shadow: rgba(0,0,0,0.08);
+            
+            --price-now: #16a34a;
+            --stock-bg: #e2e8f0;
+            
+            --header-1: #dc2626;
+            --header-2: #ef4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: system-ui, sans-serif; background: var(--bg); color: var(--text);
+            padding-bottom: 60px; transition: background 0.3s, color 0.3s;
+        }
+
+        /* === 2. HEADER === */
+        .header {
+            background: linear-gradient(135deg, var(--header-1), var(--header-2));
+            padding: 15px; text-align: center; position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15); color: white;
+        }
+        .timer { font-size: 1.5em; font-weight: 900; margin-top: 5px; font-variant-numeric: tabular-nums; }
+        
+        .theme-toggle {
+            position: absolute; top: 50%; right: 15px; transform: translateY(-50%);
+            width: 35px; height: 35px; border-radius: 50%;
+            background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3);
+            color: white; cursor: pointer; display: flex; align-items: center; justify-content: center;
+        }
+
+        /* === 3. CARD PRODUK === */
+        .container { max-width: 480px; margin: 0 auto; padding: 20px 15px; }
         
         .card {
-            background: #1e293b; border: 1px solid #334155; border-radius: 12px;
-            padding: 20px; margin-bottom: 20px;
-        }
-        .title { font-weight: bold; font-size: 1.1em; margin-bottom: 10px; }
-        
-        /* === STOCK BAR STYLES (YANG KITA UJI) === */
-        .stock-container { margin-top: 15px; }
-        
-        .stock-bg {
-            height: 10px; width: 100%;
-            background: #334155; /* Warna Track Gelap */
-            border-radius: 5px;
-            overflow: hidden;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
-        }
-        
-        .stock-fill {
-            height: 100%;
-            border-radius: 5px;
-            transition: width 1s ease;
-            /* Default Gradient (Akan di-override JS) */
-            background: linear-gradient(90deg, #ef4444, #f59e0b); 
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 16px; padding: 18px; margin-bottom: 15px;
+            box-shadow: 0 4px 10px var(--shadow);
         }
 
-        /* WARNA DINAMIS BERDASARKAN KELAS */
-        .fill-high { background: #22c55e !important; } /* Hijau */
-        .fill-med  { background: #f59e0b !important; } /* Kuning */
-        .fill-low  { background: #ef4444 !important; } /* Merah */
-
-        .stock-text {
-            display: flex; justify-content: space-between;
-            font-size: 0.8em; margin-top: 8px; font-weight: bold;
-        }
+        /* Badge */
+        .badges-container { display: flex; gap: 5px; margin-bottom: 8px; flex-wrap: wrap; }
+        .badge { font-size: 0.65em; padding: 3px 8px; border-radius: 6px; font-weight: 700; text-transform: uppercase; }
         
-        .text-high { color: #22c55e; }
-        .text-med  { color: #f59e0b; }
-        .text-low  { color: #ef4444; }
+        /* Warna Badge Tetap (Agar kontras) */
+        .badge-primary { background: #fff7ed; color: #c2410c; border: 1px solid #fdba74; }
+        .badge-secondary { background: #eff6ff; color: #1d4ed8; border: 1px solid #93c5fd; }
+        .badge-success { background: #f0fdf4; color: #15803d; border: 1px solid #86efac; }
+        
+        /* Override Badge Dark Mode */
+        body:not([data-theme="light"]) .badge-primary { background: rgba(234,88,12,0.2); color: #fb923c; border-color: #fb923c; }
+        body:not([data-theme="light"]) .badge-secondary { background: rgba(37,99,235,0.2); color: #60a5fa; border-color: #60a5fa; }
+        body:not([data-theme="light"]) .badge-success { background: rgba(22,163,74,0.2); color: #4ade80; border-color: #4ade80; }
 
-        .debug-label {
-            background: #333; color: #aaa; font-size: 0.7em; 
-            padding: 5px; margin-bottom: 10px; display: inline-block; border-radius: 4px;
+        .title { font-size: 1.1em; font-weight: 700; margin-bottom: 8px; line-height: 1.4; }
+        
+        .price-box { display: flex; align-items: baseline; gap: 8px; margin-bottom: 12px; }
+        .price-now { color: var(--price-now); font-size: 1.3em; font-weight: 800; }
+        .price-old { color: var(--text-sec); text-decoration: line-through; font-size: 0.9em; }
+
+        /* Stock Bar */
+        .stock-bg { height: 8px; background: var(--stock-bg); border-radius: 4px; overflow: hidden; margin-bottom: 5px; }
+        .stock-fill { height: 100%; border-radius: 4px; transition: width 1s; }
+        .stock-text { font-size: 0.75em; color: var(--text-sec); font-weight: 500; display: flex; justify-content: space-between; }
+        
+        /* Warna Stok Dinamis */
+        .fill-high { background: #22c55e; }
+        .fill-med { background: #f59e0b; }
+        .fill-low { background: #ef4444; }
+
+        /* Buttons */
+        .btn {
+            display: block; width: 100%; padding: 12px; margin-top: 8px;
+            text-align: center; text-decoration: none; color: white;
+            font-weight: 700; border-radius: 8px; font-size: 0.95em;
         }
+        .btn-shopee { background: #ee4d2d; }
+        .btn-tiktok { background: #000000; border: 1px solid #333; }
+        .btn-tokped { background: #03AC0E; }
+        [data-theme="light"] .btn-tiktok { background: #222; }
+
+        /* Banner */
+        .banner { background: linear-gradient(135deg, var(--header-1), var(--header-2)); color: white; padding: 15px; border-radius: 12px; margin: 15px 15px 0; text-align: center; display: none; }
+        
+        .footer { text-align: center; padding: 30px; color: var(--text-sec); font-size: 0.8em; }
+        #loading { text-align: center; padding: 50px; color: var(--text-sec); }
     </style>
 </head>
 <body>
 
-    <div class="container" id="productList">
-        </div>
+    <div class="header">
+        <div style="font-size:0.8em; opacity:0.9" id="headerText">PROMO BERAKHIR:</div>
+        <div class="timer" id="timer">00:00:00</div>
+        <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">☀️</button>
+    </div>
+
+    <div id="bannerArea"></div>
+
+    <div class="container" id="list">
+        <div id="loading">⏳ Memuat Data...</div>
+    </div>
+
+    <div class="footer" id="footerText">© 2025 Official Store</div>
 
     <script>
-        // === 1. DATA DUMMY (PENGGANTI CSV) ===
-        // Kita hardcode angka stoknya untuk memastikan logika visual benar
-        const DUMMY_DATA = [
-            {
-                nama: "TEST 1: Stok Aman",
-                stok: 85, // Angka Persen
-                desc: "Harus Bar HIJAU panjang"
-            },
-            {
-                nama: "TEST 2: Stok Sedang",
-                stok: 45,
-                desc: "Harus Bar KUNING setengah"
-            },
-            {
-                nama: "TEST 3: Stok Kritis",
-                stok: 12,
-                desc: "Harus Bar MERAH pendek"
-            },
-            {
-                nama: "TEST 4: Stok Error (String)",
-                stok: "5", // Test jika data berupa string
-                desc: "Harus tetap jalan (Bar Merah sangat pendek)"
+        // === CONFIG ===
+        const CONFIG = {
+            PAGE: 'page.csv',
+            PROD: 'pro.csv'
+        };
+
+        // 1. THEME
+        function toggleTheme() {
+            const b = document.body;
+            const btn = document.getElementById('themeBtn');
+            if(b.getAttribute('data-theme') === 'light') {
+                b.removeAttribute('data-theme'); btn.innerText = '☀️';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                b.setAttribute('data-theme', 'light'); btn.innerText = '🌙';
+                localStorage.setItem('theme', 'light');
             }
-        ];
-
-        // === 2. FUNGSI RENDER ===
-        function renderDummy() {
-            const container = document.getElementById('productList');
-            container.innerHTML = '';
-
-            DUMMY_DATA.forEach(item => {
-                // Pastikan stok dibaca sebagai Angka (Integer)
-                const stockVal = parseInt(item.stok) || 0; 
-
-                // LOGIKA WARNA (Color Logic)
-                let colorClass = 'fill-high';
-                let textClass = 'text-high';
-                let statusText = 'Stok Tersedia';
-
-                if (stockVal < 20) {
-                    colorClass = 'fill-low';
-                    textClass = 'text-low';
-                    statusText = '🔥 Segera Habis!';
-                } else if (stockVal < 50) {
-                    colorClass = 'fill-med';
-                    textClass = 'text-med';
-                    statusText = '⚠️ Stok Terbatas';
-                }
-
-                // Render HTML
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML = `
-                    <div class="debug-label">Input Data: ${item.stok}% (${item.desc})</div>
-                    <div class="title">${item.nama}</div>
-                    
-                    <div class="stock-container">
-                        <div class="stock-bg">
-                            <div class="stock-fill ${colorClass}" style="width: ${stockVal}%"></div>
-                        </div>
-                        <div class="stock-text ${textClass}">
-                            <span>${statusText}</span>
-                            <span>${stockVal}% Tersisa</span>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
+        }
+        if(localStorage.getItem('theme') === 'light') {
+            document.body.setAttribute('data-theme', 'light');
+            document.getElementById('themeBtn').innerText = '🌙';
         }
 
-        // Jalankan
-        renderDummy();
+        // 2. SMART CSV PARSER (FIX UTAMA)
+        function parseCSV(text) {
+            if(!text) return [];
+            const lines = text.trim().split('\n');
+            if(lines.length < 2) return [];
+            
+            return lines.slice(1).map(line => {
+                // Regex ini memisahkan koma, tapi MENGABAIKAN koma di dalam tanda kutip "..."
+                // Ini mencegah error kolom geser jika ada koma di nama produk
+                const regex = /(".*?"|[^",\s]+)(?=\s*,|\s*$)/g;
+                const matches = line.match(regex);
+                return matches ? matches.map(col => col.replace(/^"|"$/g, '').trim()) : null;
+            }).filter(row => row !== null);
+        }
 
+        // 3. LOAD DATA
+        async function init() {
+            try {
+                // Load Config
+                const res1 = await fetch(CONFIG.PAGE + '?t=' + Date.now());
+                const rows1 = parseCSV(await res1.text());
+                rows1.forEach(r => {
+                    const k=r[0], v=r[1];
+                    if(k === 'site_title') document.title = v;
+                    if(k === 'header_text') document.getElementById('headerText').innerText = v;
+                    if(k === 'footer_text') document.getElementById('footerText').innerText = v;
+                    if(k === 'banner_text' && v.length > 2) {
+                        const b = document.getElementById('bannerArea');
+                        b.innerHTML = `<div class="banner"><strong>${v}</strong></div>`;
+                        b.querySelector('.banner').style.display = 'block';
+                    }
+                    if(k.includes('color')) document.documentElement.style.setProperty('--'+k.replace('color_',''), v);
+                    if(k === 'timer_seconds') startTimer(parseInt(v));
+                });
+
+                // Load Products
+                const res2 = await fetch(CONFIG.PROD + '?t=' + Date.now());
+                const prods = parseCSV(await res2.text());
+                const list = document.getElementById('list');
+                document.getElementById('loading').style.display = 'none';
+
+                prods.forEach(p => {
+                    // URUTAN KOLOM WAJIB: 
+                    // 0:id, 1:nama, 2:harga_asli, 3:harga_promo, 4:shopee, 5:tiktok, 6:tokped, 7:stok, 8:bdg1, 9:bdg2, 10:bdg3
+                    
+                    if(p.length < 4) return;
+
+                    const nama = p[1];
+                    const h_asli = parseInt(p[2]);
+                    const h_promo = parseInt(p[3]);
+                    const link_shopee = p[4];
+                    const link_tiktok = p[5];
+                    const link_tokped = p[6];
+                    const stok = parseInt(p[7]) || 0;
+
+                    // Stok Logic
+                    let barColor = 'fill-high';
+                    let msg = 'Stok Tersedia';
+                    if(stok < 20) { barColor = 'fill-low'; msg = '🔥 Segera Habis!'; }
+                    else if(stok < 50) { barColor = 'fill-med'; msg = '⚠️ Stok Terbatas'; }
+
+                    // Badges
+                    let badges = '';
+                    if(p[8]) badges += `<span class="badge badge-primary">${p[8]}</span>`;
+                    if(p[9]) badges += `<span class="badge badge-secondary">${p[9]}</span>`;
+                    if(p[10]) badges += `<span class="badge badge-success">${p[10]}</span>`;
+
+                    // Buttons
+                    let btns = '';
+                    if(link_shopee && link_shopee.length > 5) btns += `<a href="${link_shopee}" class="btn btn-shopee">🛒 Beli di Shopee</a>`;
+                    if(link_tiktok && link_tiktok.length > 5) btns += `<a href="${link_tiktok}" class="btn btn-tiktok">🎵 Beli di TikTok</a>`;
+                    if(link_tokped && link_tokped.length > 5) btns += `<a href="${link_tokped}" class="btn btn-tokped">🦅 Beli di Tokopedia</a>`;
+
+                    // Render
+                    const div = document.createElement('div');
+                    div.className = 'card';
+                    div.innerHTML = `
+                        <div class="badges-container">${badges}</div>
+                        <div class="title">${nama}</div>
+                        <div class="price-box">
+                            <div class="price-now">Rp ${h_promo.toLocaleString('id-ID')}</div>
+                            <div class="price-old">Rp ${h_asli.toLocaleString('id-ID')}</div>
+                        </div>
+                        <div class="stock-bg"><div class="stock-fill ${barColor}" style="width:${stok}%"></div></div>
+                        <div class="stock-text"><span>${msg}</span> <span>${stok}%</span></div>
+                        ${btns}
+                    `;
+                    list.appendChild(div);
+                });
+
+            } catch(e) { console.error(e); }
+        }
+
+        function startTimer(dur) {
+            let t = dur || 7200;
+            setInterval(() => {
+                let h=Math.floor(t/3600), m=Math.floor((t%3600)/60), s=t%60;
+                document.getElementById('timer').innerText = `${h<10?'0'+h:h}:${m<10?'0'+m:m}:${s<10?'0'+s:s}`;
+                t--; if(t<0) t=dur;
+            }, 1000);
+        }
+
+        window.onload = init;
     </script>
 </body>
 </html>
