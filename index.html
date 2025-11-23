@@ -294,6 +294,10 @@
 
         .price-container { 
             margin-bottom: 10px; 
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
         }
         .price-final { 
             font-size: 1.1rem; 
@@ -304,7 +308,6 @@
             font-size: 0.75rem; 
             color: var(--text-secondary); 
             text-decoration: line-through; 
-            margin-left: 6px; 
         }
 
         .discount-badge {
@@ -322,85 +325,159 @@
             background: var(--surface-highlight); 
             width: 100%; 
             border-radius: 2px; 
-            margin-bottom: 12px; 
+            margin-bottom: 8px; 
             overflow: hidden; 
         }
         .stock-fill { 
             height: 100%; 
-            background: var(--success); 
             border-radius: 2px; 
         }
 
-        /* Store Info */
+        .stock-text {
+            font-size: 0.7em;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        /* === 7. ACCORDION MARKETPLACE BUTTONS === */
+        .accordion {
+            margin-top: auto;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .accordion-header {
+            background: var(--surface-highlight);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .accordion-header:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .accordion-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .accordion-icon {
+            transition: transform 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .accordion.open .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: var(--surface);
+        }
+
+        .accordion.open .accordion-content {
+            max-height: 200px;
+        }
+
+        .store-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            background: var(--border);
+        }
+
+        .store-option {
+            background: var(--surface);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-decoration: none;
+            transition: background 0.2s ease;
+            border: none;
+            cursor: pointer;
+            color: inherit;
+        }
+
+        .store-option:hover {
+            background: var(--surface-highlight);
+        }
+
         .store-info {
             display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 5px;
-            font-size: 0.75em;
-            opacity: 0.9;
-            justify-content: center;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
         }
 
-        .rating {
+        .store-platform {
             display: flex;
             align-items: center;
-            gap: 3px;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 0.8rem;
         }
 
-        .star {
-            color: #fbbf24;
+        .store-details {
+            display: flex;
+            gap: 12px;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
         }
 
-        .sales {
-            background: rgba(255,255,255,0.2);
+        .store-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .store-sales {
+            background: rgba(255,255,255,0.1);
             padding: 2px 6px;
             border-radius: 8px;
-            font-size: 0.7em;
         }
 
-        /* Marketplace Buttons */
-        .actions {
-            margin-top: auto;
-            display: flex; 
-            gap: 8px;
+        .store-action {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent);
+            padding: 4px 8px;
+            border-radius: 6px;
+            background: rgba(59, 130, 246, 0.1);
         }
 
-        .action-btn {
-            flex: 1; 
-            height: 36px; 
-            border-radius: 8px;
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-            text-decoration: none; 
-            font-size: 1.1rem;
-            transition: opacity 0.2s; 
-            border: 1px solid transparent;
-            cursor: pointer;
-        }
-        .action-btn:active { 
-            opacity: 0.7; 
-            transform: scale(0.95); 
+        /* Platform-specific colors */
+        .store-option[data-platform="shopee"] .store-action {
+            color: var(--shopee);
+            background: rgba(238, 77, 45, 0.1);
         }
 
-        .btn-shopee { 
-            background: rgba(238, 77, 45, 0.1); 
-            color: #ee4d2d; 
-            border-color: rgba(238, 77, 45, 0.2); 
-        }
-        .btn-tiktok { 
-            background: var(--surface-highlight); 
-            color: var(--tiktok); 
-            border-color: var(--border); 
-        }
-        .btn-tokped { 
-            background: rgba(3, 172, 14, 0.1); 
-            color: #03AC0E; 
-            border-color: rgba(3, 172, 14, 0.2); 
+        .store-option[data-platform="tiktok"] .store-action {
+            color: var(--tiktok);
+            background: rgba(0, 0, 0, 0.1);
         }
 
-        /* === 7. FAQ SECTION === */
+        [data-theme="light"] .store-option[data-platform="tiktok"] .store-action {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .store-option[data-platform="tokped"] .store-action {
+            color: var(--tokped);
+            background: rgba(3, 172, 14, 0.1);
+        }
+
+        /* === 8. FAQ SECTION === */
         .faq-section {
             margin: 40px 0 20px 0;
             padding: 0 10px;
@@ -411,7 +488,7 @@
             font-weight: 800;
             text-align: center;
             margin-bottom: 25px;
-            color: var(--text);
+            color: var(--text-primary);
         }
 
         .faq-grid {
@@ -420,7 +497,7 @@
         }
 
         .faq-item {
-            background: var(--card);
+            background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 12px;
             padding: 20px;
@@ -435,7 +512,7 @@
         .faq-question {
             font-weight: 700;
             margin-bottom: 10px;
-            color: var(--text);
+            color: var(--text-primary);
             font-size: 0.95em;
             display: flex;
             align-items: center;
@@ -443,13 +520,12 @@
         }
 
         .faq-answer {
-            color: var(--text-sec);
+            color: var(--text-secondary);
             font-size: 0.85em;
             line-height: 1.6;
-            padding-left: 26px;
         }
 
-        /* === 8. UTILITIES === */
+        /* === 9. UTILITIES === */
         #loading {
             text-align: center; 
             padding: 50px; 
@@ -473,7 +549,7 @@
             font-size: 0.9rem;
         }
 
-        /* === 9. NOTIFICATION === */
+        /* === 10. NOTIFICATION === */
         .notification {
             position: fixed;
             bottom: 20px;
@@ -506,11 +582,11 @@
             flex-shrink: 0;
         }
 
-        /* === 10. FOOTER === */
+        /* === 11. FOOTER === */
         .footer {
             text-align: center;
             padding: 25px 15px;
-            color: var(--text-sec);
+            color: var(--text-secondary);
             font-size: 0.8em;
             border-top: 1px solid var(--border);
             margin-top: 20px;
@@ -518,8 +594,8 @@
 
         /* SVG Icons */
         .icon { 
-            width: 20px; 
-            height: 20px; 
+            width: 16px; 
+            height: 16px; 
             fill: currentColor; 
         }
     </style>
@@ -905,8 +981,7 @@
                         badgesHtml += '</div>';
                     }
 
-                    // Buttons with Store Info
-                    let btns = '';
+                    // Store options for accordion
                     const stores = [
                         { 
                             platform: 'shopee', 
@@ -930,31 +1005,63 @@
                             sales: parseInt(terjual_tokped) || 0 
                         }
                     ];
+
+                    // Filter stores yang memiliki link valid
+                    const validStores = stores.filter(store => isValidUrl(store.link));
                     
-                    stores.forEach(store => {
-                        if (isValidUrl(store.link)) {
-                            const storeInfo = (store.rating && store.rating > 0) ? `
-                                <div class="store-info">
-                                    <div class="rating">
-                                        <span class="star">⭐</span> ${store.rating}
+                    let accordionHtml = '';
+                    if (validStores.length > 0) {
+                        const storeOptions = validStores.map(store => {
+                            const storeIcon = getPlatformIcon(store.platform);
+                            return `
+                                <button class="store-option" data-platform="${store.platform}" onclick="safeRedirect('${store.link}', '${nama.replace(/'/g, "\\'")}')">
+                                    <div class="store-info">
+                                        <div class="store-platform">
+                                            ${storeIcon} ${store.platform.toUpperCase()}
+                                            ${store.store ? `• ${store.store}` : ''}
+                                        </div>
+                                        <div class="store-details">
+                                            ${store.rating > 0 ? `
+                                                <div class="store-rating">
+                                                    ⭐ ${store.rating}
+                                                </div>
+                                            ` : ''}
+                                            ${store.sales > 0 ? `
+                                                <div class="store-sales">
+                                                    ${formatNumber(store.sales)} terjual
+                                                </div>
+                                            ` : ''}
+                                        </div>
                                     </div>
-                                    ${store.sales ? `<div class="sales">${formatNumber(store.sales)} terjual</div>` : ''}
-                                </div>
-                            ` : '';
-                            
-                            btns += `
-                                <button class="action-btn btn-${store.platform}" onclick="safeRedirect('${store.link}', '${nama.replace(/'/g, "\\'")}')">
-                                    <svg class="icon" viewBox="0 0 24 24">
-                                        ${getPlatformIconSVG(store.platform)}
-                                    </svg>
-                                    ${storeInfo}
+                                    <div class="store-action">
+                                        BELI
+                                    </div>
                                 </button>
                             `;
-                        }
-                    });
+                        }).join('');
 
-                    // Jika semua link kosong
-                    if(btns === '') btns = `<div style="font-size:0.8rem; color:var(--text-secondary); margin:auto;">Stok Habis</div>`;
+                        accordionHtml = `
+                            <div class="accordion" id="accordion-${id}">
+                                <div class="accordion-header" onclick="toggleAccordion('accordion-${id}')">
+                                    <div class="accordion-title">
+                                        🛒 Tersedia di ${validStores.length} Marketplace
+                                    </div>
+                                    <div class="accordion-icon">▼</div>
+                                </div>
+                                <div class="accordion-content">
+                                    <div class="store-options">
+                                        ${storeOptions}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        accordionHtml = `
+                            <div style="text-align:center; padding:12px; color:var(--text-secondary); font-size:0.8rem;">
+                                🔒 Stok sedang habis
+                            </div>
+                        `;
+                    }
 
                     const stockWarning = stockVal < 20 ? '🛑' : stockVal < 50 ? '⚠️' : '✅';
                     const stockText = stockVal < 10 ? 
@@ -978,9 +1085,7 @@
                                 <div class="stock-fill" style="width:${stockVal}%; background:${stockColor}"></div>
                             </div>
                             <span class="stock-text">${stockText}</span>
-                            <div class="actions">
-                                ${btns}
-                            </div>
+                            ${accordionHtml}
                         </div>
                     `;
 
@@ -997,16 +1102,15 @@
             }
         }
 
-        function getPlatformIconSVG(platform) {
-            const svgPaths = {
-                shopee: '<path d="M12.04 2.5c-5.3 0-9.6 3.73-9.6 8.33 0 2.75 1.53 5.22 3.92 6.77-.33 1.15-1.2 2.7-1.2 2.7 0 0 3.16.23 5.6-1.5.41.06.84.09 1.28.09 5.3 0 9.6-3.73 9.6-8.33s-4.3-8.33-9.6-8.33z"/>',
-                tiktok: '<path d="M12.5 0v16.3c0 2.6-2.1 4.7-4.7 4.7s-4.7-2.1-4.7-4.7 2.1-4.7 4.7-4.7v3c-.9 0-1.7.8-1.7 1.7s.8 1.7 1.7 1.7 1.7-.8 1.7-1.7V4h3c0 2.2 1.8 4 4 4v-3c-.6 0-1 0-1-1V0h-3z"/>',
-                tokped: '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 14c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/>'
-            };
-            return svgPaths[platform] || '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14h2v2h-2zm0-10h2v8h-2z"/>';
+        // === 7. ACCORDION FUNCTIONALITY ===
+        function toggleAccordion(accordionId) {
+            const accordion = document.getElementById(accordionId);
+            if (accordion) {
+                accordion.classList.toggle('open');
+            }
         }
 
-        // === 7. NOTIFICATIONS ===
+        // === 8. NOTIFICATIONS ===
         async function startNotifications() {
             try {
                 const response = await fetch(CONFIG.NOTIFICATIONS_CSV);
@@ -1096,7 +1200,7 @@
             }, 3000);
         }
 
-        // === 8. INITIALIZATION ===
+        // === 9. INITIALIZATION ===
         async function initializeApp() {
             try {
                 await loadPageSettings();
@@ -1115,6 +1219,7 @@
         // Global functions
         window.toggleTheme = toggleTheme;
         window.safeRedirect = safeRedirect;
+        window.toggleAccordion = toggleAccordion;
     </script>
 </body>
 </html>
