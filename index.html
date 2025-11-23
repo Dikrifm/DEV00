@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLASH SALE HARI INI 🔥</title>
+    <style>
+        /* --- KONFIGURASI WARNA (CSS VARIABLES) --- */
+        :root {
+            /* Default: DARK MODE */
+            --bg: #0f172a;
+            --card: #1e293b;
+            --text: #ffffff;
+            --text-sec: #94a3b8;
+            --border: #334155;
+            --price-now: #4ade80;
+            --shadow: rgba(0,0,0,0.5);
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        /* LIGHT MODE OVERRIDE */
+        [data-theme="light"] {
+            --bg: #f1f5f9;
+            --card: #ffffff;
+            --text: #0f172a;
+            --text-sec: #64748b;
+            --border: #cbd5e1;
+            --price-now: #16a34a;
+            --shadow: rgba(0,0,0,0.1);
+            --danger: #dc2626;
+            --warning: #d97706;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body { 
+            margin: 0; 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; 
+            background: var(--bg); 
+            color: var(--text); 
+            padding-bottom: 50px; 
+            transition: background 0.3s ease, color 0.3s ease;
+            line-height: 1.5;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #dc2626, #b91c1c, #991b1b);
+            padding: 15px; 
+            text-align: center; 
+            position: sticky; 
+            top: 0; 
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(220, 38, 38, 0.4); 
+            color: white;
+        }
+        .timer { 
+            font-size: 1.3em; 
+            font-weight: 900; 
+            letter-spacing: 2px; 
+            animation: pulse 1.5s ease-in-out infinite; 
+            font-feature-settings: "tnum";
+            font-variant-numeric: tabular-nums;
+        }
+        @keyframes pulse { 
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Toggle Button (Mode Siang/Malam) */
+        .theme-toggle {
+            position: absolute; 
+            top: 15px; 
+            right: 15px;
+            background: rgba(255,255,255,0.2); 
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white; 
+            border-radius: 50%; 
+            width: 40px; 
+            height: 40px;
+            cursor: pointer; 
+            font-size: 1.2em; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.3);
+            transform: rotate(15deg);
+        }
+
+        /* Container */
+        .container { 
+            max-width: 480px; 
+            margin: 20px auto; 
+            padding: 0 15px; 
+        }
+
+        /* Loading States */
+        #loading, #error { 
+            text-align: center; 
+            margin: 50px 0; 
+            color: var(--text-sec); 
+            padding: 20px;
+        }
+        .loading-spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: var(--danger);
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 15px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Product Card */
+        .card {
+            background: var(--card); 
+            border-radius: 15px; 
+            padding: 18px; 
+            margin-bottom: 18px;
+            border: 1px solid var(--border); 
+            position: relative; 
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px var(--shadow);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: cardEnter 0.5s ease forwards;
+        }
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+        .card:nth-child(4) { animation-delay: 0.4s; }
+        .card:nth-child(5) { animation-delay: 0.5s; }
+        .card:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes cardEnter {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px var(--shadow);
+        }
+
+        .tag {
+            background: var(--warning); 
+            color: black; 
+            font-weight: bold; 
+            font-size: 0.7em;
+            padding: 4px 10px; 
+            border-radius: 20px; 
+            position: absolute; 
+            top: 15px; 
+            right: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .product-title { 
+            font-size: 1.15em; 
+            font-weight: 700; 
+            margin: 5px 0 12px 0; 
+            padding-right: 80px; 
+            color: var(--text);
+            line-height: 1.4;
+        }
+        
+        .price-box { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            margin: 12px 0; 
+            flex-wrap: wrap;
+        }
+        .price-now { 
+            color: var(--price-now); 
+            font-weight: 900; 
+            font-size: 1.4em; 
+        }
+        .price-coret { 
+            color: var(--text-sec); 
+            text-decoration: line-through; 
+            font-size: 0.95em; 
+        }
+        .discount-badge {
+            background: var(--danger);
+            color: white;
+            font-size: 0.75em;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        
+        /* Tombol Marketplace */
+        .btn {
+            width: 100%; 
+            padding: 14px; 
+            border: none; 
+            border-radius: 10px; 
+            font-weight: 800; 
+            font-size: 1em; 
+            cursor: pointer; 
+            margin-top: 10px;
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 8px; 
+            text-decoration: none;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn::after {
+            content: '🔗';
+            position: absolute;
+            right: 15px;
+            opacity: 0.8;
+            transition: transform 0.2s ease;
+        }
+        .btn:hover::after {
+            transform: scale(1.2);
+        }
+        .btn:active { 
+            transform: scale(0.98); 
+        }
+        .btn-shopee { 
+            background: #ee4d2d; 
+            color: white; 
+        }
+        .btn-tiktok { 
+            background: #000000; 
+            color: white; 
+            border: 1px solid #333; 
+        }
+        .btn-tokped { 
+            background: #03AC0E; 
+            color: white; 
+        }
+        .btn-disabled {
+            background: var(--text-sec) !important;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        .btn-disabled::after {
+            content: '⏳';
+        }
+
+        /* Stock Bar */
+        .stock-bg { 
+            height: 8px; 
+            background: var(--border); 
+            border-radius: 4px; 
+            margin: 15px 0 8px 0; 
+            width: 100%; 
+            overflow: hidden;
+        }
+        .stock-fill { 
+            height: 100%; 
+            background: linear-gradient(90deg, var(--danger), #f97316);
+            border-radius: 4px; 
+            transition: width 1s ease;
+        }
+        .stock-text { 
+            font-size: 0.75em; 
+            color: var(--text-sec); 
+            margin-top: 5px; 
+            display: block; 
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-sec);
+            font-size: 0.8em;
+            border-top: 1px solid var(--border);
+            margin-top: 30px;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(150%);
+            background: rgba(255, 255, 255, 0.95);
+            color: black;
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1000;
+            max-width: 90%;
+            backdrop-filter: blur(10px);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        .notification.show {
+            transform: translateX(-50%) translateY(0);
+        }
+        .notif-img {
+            width: 40px;
+            height: 40px;
+            background: #ddd;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 12px;
+            }
+            .card {
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+            .product-title {
+                font-size: 1.1em;
+                padding-right: 70px;
+            }
+            .btn {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div style="font-size: 0.8em; margin-bottom: 5px; opacity: 0.9;">⏰ PROMO BERAKHIR DALAM:</div>
+        <div class="timer" id="timer">02:00:00</div>
+        <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" aria-label="Ubah tema">☀️</button>
+    </div>
+
+    <div class="container">
+        <div id="loading">
+            <div class="loading-spinner"></div>
+            <div>Memuat produk terbaru...</div>
+        </div>
+        
+        <div id="error" style="display: none;"></div>
+        
+        <div id="product-list"></div>
+    </div>
+
+    <div class="footer">
+        © 2024 Flash Sale - Update Terbaru<br>
+        <small>Harga dan stok dapat berubah sewaktu-waktu</small>
+    </div>
+
+    <div class="notification" id="notification">
+        <img src="" class="notif-img" id="notifImg" alt="Pembeli">
+        <div>
+            <strong id="notifName">Budi dari Surabaya</strong><br>
+            <span style="color: #16a34a;" id="notifProduct">Baru saja membeli Charger ROBOT</span>
+            <div style="font-size: 0.75em; color: #666; margin-top: 2px;" id="notifTime">1 menit yang lalu</div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== KONFIGURASI ====================
+        // NAMACSV NAMA_CSV
+const CONFIG = {
+            CSV_URL: 'data.csv',
+            THEME_KEY: 'flashsale_theme',
+            TIMER_END_KEY: 'flashsale_timer_end',
+            TIMER_DURATION: 2 * 60 * 60 * 1000, // 2 jam
+            NOTIFICATION_INTERVAL: 15000, // 15 detik
+            CACHE_DURATION: 5 * 60 * 1000 // 5 menit
+        };
+
+        // ==================== UTILITIES ====================
+        const Utils = {
+            // Format angka ke Rupiah
+            formatRupiah: (number) => {
+                return new Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR',
+                    minimumFractionDigits: 0
+                }).format(number);
+            },
+
+            // Hitung diskon dalam persen
+            calculateDiscount: (original, promo) => {
+                return Math.round(((original - promo) / original) * 100);
+            },
+
+            // Waktu relatif (baru saja, x menit lalu)
+            getRelativeTime: (timestamp) => {
+                const now = new Date().getTime();
+                const diff = now - timestamp;
+                const minutes = Math.floor(diff / 60000);
+                
+                if (minutes < 1) return 'Baru saja';
+                if (minutes === 1) return '1 menit lalu';
+                if (minutes < 60) return `${minutes} menit lalu`;
+                
+                const hours = Math.floor(minutes / 60);
+                if (hours === 1) return '1 jam lalu';
+                return `${hours} jam lalu`;
+            },
+
+            // Validasi URL
+            isValidUrl: (string) => {
+                if (!string || string === '-' || string.trim() === '') return false;
+                try {
+                    new URL(string);
+                    return true;
+                } catch (_) {
+                    return false;
+                }
+            },
+
+            // Safe redirect dengan tracking
+            safeRedirect: (url, productName) => {
+                if (!Utils.isValidUrl(url)) {
+                    alert(`Link untuk ${productName} sedang tidak tersedia`);
+                    return false;
+                }
+
+                // Tracking click (bisa diintegrasikan dengan Google Analytics)
+                console.log(`Redirect to: ${url} - Product: ${productName}`);
+                
+                // Buka di tab baru
+                window.open(url, '_blank', 'noopener,noreferrer');
+                return true;
+            }
+        };
+
+        // ==================== THEME MANAGER ====================
+        const ThemeManager = {
+            init: () => {
+                const savedTheme = localStorage.getItem(CONFIG.THEME_KEY) || 'dark';
+                ThemeManager.setTheme(savedTheme);
+            },
+
+            setTheme: (theme) => {
+                document.body.setAttribute('data-theme', theme);
+                const btn = document.getElementById('themeBtn');
+                btn.innerText = theme === 'light' ? '🌙' : '☀️';
+                localStorage.setItem(CONFIG.THEME_KEY, theme);
+            },
+
+            toggle: () => {
+                const currentTheme = document.body.getAttribute('data-theme') || 'dark';
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                ThemeManager.setTheme(newTheme);
+            }
+        };
+
+        // ==================== TIMER MANAGER ====================
+        const TimerManager = {
+            endTime: null,
+
+            init: () => {
+                // Cek jika ada timer yang disimpan
+                const savedEndTime = localStorage.getItem(CONFIG.TIMER_END_KEY);
+                
+                if (savedEndTime) {
+                    TimerManager.endTime = parseInt(savedEndTime);
+                    // Jika timer sudah expired, reset
+                    if (Date.now() > TimerManager.endTime) {
+                        TimerManager.reset();
+                    }
+                } else {
+                    TimerManager.reset();
+                }
+
+                TimerManager.start();
+            },
+
+            reset: () => {
+                TimerManager.endTime = Date.now() + CONFIG.TIMER_DURATION;
+                localStorage.setItem(CONFIG.TIMER_END_KEY, TimerManager.endTime.toString());
+            },
+
+            start: () => {
+                const timerElement = document.getElementById('timer');
+                
+                const updateTimer = () => {
+                    const now = Date.now();
+                    const distance = TimerManager.endTime - now;
+                    
+                    if (distance <= 0) {
+                        timerElement.textContent = "PROMO BERAKHIR";
+                        timerElement.style.animation = 'none';
+                        timerElement.style.color = '#ef4444';
+                        return;
+                    }
+                    
+                    const hours = Math.floor(distance / (1000 * 60 * 60));
+                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                    
+                    timerElement.textContent = 
+                        `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                };
+                
+                updateTimer();
+                setInterval(updateTimer, 1000);
+            }
+        };
+
+        // ==================== CSV PARSER ====================
+        const CSVParser = {
+            parse: (csvText) => {
+                const rows = [];
+                let currentRow = [];
+                let currentValue = '';
+                let inQuotes = false;
+                
+                for (let i = 0; i < csvText.length; i++) {
+                    const char = csvText[i];
+                    
+                    if (char === '"') {
+                        inQuotes = !inQuotes;
+                    } else if (char === ',' && !inQuotes) {
+                        currentRow.push(currentValue.trim());
+                        currentValue = '';
+                    } else if (char === '\n' && !inQuotes) {
+                        currentRow.push(currentValue.trim());
+                        rows.push(currentRow);
+                        currentRow = [];
+                        currentValue = '';
+                    } else {
+                        currentValue += char;
+                    }
+                }
+                
+                // Push the last row
+                if (currentValue.trim() !== '' || currentRow.length > 0) {
+                    currentRow.push(currentValue.trim());
+                    rows.push(currentRow);
+                }
+                
+                return rows;
+            },
+
+            validateProduct: (productData, headers) => {
+                const errors = [];
+                const product = {
+                    id: productData[0],
+                    nama: productData[1],
+                    hargaAsli: parseInt(productData[2]) || 0,
+                    hargaPromo: parseInt(productData[3]) || 0,
+                    linkShopee: productData[4],
+                    linkTikTok: productData[5],
+                    stok: parseInt(productData[6]) || 0,
+                    linkTokped: productData[7]
+                };
+                
+                // Validasi field penting
+                if (!product.nama || product.nama.length < 2) errors.push('Nama produk invalid');
+                if (product.hargaPromo <= 0) errors.push('Harga promo invalid');
+                if (product.stok < 0 || product.stok > 100) errors.push('Stok persen invalid');
+                if (product.hargaAsli < product.hargaPromo) errors.push('Harga asli lebih kecil dari harga promo');
+                
+                return {
+                    product,
+                    errors,
+                    isValid: errors.length === 0
+                };
+            }
+        };
+
+        // ==================== PRODUCT MANAGER ====================
+        const ProductManager = {
+            products: [],
+
+            fetch: async () => {
+                const loadingElement = document.getElementById('loading');
+                const errorElement = document.getElementById('error');
+                
+                try {
+                    // Cek cache dulu
+                    const cached = ProductManager.getCachedProducts();
+                    if (cached) {
+                        ProductManager.products = cached;
+                        ProductManager.render();
+                        return;
+                    }
+
+                    loadingElement.style.display = 'block';
+                    errorElement.style.display = 'none';
+                    
+                    const response = await fetch(CONFIG.CSV_URL);
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    
+                    const csvText = await response.text();
+                    const rows = CSVParser.parse(csvText);
+                    
+                    if (rows.length < 2) throw new Error('Data CSV kosong atau format salah');
+                    
+                    const headers = rows[0];
+                    const dataRows = rows.slice(1);
+                    
+                    ProductManager.products = [];
+                    
+                    dataRows.forEach(row => {
+                        const validation = CSVParser.validateProduct(row, headers);
+                        if (validation.isValid) {
+                            ProductManager.products.push(validation.product);
+                        } else {
+                            console.warn('Produk tidak valid:', validation.errors, row);
+                        }
+                    });
+                    
+                    if (ProductManager.products.length === 0) {
+                        throw new Error('Tidak ada produk valid dalam data CSV');
+                    }
+                    
+                    // Simpan ke cache
+                    ProductManager.cacheProducts();
+                    ProductManager.render();
+                    
+                } catch (error) {
+                    console.error('Error fetching products:', error);
+                    ProductManager.showError(`Gagal memuat produk: ${error.message}`);
+                } finally {
+                    loadingElement.style.display = 'none';
+                }
+            },
+
+            render: () => {
+                const container = document.getElementById('product-list');
+                container.innerHTML = '';
+                
+                ProductManager.products.forEach(product => {
+                    const card = ProductManager.createProductCard(product);
+                    container.appendChild(card);
+                });
+            },
+
+            createProductCard: (product) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                
+                const discount = Utils.calculateDiscount(product.hargaAsli, product.hargaPromo);
+                const discountBadge = discount > 0 ? `<span class="discount-badge">-${discount}%</span>` : '';
+                
+                let buttonsHtml = '';
+                
+                // Shopee button
+                if (Utils.isValidUrl(product.linkShopee)) {
+                    buttonsHtml += `
+                        <button class="btn btn-shopee" onclick="Utils.safeRedirect('${product.linkShopee}', '${product.nama.replace(/'/g, "\\'")}')">
+                            🛒 BELI DI SHOPEE
+                        </button>
+                    `;
+                }
+                
+                // TikTok button
+                if (Utils.isValidUrl(product.linkTikTok)) {
+                    buttonsHtml += `
+                        <button class="btn btn-tiktok" onclick="Utils.safeRedirect('${product.linkTikTok}', '${product.nama.replace(/'/g, "\\'")}')">
+                            🎵 BELI DI TIKTOK
+                        </button>
+                    `;
+                }
+                
+                // Tokopedia button
+                if (Utils.isValidUrl(product.linkTokped)) {
+                    buttonsHtml += `
+                        <button class="btn btn-tokped" onclick="Utils.safeRedirect('${product.linkTokped}', '${product.nama.replace(/'/g, "\\'")}')">
+                            🦅 BELI DI TOKOPEDIA
+                        </button>
+                    `;
+                }
+                
+                // Jika tidak ada link yang valid
+                if (!buttonsHtml) {
+                    buttonsHtml = `
+                        <button class="btn btn-disabled" disabled>
+                            🔒 LINK SEDANG TIDAK TERSEDIA
+                        </button>
+                    `;
+                }
+                
+                const stockWarning = product.stok < 20 ? '🛑' : product.stok < 50 ? '⚠️' : '✅';
+                const stockText = product.stok < 10 ? 
+                    `🛑 HAMPIR HABIS! Sisa ${product.stok}% stok!` : 
+                    `${stockWarning} Stok tersisa ${product.stok}%`;
+                
+                card.innerHTML = `
+                    <div class="tag">🔥 PROMO</div>
+                    <div class="product-title">${product.nama}</div>
+                    <div class="price-box">
+                        <span class="price-now">${Utils.formatRupiah(product.hargaPromo)}</span>
+                        <span class="price-coret">${Utils.formatRupiah(product.hargaAsli)}</span>
+                        ${discountBadge}
+                    </div>
+                    <div class="stock-bg">
+                        <div class="stock-fill" style="width: ${product.stok}%"></div>
+                    </div>
+                    <span class="stock-text">${stockText}</span>
+                    ${buttonsHtml}
+                `;
+                
+                return card;
+            },
+
+            showError: (message) => {
+                const errorElement = document.getElementById('error');
+                errorElement.innerHTML = `
+                    <div style="text-align: center; color: var(--danger);">
+                        <div style="font-size: 3em;">😵</div>
+                        <div style="margin: 15px 0; font-size: 1.1em;">${message}</div>
+                        <button onclick="ProductManager.fetch()" style="
+                            padding: 12px 24px; 
+                            background: var(--danger); 
+                            color: white; 
+                            border: none; 
+                            border-radius: 8px; 
+                            cursor: pointer;
+                            font-weight: bold;
+                        ">🔄 COBA LAGI</button>
+                    </div>
+                `;
+                errorElement.style.display = 'block';
+            },
+
+            cacheProducts: () => {
+                const cacheData = {
+                    products: ProductManager.products,
+                    timestamp: Date.now()
+                };
+                localStorage.setItem('product_cache', JSON.stringify(cacheData));
+            },
+
+            getCachedProducts: () => {
+                try {
+                    const cached = localStorage.getItem('product_cache');
+                    if (!cached) return null;
+                    
+                    const cacheData = JSON.parse(cached);
+                    const isExpired = Date.now() - cacheData.timestamp > CONFIG.CACHE_DURATION;
+                    
+                    return isExpired ? null : cacheData.products;
+                } catch (e) {
+                    return null;
+                }
+            }
+        };
+
+        // ==================== NOTIFICATION MANAGER ====================
+        const NotificationManager = {
+            names: ['Andi', 'Siti', 'Budi', 'Rina', 'Eko', 'Dewi', 'Reza', 'Ahmad', 'Maya', 'Joko'],
+            cities: ['Jakarta', 'Bandung', 'Surabaya', 'Medan', 'Makassar', 'Jogja', 'Semarang', 'Denpasar'],
+            
+            init: () => {
+                // Mulai notifikasi setelah delay awal
+                setTimeout(() => {
+                    NotificationManager.showRandom();
+                    setInterval(NotificationManager.showRandom, CONFIG.NOTIFICATION_INTERVAL);
+                }, 5000);
+            },
+            
+            showRandom: () => {
+                if (ProductManager.products.length === 0) return;
+                
+                const randomName = NotificationManager.names[Math.floor(Math.random() * NotificationManager.names.length)];
+                const randomCity = NotificationManager.cities[Math.floor(Math.random() * NotificationManager.cities.length)];
+                const randomProduct = ProductManager.products[Math.floor(Math.random() * ProductManager.products.length)];
+                
+                document.getElementById('notifName').textContent = `${randomName} dari ${randomCity}`;
+                document.getElementById('notifProduct').textContent = `Baru saja membeli ${randomProduct.nama}`;
+                document.getElementById('notifTime').textContent = Utils.getRelativeTime(Date.now());
+                document.getElementById('notifImg').src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${randomName}`;
+                
+                const notif = document.getElementById('notification');
+                notif.classList.add('show');
+                
+                setTimeout(() => {
+                    notif.classList.remove('show');
+                }, 4000);
+            }
+        };
+
+        // ==================== INITIALIZATION ====================
+        function init() {
+            ThemeManager.init();
+            TimerManager.init();
+            ProductManager.fetch();
+            NotificationManager.init();
+        }
+
+        // Global functions untuk HTML
+        window.toggleTheme = ThemeManager.toggle;
+
+        // Start everything when page loads
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>

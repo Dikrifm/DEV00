@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLASH SALE 🔥</title>
+    <style>
+        /* === VARIABLES & RESET === */
+        :root {
+            /* DEFAULT DARK MODE VARIABLES */
+            --bg: #0f172a;
+            --card: #1e293b;
+            --text: #ffffff;
+            --text-sec: #94a3b8;
+            --border: #334155;
+            --price-now: #4ade80;
+            --shadow: rgba(0,0,0,0.5);
+            
+            /* HEADER - DARK MODE DEFAULT */
+            --header-bg-1: #dc2626;
+            --header-bg-2: #b91c1c;
+            
+            /* BANNER - DARK MODE DEFAULT */
+            --banner-bg-1: #6366f1;
+            --banner-bg-2: #8b5cf6;
+        }
+
+        /* LIGHT MODE OVERRIDE */
+        [data-theme="light"] {
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #0f172a;
+            --text-sec: #64748b;
+            --border: #e2e8f0;
+            --price-now: #16a34a;
+            --shadow: rgba(0,0,0,0.1);
+            
+            /* HEADER - LIGHT MODE */
+            --header-bg-1: #ef4444;
+            --header-bg-2: #dc2626;
+            
+            /* BANNER - LIGHT MODE */
+            --banner-bg-1: #4f46e5;
+            --banner-bg-2: #7c3aed;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+            min-height: 100vh;
+        }
+
+        /* === HEADER === */
+        .header {
+            background: linear-gradient(135deg, var(--header-bg-1), var(--header-bg-2));
+            padding: 20px 15px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .timer {
+            font-size: 1.4em;
+            font-weight: 900;
+            letter-spacing: 2px;
+            margin: 5px 0;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .pulse {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            z-index: 101; /* Pastikan di atas elemen lain */
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.1);
+        }
+
+        /* === MAIN CONTENT === */
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 20px 15px;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 12px var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .card:active {
+            transform: scale(0.98);
+        }
+
+        /* === BADGE SYSTEM === */
+        .badges-container {
+            display: flex;
+            gap: 6px;
+            margin: 8px 0 12px 0;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            font-size: 0.65em;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .badge-primary {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: black;
+        }
+
+        .badge-secondary {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+        }
+
+        .badge-success {
+            background: linear-gradient(135deg, #10b981, #047857);
+            color: white;
+        }
+
+        .badge-warning {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            color: white;
+        }
+
+        .badge-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+
+        .badge-premium {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: white;
+        }
+
+        .product-title {
+            font-size: 1.1em;
+            font-weight: 700;
+            margin: 5px 0 8px 0;
+            line-height: 1.4;
+        }
+
+        .price-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 12px 0;
+            flex-wrap: wrap;
+        }
+
+        .price-now {
+            color: var(--price-now);
+            font-weight: 900;
+            font-size: 1.3em;
+        }
+
+        .price-coret {
+            color: var(--text-sec);
+            text-decoration: line-through;
+            font-size: 0.9em;
+        }
+
+        .discount-badge {
+            background: #ef4444;
+            color: white;
+            font-size: 0.7em;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        /* === BUTTONS === */
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1em;
+            cursor: pointer;
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn:active {
+            opacity: 0.8;
+            transform: scale(0.98);
+        }
+
+        .btn-shopee {
+            background: #ee4d2d;
+            color: white;
+        }
+
+        .btn-tiktok {
+            background: #000000;
+            color: white;
+        }
+
+        .btn-tokped {
+            background: #03AC0E;
+            color: white;
+        }
+
+        /* === STOCK BAR === */
+        .stock-bg {
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            margin: 12px 0 6px 0;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .stock-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ef4444, #f97316);
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        .stock-text {
+            font-size: 0.75em;
+            color: var(--text-sec);
+        }
+
+        /* === LOADING & ERROR === */
+        .loading {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-sec);
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #ef4444;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error {
+            text-align: center;
+            padding: 40px 20px;
+            background: var(--card);
+            border-radius: 12px;
+            margin: 20px 0;
+            border: 1px solid var(--border);
+        }
+
+        .retry-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        /* === FOOTER === */
+        .footer {
+            text-align: center;
+            padding: 25px 15px;
+            color: var(--text-sec);
+            font-size: 0.8em;
+            border-top: 1px solid var(--border);
+            margin-top: 20px;
+        }
+
+        /* === NOTIFICATION === */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(150%);
+            background: rgba(255, 255, 255, 0.95);
+            color: black;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 0.85em;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1000;
+            max-width: 90%;
+            backdrop-filter: blur(10px);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .notification.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .notif-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        /* === BANNER & SECTIONS === */
+        .banner {
+            background: linear-gradient(135deg, var(--banner-bg-1), var(--banner-bg-2));
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .section-title {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin: 20px 0 15px 0;
+            text-align: center;
+            color: var(--text);
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER SECTION -->
+    <div class="header">
+        <div id="headerText" style="font-size: 0.8em; margin-bottom: 5px; opacity: 0.9;">⏰ PROMO BERAKHIR DALAM:</div>
+        <div class="timer pulse" id="timer">02:00:00</div>
+        <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌙</button>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="container">
+        <!-- Loading State -->
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <div>Memuat konten terbaru...</div>
+        </div>
+
+        <!-- Error State -->
+        <div class="error" id="error" style="display: none;"></div>
+
+        <!-- Dynamic Banner -->
+        <div id="banner-container"></div>
+
+        <!-- Dynamic Section Titles -->
+        <div id="section-titles-container"></div>
+
+        <!-- Products Will Appear Here -->
+        <div id="product-list"></div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer" id="footerText">
+        © 2024 Flash Sale - Update Terbaru<br>
+        <small>Harga dan stok dapat berubah sewaktu-waktu</small>
+    </div>
+
+    <!-- NOTIFICATION -->
+    <div class="notification" id="notification">
+        <img src="" class="notif-img" id="notifImg" alt="Pembeli">
+        <div>
+            <strong id="notifName">Budi dari Surabaya</strong><br>
+            <span style="color: #16a34a;" id="notifProduct">Baru saja membeli produk</span>
+            <div style="font-size: 0.75em; color: #666;" id="notifTime">1 menit lalu</div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== KONFIGURASI ====================
+        const CONFIG = {
+            PAGE_CSV: 'page.csv',
+            PRODUCTS_CSV: 'pro.csv',
+            NOTIFICATION_INTERVAL: 15000
+        };
+
+        // ==================== GLOBAL STATE ====================
+        let pageSettings = {};
+        let currentTimerDuration = 2 * 60 * 60;
+
+        // ==================== FIXED THEME MANAGEMENT ====================
+        // **PERBAIKAN UTAMA: Theme di-load SEBELUM page settings**
+        function initializeTheme() {
+            console.log('🔄 Initializing theme system...');
+            
+            // Cek saved theme atau system preference
+            const savedTheme = localStorage.getItem('theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            let initialTheme = 'dark'; // Default ke dark
+            if (savedTheme) {
+                initialTheme = savedTheme;
+                console.log('📁 Using saved theme:', savedTheme);
+            } else if (!systemPrefersDark) {
+                initialTheme = 'light';
+                console.log('💡 Using system light theme');
+            } else {
+                console.log('🌙 Using default dark theme');
+            }
+            
+            applyTheme(initialTheme);
+        }
+
+        function applyTheme(theme) {
+            console.log('🎨 Applying theme:', theme);
+            
+            // Set attribute di body
+            document.body.setAttribute('data-theme', theme);
+            
+            // Update button icon - PASTIKAN INI DIEKSEKUSI
+            const themeBtn = document.getElementById('themeBtn');
+            if (themeBtn) {
+                themeBtn.textContent = theme === 'light' ? '🌙' : '☀️';
+                console.log('✅ Theme button updated to:', themeBtn.textContent);
+            } else {
+                console.log('❌ Theme button not found!');
+            }
+            
+            // Save preference
+            localStorage.setItem('theme', theme);
+            console.log('💾 Theme saved to localStorage');
+        }
+
+        function toggleTheme() {
+            console.log('🔄 Toggling theme...');
+            const currentTheme = document.body.getAttribute('data-theme') || 'dark';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            console.log('Current:', currentTheme, 'New:', newTheme);
+            applyTheme(newTheme);
+        }
+
+        // ==================== UTILITY FUNCTIONS ====================
+        function formatRupiah(number) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(number);
+        }
+
+        function calculateDiscount(original, promo) {
+            return Math.round(((original - promo) / original) * 100);
+        }
+
+        function isValidUrl(string) {
+            if (!string || string === '-' || string.trim() === '') return false;
+            try {
+                new URL(string);
+                return true;
+            } catch (_) {
+                return false;
+            }
+        }
+
+        function safeRedirect(url, productName) {
+            if (!isValidUrl(url)) {
+                alert(`Link untuk ${productName} sedang tidak tersedia`);
+                return false;
+            }
+            window.open(url, '_blank', 'noopener,noreferrer');
+            return true;
+        }
+
+        // ==================== PAGE SETTINGS MANAGEMENT ====================
+        async function loadPageSettings() {
+            try {
+                console.log('📄 Loading page settings from:', CONFIG.PAGE_CSV);
+                const response = await fetch(CONFIG.PAGE_CSV);
+                
+                if (!response.ok) {
+                    throw new Error(`File ${CONFIG.PAGE_CSV} tidak ditemukan`);
+                }
+                
+                const csvText = await response.text();
+                const settings = parsePageCSV(csvText);
+                
+                // **PERBAIKAN: Apply page settings SETELAH theme sudah di-set**
+                applyPageSettings(settings);
+                console.log('✅ Page settings applied:', settings);
+                
+            } catch (error) {
+                console.error('❌ Error loading page settings:', error);
+                applyDefaultPageSettings();
+            }
+        }
+
+        function parsePageCSV(csvText) {
+            const settings = {};
+            const lines = csvText.trim().split('\n');
+            
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
+                
+                const [key, value, type = 'text'] = line.split(',').map(field => field.trim());
+                
+                if (key && value) {
+                    switch(type.toLowerCase()) {
+                        case 'number':
+                            settings[key] = parseInt(value) || 0;
+                            break;
+                        case 'boolean':
+                            settings[key] = value.toLowerCase() === 'true';
+                            break;
+                        case 'color':
+                            settings[key] = value;
+                            break;
+                        default:
+                            settings[key] = value;
+                    }
+                }
+            }
+            
+            return settings;
+        }
+
+        function applyPageSettings(settings) {
+            pageSettings = settings;
+            
+            // Apply individual settings - TANPA GANGGU THEME
+            if (settings.site_title) {
+                document.title = settings.site_title;
+            }
+            
+            if (settings.header_text) {
+                const headerText = document.getElementById('headerText');
+                if (headerText) headerText.innerHTML = settings.header_text;
+            }
+            
+            if (settings.footer_text) {
+                const footerText = document.getElementById('footerText');
+                if (footerText) footerText.innerHTML = settings.footer_text;
+            }
+            
+            if (settings.timer_duration) {
+                currentTimerDuration = settings.timer_duration;
+            }
+            
+            // **PERBAIKAN: Header colors HANYA jika belum di-set oleh theme**
+            // Biarkan CSS variables dari theme yang mengatur, kecuali ada override spesifik
+            if (settings.header_bg_1 && settings.header_bg_2) {
+                console.log('🎨 Applying custom header colors from page.csv');
+                document.documentElement.style.setProperty('--header-bg-1', settings.header_bg_1);
+                document.documentElement.style.setProperty('--header-bg-2', settings.header_bg_2);
+            }
+            
+            if (settings.banner_text && settings.banner_bg_1 && settings.banner_bg_2) {
+                document.documentElement.style.setProperty('--banner-bg-1', settings.banner_bg_1);
+                document.documentElement.style.setProperty('--banner-bg-2', settings.banner_bg_2);
+                
+                const bannerContainer = document.getElementById('banner-container');
+                if (bannerContainer) {
+                    bannerContainer.innerHTML = `
+                        <div class="banner">
+                            <div style="font-size: 1.1em; font-weight: bold; margin-bottom: 8px;">
+                                ${settings.banner_text}
+                            </div>
+                            ${settings.banner_subtext ? `
+                                <div style="font-size: 0.9em; opacity: 0.9;">
+                                    ${settings.banner_subtext}
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                }
+            }
+            
+            if (settings.section_titles) {
+                const titles = settings.section_titles.split('|');
+                const container = document.getElementById('section-titles-container');
+                if (container) {
+                    container.innerHTML = titles.map(title => 
+                        `<div class="section-title">${title}</div>`
+                    ).join('');
+                }
+            }
+            
+            startTimer();
+        }
+
+        function applyDefaultPageSettings() {
+            const defaultSettings = {
+                site_title: 'FLASH SALE 🔥',
+                header_text: '⏰ PROMO BERAKHIR DALAM:',
+                footer_text: '© 2024 Flash Sale - Update Terbaru<br><small>Harga dan stok dapat berubah sewaktu-waktu</small>',
+                timer_duration: 7200
+            };
+            
+            applyPageSettings(defaultSettings);
+        }
+
+        // ==================== TIMER ====================
+        function startTimer() {
+            const endTime = Date.now() + (currentTimerDuration * 1000);
+            
+            function updateTimer() {
+                const now = Date.now();
+                const distance = endTime - now;
+                
+                if (distance <= 0) {
+                    document.getElementById('timer').textContent = "PROMO BERAKHIR";
+                    document.getElementById('timer').classList.remove('pulse');
+                    return;
+                }
+                
+                const hours = Math.floor(distance / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                document.getElementById('timer').textContent = 
+                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+            
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        }
+
+        // ==================== PRODUCTS MANAGEMENT ====================
+        async function loadProducts() {
+            const loadingElement = document.getElementById('loading');
+            const errorElement = document.getElementById('error');
+            const productList = document.getElementById('product-list');
+            
+            try {
+                loadingElement.style.display = 'block';
+                errorElement.style.display = 'none';
+                productList.innerHTML = '';
+                
+                console.log('📦 Loading products from:', CONFIG.PRODUCTS_CSV);
+                const response = await fetch(CONFIG.PRODUCTS_CSV);
+                
+                if (!response.ok) {
+                    throw new Error(`File ${CONFIG.PRODUCTS_CSV} tidak ditemukan`);
+                }
+                
+                const csvText = await response.text();
+                console.log('✅ Products CSV loaded successfully');
+                
+                const products = parseProductsCSV(csvText);
+                console.log('📊 Parsed products:', products);
+                
+                if (products.length === 0) {
+                    throw new Error('Tidak ada produk ditemukan dalam CSV');
+                }
+                
+                renderProducts(products);
+                loadingElement.style.display = 'none';
+                
+            } catch (error) {
+                console.error('❌ Error loading products:', error);
+                loadingElement.style.display = 'none';
+                showError(`Gagal memuat produk: ${error.message}`);
+            }
+        }
+
+        function parseProductsCSV(csvText) {
+            const lines = csvText.trim().split('\n');
+            const products = [];
+            
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
+                
+                const fields = line.split(',').map(field => field.trim());
+                
+                if (fields.length >= 8) {
+                    const product = {
+                        id: fields[0] || i,
+                        nama: fields[1] || 'Produk',
+                        harga_asli: parseInt(fields[2]) || 0,
+                        harga_promo: parseInt(fields[3]) || 0,
+                        link_shopee: fields[4] || '',
+                        link_tiktok: fields[5] || '',
+                        link_tokped: fields[6] || '',
+                        stok_persen: parseInt(fields[7]) || 50,
+                        badge1: fields[8] || '',
+                        badge2: fields[9] || '',
+                        badge3: fields[10] || ''
+                    };
+                    
+                    if (product.nama && product.harga_promo > 0) {
+                        products.push(product);
+                    }
+                }
+            }
+            
+            return products;
+        }
+
+        function renderProducts(products) {
+            const productList = document.getElementById('product-list');
+            productList.innerHTML = '';
+            
+            products.forEach((product, index) => {
+                const discount = calculateDiscount(product.harga_asli, product.harga_promo);
+                const discountBadge = discount > 0 ? 
+                    `<span class="discount-badge">-${discount}%</span>` : '';
+                
+                let badgesHtml = '';
+                if (product.badge1 || product.badge2 || product.badge3) {
+                    badgesHtml = '<div class="badges-container">';
+                    
+                    if (product.badge1) {
+                        badgesHtml += `<span class="badge badge-primary">${product.badge1}</span>`;
+                    }
+                    if (product.badge2) {
+                        badgesHtml += `<span class="badge badge-secondary">${product.badge2}</span>`;
+                    }
+                    if (product.badge3) {
+                        badgesHtml += `<span class="badge badge-success">${product.badge3}</span>`;
+                    }
+                    
+                    badgesHtml += '</div>';
+                }
+                
+                let buttonsHtml = '';
+                
+                if (isValidUrl(product.link_shopee)) {
+                    buttonsHtml += `
+                        <button class="btn btn-shopee" onclick="safeRedirect('${product.link_shopee}', '${product.nama.replace(/'/g, "\\'")}')">
+                            🛒 BELI DI SHOPEE
+                        </button>
+                    `;
+                }
+                
+                if (isValidUrl(product.link_tiktok)) {
+                    buttonsHtml += `
+                        <button class="btn btn-tiktok" onclick="safeRedirect('${product.link_tiktok}', '${product.nama.replace(/'/g, "\\'")}')">
+                            🎵 BELI DI TIKTOK
+                        </button>
+                    `;
+                }
+                
+                if (isValidUrl(product.link_tokped)) {
+                    buttonsHtml += `
+                        <button class="btn btn-tokped" onclick="safeRedirect('${product.link_tokped}', '${product.nama.replace(/'/g, "\\'")}')">
+                            🦅 BELI DI TOKOPEDIA
+                        </button>
+                    `;
+                }
+                
+                if (!buttonsHtml) {
+                    buttonsHtml = `
+                        <button class="btn" style="background: var(--text-sec); color: white;" disabled>
+                            🔒 LINK SEDANG TIDAK TERSEDIA
+                        </button>
+                    `;
+                }
+                
+                const stockWarning = product.stok_persen < 20 ? '🛑' : 
+                                   product.stok_persen < 50 ? '⚠️' : '✅';
+                
+                const stockText = product.stok_persen < 10 ? 
+                    `🛑 HAMPIR HABIS! Sisa ${product.stok_persen}% stok!` : 
+                    `${stockWarning} Stok tersisa ${product.stok_persen}%`;
+                
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="product-title">${product.nama}</div>
+                    ${badgesHtml}
+                    <div class="price-box">
+                        <span class="price-now">${formatRupiah(product.harga_promo)}</span>
+                        <span class="price-coret">${formatRupiah(product.harga_asli)}</span>
+                        ${discountBadge}
+                    </div>
+                    <div class="stock-bg">
+                        <div class="stock-fill" style="width: ${product.stok_persen}%"></div>
+                    </div>
+                    <span class="stock-text">${stockText}</span>
+                    ${buttonsHtml}
+                `;
+                
+                productList.appendChild(card);
+            });
+        }
+
+        function showError(message) {
+            const errorElement = document.getElementById('error');
+            errorElement.innerHTML = `
+                <div style="color: #ef4444; font-size: 2em;">😵</div>
+                <div style="margin: 15px 0; font-size: 1.1em;">${message}</div>
+                <button class="retry-btn" onclick="initializeApp()">
+                    🔄 COBA LAGI
+                </button>
+                <div style="margin-top: 15px; font-size: 0.9em; color: var(--text-sec);">
+                    Pastikan file <strong>${CONFIG.PAGE_CSV}</strong> dan <strong>${CONFIG.PRODUCTS_CSV}</strong> ada di folder yang sama
+                </div>
+            `;
+            errorElement.style.display = 'block';
+        }
+
+        // ==================== NOTIFICATIONS ====================
+        function startNotifications() {
+            const names = ['Andi', 'Siti', 'Budi', 'Rina', 'Eko', 'Dewi'];
+            const cities = ['Jakarta', 'Bandung', 'Surabaya', 'Medan', 'Makassar'];
+            
+            function showNotification() {
+                const notif = document.getElementById('notification');
+                const randomName = names[Math.floor(Math.random() * names.length)];
+                const randomCity = cities[Math.floor(Math.random() * cities.length)];
+                
+                document.getElementById('notifName').textContent = `${randomName} dari ${randomCity}`;
+                document.getElementById('notifProduct').textContent = 'Baru saja membeli produk premium';
+                document.getElementById('notifTime').textContent = 'Beberapa menit lalu';
+                document.getElementById('notifImg').src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${randomName}`;
+                
+                notif.classList.add('show');
+                
+                setTimeout(() => {
+                    notif.classList.remove('show');
+                }, 4000);
+            }
+            
+            setTimeout(() => {
+                showNotification();
+                setInterval(showNotification, CONFIG.NOTIFICATION_INTERVAL);
+            }, 5000);
+        }
+
+        // ==================== INITIALIZATION ====================
+        async function initializeApp() {
+            console.log('🚀 Starting application initialization...');
+            
+            try {
+                // **PERBAIKAN KRITIS: Theme HARUS di-load PERTAMA**
+                console.log('1. Initializing theme...');
+                initializeTheme();
+                
+                // Tunggu sebentar untuk memastikan theme ter-applied
+                await new Promise(resolve => setTimeout(resolve, 100));
+                
+                console.log('2. Loading page settings...');
+                await loadPageSettings();
+                
+                console.log('3. Loading products...');
+                await loadProducts();
+                
+                console.log('4. Starting notifications...');
+                startNotifications();
+                
+                console.log('✅ Application initialized successfully!');
+                
+            } catch (error) {
+                console.error('❌ Initialization error:', error);
+                showError('Gagal memuat halaman: ' + error.message);
+            }
+        }
+
+        // Start when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📄 DOM fully loaded, starting app...');
+            initializeApp();
+        });
+
+        // Global functions
+        window.toggleTheme = toggleTheme;
+        window.retryLoad = initializeApp;
+    </script>
+</body>
+</html>

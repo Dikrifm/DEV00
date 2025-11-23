@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLASH SALE 🔥</title>
+    <style>
+        /* === VARIABEL WARNA YANG LEBIH KOMPREHENSIF === */
+        :root {
+            /* Dark Mode (Default) */
+            --bg: #0f172a;
+            --card: #1e293b;
+            --text: #ffffff;
+            --text-sec: #94a3b8;
+            --border: #334155;
+            --price-now: #4ade80;
+            --shadow: rgba(0,0,0,0.5);
+            --header-1: #dc2626;
+            --header-2: #b91c1c;
+            --error-bg: #7f1d1d;
+            --success-bg: #065f46;
+        }
+
+        [data-theme="light"] {
+            /* Light Mode */
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #0f172a;
+            --text-sec: #64748b;
+            --border: #e2e8f0;
+            --price-now: #16a34a;
+            --shadow: rgba(0,0,0,0.08);
+            --header-1: #ef4444;
+            --header-2: #dc2626;
+            --error-bg: #fecaca;
+            --success-bg: #d1fae5;
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+            min-height: 100vh;
+            padding-bottom: 60px;
+        }
+
+        /* === IMPROVED HEADER === */
+        .header {
+            background: linear-gradient(135deg, var(--header-1), var(--header-2));
+            padding: 20px 15px;
+            text-align: center;
+            position: sticky; 
+            top: 0; 
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            color: white;
+        }
+
+        .timer {
+            font-size: 1.4em; 
+            font-weight: 900; 
+            letter-spacing: 2px;
+            margin: 5px 0; 
+            font-variant-numeric: tabular-nums;
+        }
+
+        .timer.expired {
+            color: #fef08a;
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink { 
+            0%, 50% { opacity: 1; } 
+            51%, 100% { opacity: 0.3; } 
+        }
+
+        .pulse { animation: pulse 1.5s infinite; }
+        @keyframes pulse { 
+            0%, 100% { transform: scale(1); } 
+            50% { transform: scale(1.05); } 
+        }
+
+        .theme-toggle {
+            position: absolute; 
+            top: 15px; 
+            right: 15px;
+            background: rgba(255,255,255,0.2); 
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white; 
+            border-radius: 50%; 
+            width: 40px; 
+            height: 40px;
+            cursor: pointer; 
+            font-size: 1.2em; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            backdrop-filter: blur(10px); 
+            transition: all 0.3s ease;
+        }
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.3);
+            transform: rotate(15deg);
+        }
+        .theme-toggle:active { transform: scale(0.9); }
+
+        /* === IMPROVED MAIN CONTENT === */
+        .container { 
+            max-width: 480px; 
+            margin: 0 auto; 
+            padding: 20px 15px; 
+        }
+
+        .card {
+            background: var(--card); 
+            border-radius: 12px; 
+            padding: 18px; 
+            margin-bottom: 16px;
+            border: 1px solid var(--border); 
+            box-shadow: 0 4px 12px var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--shadow);
+        }
+        .card:active { transform: scale(0.98); }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--header-1), transparent);
+            transition: left 0.5s ease;
+        }
+        .card:hover::before {
+            left: 100%;
+        }
+
+        /* === ENHANCED BADGE SYSTEM === */
+        .badges-container { 
+            display: flex; 
+            gap: 6px; 
+            margin: 8px 0 12px 0; 
+            flex-wrap: wrap; 
+        }
+        .badge {
+            font-size: 0.65em; 
+            padding: 4px 10px; 
+            border-radius: 12px;
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 0.3px;
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .badge:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.1);
+        }
+
+        .badge-primary { background: linear-gradient(135deg, #f59e0b, #d97706); color: black; }
+        .badge-secondary { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; }
+        .badge-success { background: linear-gradient(135deg, #10b981, #047857); color: white; }
+        .badge-warning { background: linear-gradient(135deg, #f97316, #ea580c); color: white; }
+        .badge-danger { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; }
+        .badge-premium { 
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed); 
+            color: white; 
+            animation: glow 2s infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 5px #8b5cf6; }
+            50% { box-shadow: 0 0 15px #8b5cf6; }
+        }
+
+        .product-title {
+            font-size: 1.1em; 
+            font-weight: 700; 
+            margin: 5px 0 8px 0;
+            line-height: 1.4; 
+            color: var(--text);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .price-box { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            margin: 12px 0; 
+            flex-wrap: wrap; 
+        }
+        .price-now { 
+            color: var(--price-now); 
+            font-weight: 900; 
+            font-size: 1.3em; 
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .price-correct { 
+            color: var(--text-sec); 
+            text-decoration: line-through; 
+            font-size: 0.9em; 
+        }
+
+        .discount-badge {
+            background: var(--header-1); 
+            color: white; 
+            font-size: 0.7em;
+            padding: 3px 10px; 
+            border-radius: 10px; 
+            font-weight: bold;
+            animation: bounce 1s infinite alternate;
+        }
+
+        @keyframes bounce {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+
+        /* === IMPROVED BUTTONS === */
+        .btn {
+            width: 100%; 
+            padding: 14px; 
+            border: none; 
+            border-radius: 8px;
+            font-weight: 700; 
+            font-size: 1em; 
+            cursor: pointer; 
+            margin-top: 10px;
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 8px;
+            transition: all 0.3s ease; 
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            transform: translate(-50%, -50%);
+        }
+        .btn:active::after {
+            width: 100px;
+            height: 100px;
+        }
+        .btn:active { transform: scale(0.95); }
+
+        .btn-shopee { background: linear-gradient(135deg, #ee4d2d, #ff6b4a); color: white; }
+        .btn-tiktok { background: linear-gradient(135deg, #000000, #333333); color: white; }
+        .btn-tokped { background: linear-gradient(135deg, #03AC0E, #05c417); color: white; }
+        .btn-disabled { 
+            background: var(--text-sec); 
+            color: var(--text);
+            cursor: not-allowed !important;
+            opacity: 0.6;
+        }
+        
+        [data-theme="light"] .btn-tiktok { 
+            background: linear-gradient(135deg, #1a1a1a, #333333); 
+        }
+
+        /* === ENHANCED STOCK BAR === */
+        .stock-bg {
+            height: 8px; 
+            background: var(--border); 
+            border-radius: 4px;
+            margin: 12px 0 6px 0; 
+            width: 100%; 
+            overflow: hidden;
+            position: relative;
+        }
+        .stock-fill {
+            height: 100%; 
+            background: linear-gradient(90deg, #ef4444, #f97316, #4ade80);
+            border-radius: 4px; 
+            transition: width 0.8s ease;
+            position: relative;
+        }
+        .stock-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shimmer 2s infinite;
+        }
+        .stock-text { 
+            font-size: 0.75em; 
+            color: var(--text-sec);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        /* === IMPROVED LOADING & STATES === */
+        .loading { 
+            text-align: center; 
+            padding: 40px 20px; 
+            color: var(--text-sec); 
+        }
+        .spinner {
+            display: inline-block; 
+            width: 40px; 
+            height: 40px;
+            border: 4px solid rgba(255,255,255,0.3); 
+            border-radius: 50%;
+            border-top-color: var(--header-1); 
+            animation: spin 1s linear infinite; 
+            margin-bottom: 15px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .error {
+            text-align: center; 
+            padding: 20px; 
+            background: var(--error-bg);
+            color: white;
+            border-radius: 12px; 
+            margin: 20px 0; 
+            border: 1px solid var(--border); 
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        .success {
+            text-align: center;
+            padding: 15px;
+            background: var(--success-bg);
+            color: white;
+            border-radius: 8px;
+            margin: 10px 0;
+            display: none;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .banner {
+            background: linear-gradient(135deg, var(--header-1), var(--header-2));
+            color: white; 
+            padding: 20px; 
+            border-radius: 12px; 
+            margin-bottom: 20px; 
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+        .section-title {
+            font-size: 1.2em; 
+            font-weight: 700; 
+            margin: 20px 0 15px 0;
+            text-align: center; 
+            color: var(--text);
+            position: relative;
+            padding-bottom: 10px;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--header-1), var(--header-2));
+            border-radius: 2px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .notification {
+            position: fixed; 
+            bottom: 20px; 
+            left: 50%; 
+            transform: translateX(-50%) translateY(150%);
+            background: var(--card); 
+            color: var(--text);
+            padding: 12px 16px; 
+            border-radius: 10px; 
+            font-size: 0.85em;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
+            border: 1px solid var(--border);
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            z-index: 1000;
+            width: max-content; 
+            max-width: 90%; 
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        .notification.show { transform: translateX(-50%) translateY(0); }
+        .notif-img { 
+            width: 40px; 
+            height: 40px; 
+            border-radius: 50%; 
+            object-fit: cover; 
+            background: #cbd5e1;
+            border: 2px solid var(--header-1);
+        }
+        
+        .footer {
+            text-align: center; 
+            padding: 25px 15px; 
+            color: var(--text-sec);
+            font-size: 0.8em; 
+            border-top: 1px solid var(--border); 
+            margin-top: 20px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-sec);
+        }
+        .empty-state .icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        /* === RESPONSIVE IMPROVEMENTS === */
+        @media (max-width: 380px) {
+            .container { padding: 15px 10px; }
+            .card { padding: 15px; }
+            .btn { padding: 12px; font-size: 0.9em; }
+            .timer { font-size: 1.2em; }
+        }
+
+        @media (max-width: 320px) {
+            .badges-container { gap: 4px; }
+            .badge { font-size: 0.6em; padding: 3px 8px; }
+            .price-box { gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div id="headerText" style="font-size: 0.8em; margin-bottom: 5px; opacity: 0.9;">⏰ PROMO BERAKHIR DALAM:</div>
+        <div class="timer pulse" id="timer">02:00:00</div>
+        <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" aria-label="Toggle theme">☀️</button>
+    </div>
+
+    <div class="container">
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <div>Memuat konten terbaru...</div>
+        </div>
+        
+        <div class="error" id="error"></div>
+        <div class="success" id="success"></div>
+        
+        <div id="banner-container"></div>
+        <div id="section-titles-container"></div>
+        
+        <div id="product-list"></div>
+        
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="icon">😴</div>
+            <h3>Tidak ada produk tersedia</h3>
+            <p>Silakan coba lagi nanti atau periksa koneksi internet Anda</p>
+        </div>
+    </div>
+
+    <div class="footer" id="footerText">© 2025 Official Store</div>
+
+    <div class="notification" id="notification" aria-live="polite">
+        <img src="" class="notif-img" id="notifImg" alt="Pembeli">
+        <div>
+            <strong id="notifName">Budi dari Surabaya</strong><br>
+            <span style="color: var(--price-now);" id="notifProduct">Baru saja membeli produk</span>
+            <div style="font-size: 0.75em; color: var(--text-sec);" id="notifTime">1 menit lalu</div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== KONFIGURASI YANG LEBIH ROBUST ====================
+        const CONFIG = {
+            PAGE_CSV: 'page.csv',
+            PRODUCTS_CSV: 'pro.csv',
+            NOTIFICATION_INTERVAL: 15000,
+            FALLBACK_TIMER: 7200, // 2 jam dalam detik
+            RETRY_DELAY: 3000
+        };
+
+        // ==================== STATE MANAGEMENT ====================
+        const state = {
+            timerInterval: null,
+            notificationInterval: null,
+            products: [],
+            currentTheme: localStorage.getItem('theme') || 'dark'
+        };
+
+        // ==================== IMPROVED THEME MANAGEMENT ====================
+        function toggleTheme() {
+            const body = document.body;
+            const btn = document.getElementById('themeBtn');
+            
+            if (body.getAttribute('data-theme') === 'light') {
+                body.removeAttribute('data-theme');
+                btn.textContent = '☀️';
+                btn.setAttribute('aria-label', 'Switch to light mode');
+                localStorage.setItem('theme', 'dark');
+                state.currentTheme = 'dark';
+            } else {
+                body.setAttribute('data-theme', 'light');
+                btn.textContent = '🌙';
+                btn.setAttribute('aria-label', 'Switch to dark mode');
+                localStorage.setItem('theme', 'light');
+                state.currentTheme = 'light';
+            }
+        }
+
+        function initializeTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.body.setAttribute('data-theme', 'light');
+                document.getElementById('themeBtn').textContent = '🌙';
+                document.getElementById('themeBtn').setAttribute('aria-label', 'Switch to dark mode');
+            } else {
+                document.getElementById('themeBtn').setAttribute('aria-label', 'Switch to light mode');
+            }
+        }
+
+        // ==================== ENHANCED UTILITY FUNCTIONS ====================
+        function formatRupiah(number) {
+            if (isNaN(number)) return 'Rp 0';
+            return new Intl.NumberFormat('id-ID', { 
+                style: 'currency', 
+                currency: 'IDR', 
+                minimumFractionDigits: 0 
+            }).format(number);
+        }
+
+        function calculateDiscount(original, promo) {
+            if (!original || !promo || original <= promo) return 0;
+            return Math.round(((original - promo) / original) * 100);
+        }
+
+        function isValidUrl(string) {
+            if (!string) return false;
+            try {
+                const url = new URL(string);
+                return url.protocol === 'http:' || url.protocol === 'https:';
+            } catch {
+                return false;
+            }
+        }
+
+        function safeRedirect(url) {
+            if (isValidUrl(url)) {
+                window.open(url, '_blank', 'noopener,noreferrer');
+            }
+        }
+
+        // ==================== IMPROVED CSV PARSER ====================
+        function parseCSV(text) {
+            if (!text || text.trim().length === 0) {
+                throw new Error('CSV file is empty');
+            }
+
+            const rows = text.split('\n').filter(row => row.trim().length > 0);
+            if (rows.length < 2) {
+                throw new Error('CSV file has no data rows');
+            }
+
+            const headers = rows[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+            
+            return rows.slice(1).map(row => {
+                const regex = /(".*?"|[^",\s]+)(?=\s*,|\s*$)/g;
+                const cols = row.match(regex);
+                if (!cols) return null;
+                
+                const obj = {};
+                cols.forEach((col, index) => {
+                    const key = headers[index] || `col${index}`;
+                    obj[key] = col.replace(/^"|"$/g, '').trim();
+                });
+                return obj;
+            }).filter(row => row !== null);
+        }
+
+        // ==================== ENHANCED TIMER SYSTEM ====================
+        function startTimer(duration) {
+            let timer = duration || CONFIG.FALLBACK_TIMER;
+            const timerElement = document.getElementById('timer');
+            
+            // Clear existing interval
+            if (state.timerInterval) {
+                clearInterval(state.timerInterval);
+            }
+
+            function updateTimer() {
+                if (timer <= 0) {
+                    timerElement.textContent = '00:00:00';
+                    timerElement.classList.add('expired');
+                    timerElement.classList.remove('pulse');
+                    clearInterval(state.timerInterval);
+                    
+                    // Show expired message
+                    showMessage('⚠️ Flash sale telah berakhir!', 'error');
+                    return;
+                }
+
+                const hours = Math.floor(timer / 3600);
+                const minutes = Math.floor((timer % 3600) / 60);
+                const seconds = timer % 60;
+
+                timerElement.textContent = 
+                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                // Add warning animation when less than 5 minutes
+                if (timer <= 300) { // 5 minutes
+                    timerElement.style.animation = 'pulse 0.5s infinite';
+                }
+                
+                timer--;
+            }
+
+            updateTimer(); // Initial call
+            state.timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        // ==================== IMPROVED DATA LOADING ====================
+        async function fetchWithRetry(url, retries = 3) {
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(url);
+                    if (response.ok) return await response.text();
+                    throw new Error(`HTTP ${response.status}`);
+                } catch (error) {
+                    if (i === retries - 1) throw error;
+                    await new Promise(resolve => setTimeout(resolve, CONFIG.RETRY_DELAY));
+                }
+            }
+        }
+
+        async function loadPageSettings() {
+            try {
+                const text = await fetchWithRetry(CONFIG.PAGE_CSV);
+                const rows = parseCSV(text);
+                
+                rows.forEach(row => {
+                    const key = Object.keys(row)[0];
+                    const value = row[key];
+
+                    if (!value) return;
+
+                    // CSS Variables
+                    if (key === 'header_bg_1') document.documentElement.style.setProperty('--header-1', value);
+                    if (key === 'header_bg_2') document.documentElement.style.setProperty('--header-2', value);
+                    if (key === 'tag_bg') document.documentElement.style.setProperty('--tag-bg', value);
+                    if (key === 'tag_color') document.documentElement.style.setProperty('--tag-color', value);
+
+                    // Text content
+                    if (key === 'site_title') document.title = value;
+                    if (key === 'header_text') document.getElementById('headerText').textContent = value;
+                    if (key === 'footer_text') document.getElementById('footerText').innerHTML = value;
+                    if (key === 'timer_duration') startTimer(parseInt(value));
+
+                    if (key === 'banner_text') {
+                        const container = document.getElementById('banner-container');
+                        container.innerHTML = `<div class="banner">
+                            <div style="font-size: 1.1em; font-weight: bold; margin-bottom: 8px;">${value}</div>
+                        </div>`;
+                    }
+                });
+
+            } catch (error) {
+                console.warn("Using default page settings:", error.message);
+                startTimer(CONFIG.FALLBACK_TIMER);
+            }
+        }
+
+        // ==================== ENHANCED PRODUCT RENDERING ====================
+        function createProductCard(product) {
+            const {
+                nama = 'Produk Tanpa Nama',
+                harga_asli = 0,
+                harga_promo = 0,
+                shopee = '',
+                tiktok = '',
+                tokped = '',
+                stok = 0,
+                badge1 = '',
+                badge2 = '',
+                badge3 = ''
+            } = product;
+
+            const hAsli = parseInt(harga_asli) || 0;
+            const hPromo = parseInt(harga_promo) || 0;
+            const stockPercent = parseInt(stok) || 0;
+
+            // Badge system
+            const badges = [badge1, badge2, badge3].filter(b => b && b.trim());
+            const badgesHtml = badges.length > 0 ? 
+                `<div class="badges-container">${badges.map((badge, index) => 
+                    `<span class="badge badge-${['primary', 'secondary', 'success'][index] || 'primary'}">${badge}</span>`
+                ).join('')}</div>` : '';
+
+            // Discount calculation
+            const discount = calculateDiscount(hAsli, hPromo);
+            const discountBadge = discount > 0 ? `<span class="discount-badge">-${discount}%</span>` : '';
+
+            // Button system
+            const buttons = [];
+            if (isValidUrl(shopee)) buttons.push(`<a href="${shopee}" class="btn btn-shopee" onclick="trackClick('${nama}', 'shopee')">🛒 BELI DI SHOPEE</a>`);
+            if (isValidUrl(tiktok)) buttons.push(`<a href="${tiktok}" class="btn btn-tiktok" onclick="trackClick('${nama}', 'tiktok')">🎵 BELI DI TIKTOK</a>`);
+            if (isValidUrl(tokped)) buttons.push(`<a href="${tokped}" class="btn btn-tokped" onclick="trackClick('${nama}', 'tokped')">🦅 BELI DI TOKOPEDIA</a>`);
+            
+            const buttonsHtml = buttons.length > 0 ? buttons.join('') : 
+                `<button class="btn btn-disabled" disabled>😔 STOK HABIS</button>`;
+
+            // Stock status
+            let stockText = '';
+            let stockColor = '#4ade80';
+            
+            if (stockPercent >= 70) {
+                stockText = `✅ Stok Tersedia (${stockPercent}%)`;
+            } else if (stockPercent >= 30) {
+                stockText = `⚠️ Stok Terbatas (${stockPercent}%)`;
+                stockColor = '#f59e0b';
+            } else {
+                stockText = `🛑 Hampir Habis! (${stockPercent}%)`;
+                stockColor = '#ef4444';
+            }
+
+            return `
+                <div class="card" data-product="${nama}">
+                    ${badgesHtml}
+                    <div class="product-title">${nama}</div>
+                    <div class="price-box">
+                        <span class="price-now">${formatRupiah(hPromo)}</span>
+                        ${hAsli > hPromo ? `<span class="price-correct">${formatRupiah(hAsli)}</span>` : ''}
+                        ${discountBadge}
+                    </div>
+                    <div class="stock-bg">
+                        <div class="stock-fill" style="width: ${stockPercent}%; background: linear-gradient(90deg, #ef4444, #f59e0b, ${stockColor})"></div>
+                    </div>
+                    <div class="stock-text">
+                        <span>${stockText}</span>
+                        <span>${stockPercent}%</span>
+                    </div>
+                    ${buttonsHtml}
+                </div>
+            `;
+        }
+
+        async function loadProducts() {
+            try {
+                const text = await fetchWithRetry(CONFIG.PRODUCTS_CSV);
+                const products = parseCSV(text);
+                const container = document.getElementById('product-list');
+                const loading = document.getElementById('loading');
+                const emptyState = document.getElementById('emptyState');
+
+                loading.style.display = 'none';
+
+                if (!products || products.length === 0) {
+                    emptyState.style.display = 'block';
+                    showMessage('Tidak ada produk yang ditemukan', 'error');
+                    return;
+                }
+
+                state.products = products;
+                
+                // Render products with animation delay
+                products.forEach((product, index) => {
+                    const cardHtml = createProductCard(product);
+                    const cardElement = document.createElement('div');
+                    cardElement.innerHTML = cardHtml;
+                    cardElement.style.animationDelay = `${index * 0.1}s`;
+                    cardElement.classList.add('fade-in');
+                    container.appendChild(cardElement.firstElementChild);
+                });
+
+                if (products.length > 0) {
+                    showMessage(`✅ ${products.length} produk berhasil dimuat`, 'success');
+                }
+
+            } catch (error) {
+                document.getElementById('loading').style.display = 'none';
+                showMessage('❌ Gagal memuat produk. Silakan refresh halaman.', 'error');
+                document.getElementById('emptyState').style.display = 'block';
+                console.error('Error loading products:', error);
+            }
+        }
+
+        // ==================== IMPROVED NOTIFICATION SYSTEM ====================
+        function startNotifications() {
+            const names = ['Andi', 'Siti', 'Budi', 'Rina', 'Eko', 'Dewi', 'Ahmad', 'Maya'];
+            const cities = ['Jakarta', 'Bandung', 'Surabaya', 'Medan', 'Makassar', 'Yogyakarta', 'Semarang'];
+            const products = state.products.slice(0, 5).map(p => p.nama) || ['Smartphone', 'Laptop', 'Headphone', 'Smartwatch', 'Kamera'];
+            
+            function showRandomNotification() {
+                const name = names[Math.floor(Math.random() * names.length)];
+                const city = cities[Math.floor(Math.random() * cities.length)];
+                const product = products[Math.floor(Math.random() * products.length)];
+                const timeOptions = ['1 menit lalu', '2 menit lalu', '5 menit lalu', '10 menit lalu', '15 menit lalu'];
+                const time = timeOptions[Math.floor(Math.random() * timeOptions.length)];
+                
+                const notif = document.getElementById('notification');
+                
+                document.getElementById('notifName').textContent = `${name} dari ${city}`;
+                document.getElementById('notifProduct').textContent = `Baru saja membeli ${product}`;
+                document.getElementById('notifTime').textContent = time;
+                document.getElementById('notifImg').src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${name}&backgroundColor=dc2626`;
+                document.getElementById('notifImg').alt = `Avatar ${name}`;
+                
+                notif.classList.add('show');
+                setTimeout(() => { 
+                    notif.classList.remove('show'); 
+                }, 4000);
+            }
+
+            // Start notifications
+            state.notificationInterval = setInterval(showRandomNotification, CONFIG.NOTIFICATION_INTERVAL);
+            
+            // Show first notification after delay
+            setTimeout(showRandomNotification, 2000);
+        }
+
+        // ==================== HELPER FUNCTIONS ====================
+        function showMessage(message, type = 'error') {
+            const element = document.getElementById(type === 'error' ? 'error' : 'success');
+            element.textContent = message;
+            element.style.display = 'block';
+            
+            setTimeout(() => {
+                element.style.display = 'none';
+            }, 5000);
+        }
+
+        function trackClick(productName, platform) {
+            console.log(`Product clicked: ${productName} on ${platform}`);
+            // Here you can add analytics tracking
+        }
+
+        // ==================== INITIALIZATION ====================
+        async function initializeApp() {
+            try {
+                initializeTheme();
+                await Promise.all([
+                    loadPageSettings(),
+                    loadProducts()
+                ]);
+                startNotifications();
+            } catch (error) {
+                console.error('App initialization failed:', error);
+                showMessage('Gagal memuat aplikasi. Silakan refresh.', 'error');
+            }
+        }
+
+        // Error boundary for unhandled errors
+        window.addEventListener('error', (event) => {
+            console.error('Global error:', event.error);
+            showMessage('Terjadi kesalahan tak terduga', 'error');
+        });
+
+        // Initialize app when DOM is loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeApp);
+        } else {
+            initializeApp();
+        }
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (state.timerInterval) clearInterval(state.timerInterval);
+            if (state.notificationInterval) clearInterval(state.notificationInterval);
+        });
+    </script>
+</body>
+</html>
