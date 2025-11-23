@@ -3,270 +3,391 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Official Store Catalog">
     <title>Official Store</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        /* === 1. DESIGN SYSTEM === */
+        /* === 1. DESIGN TOKENS === */
         :root {
-            --bg: #0a0a0a;
-            --surface: #171717;
-            --surface-highlight: #262626;
-            --border: #333;
-            --text-primary: #ededed;
+            /* Semantic Colors */
+            --bg-page: #0a0a0a;
+            --bg-surface: #171717;
+            --bg-highlight: #262626;
+            --border: #333333;
+            
+            /* Typography Colors */
+            --text-primary: #ffffff;
             --text-secondary: #a1a1a1;
+            --text-tertiary: #666666;
+            
+            /* Brand Colors */
             --accent: #3b82f6;
-            --danger: #ef4444;
-            --success: #22c55e;
-            --tiktok: #ffffff;
+            --rating-gold: #fbbf24;
+            --badge-viral: #ef4444;
+            
+            /* Marketplace Identities */
+            --brand-shopee: #ee4d2d;
+            --brand-tiktok: #ffffff;
+            --brand-tokped: #03ac0e;
         }
 
         [data-theme="light"] {
-            --bg: #f2f2f7;
-            --surface: #ffffff;
-            --surface-highlight: #e5e5ea;
-            --border: #d1d1d6;
-            --text-primary: #000000;
-            --text-secondary: #8e8e93;
-            --accent: #007aff;
-            --tiktok: #000000;
+            --bg-page: #f5f5f7;
+            --bg-surface: #ffffff;
+            --bg-highlight: #f0f0f0;
+            --border: #e5e5e5;
+            
+            --text-primary: #1d1d1f;
+            --text-secondary: #86868b;
+            --text-tertiary: #aeaeb2;
+            
+            --brand-tiktok: #000000;
         }
 
+        /* === 2. GLOBAL RESET === */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg); color: var(--text-primary);
-            padding-bottom: 80px; transition: background 0.3s ease;
+            background-color: var(--bg-page);
+            color: var(--text-primary);
+            padding-bottom: 80px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* === 2. NAVBAR === */
+        /* === 3. COMPONENTS: NAVBAR === */
         .navbar {
             position: sticky; top: 0; z-index: 100;
-            background: rgba(var(--bg), 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border); padding: 15px 20px;
+            background: rgba(var(--bg-page), 0.85);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 24px;
             display: flex; justify-content: space-between; align-items: center;
         }
-        .brand { font-weight: 800; font-size: 1.2rem; letter-spacing: -0.5px; }
-        .theme-toggle {
-            width: 36px; height: 36px; border-radius: 50%;
-            background: var(--surface-highlight); border: 1px solid var(--border);
-            color: var(--text-primary); cursor: pointer; display: grid; place-items: center; font-size: 1.2rem;
-        }
 
-        /* === 3. GRID SYSTEM === */
-        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
-        .grid {
+        .brand { font-weight: 800; font-size: 1.1rem; letter-spacing: -0.02em; }
+
+        .theme-btn {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: transparent; border: 1px solid var(--border);
+            color: var(--text-primary); cursor: pointer;
+            display: grid; place-items: center; font-size: 1.2rem;
+            transition: all 0.2s ease;
+        }
+        .theme-btn:hover { background: var(--bg-highlight); }
+
+        /* === 4. COMPONENTS: GRID LAYOUT === */
+        .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+        
+        .product-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 16px;
+            gap: 20px;
         }
 
-        /* === 4. PRODUCT CARD === */
+        /* === 5. COMPONENTS: PRODUCT CARD === */
         .card {
-            background: var(--surface); border: 1px solid var(--border);
-            border-radius: 16px; overflow: hidden; position: relative;
-            display: flex; flex-direction: column; transition: transform 0.2s;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex; flex-direction: column;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
         }
-        .card:active { transform: scale(0.98); }
 
-        /* IMAGE AREA (FIXED) */
-        .card-img-wrapper {
-            width: 100%; padding-top: 100%; /* Kotak Sempurna 1:1 */
-            position: relative; background: var(--surface-highlight);
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+            border-color: var(--text-tertiary);
         }
+
+        /* Image Section */
+        .card-media {
+            position: relative;
+            width: 100%; padding-top: 100%; /* 1:1 Aspect Ratio */
+            background: var(--bg-highlight);
+            overflow: hidden;
+        }
+
         .card-img {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover; display: block;
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
         }
-        .tag {
-            position: absolute; top: 8px; left: 8px;
-            background: rgba(0,0,0,0.75); color: white;
-            font-size: 0.65rem; font-weight: 700; padding: 4px 8px; border-radius: 6px;
-            backdrop-filter: blur(4px); text-transform: uppercase; z-index: 2;
+        
+        .card:hover .card-img { transform: scale(1.05); }
+
+        .card-tag {
+            position: absolute; top: 10px; left: 10px;
+            background: rgba(0,0,0,0.8); color: white;
+            font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+            padding: 4px 8px; border-radius: 6px;
+            backdrop-filter: blur(4px); z-index: 2; letter-spacing: 0.5px;
         }
 
-        /* CONTENT AREA */
-        .card-content { padding: 12px; flex-grow: 1; display: flex; flex-direction: column; }
-        
+        /* Content Section */
+        .card-body {
+            padding: 14px;
+            flex-grow: 1;
+            display: flex; flex-direction: column;
+        }
+
         .card-title {
-            font-size: 0.9rem; font-weight: 600; margin-bottom: 6px;
-            line-height: 1.3; color: var(--text-primary);
-            /* Batasi 2 Baris */
-            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-            height: 2.6em; 
+            font-size: 0.95rem; font-weight: 600; margin-bottom: 8px;
+            line-height: 1.4; color: var(--text-primary);
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+            overflow: hidden; height: 2.8em;
         }
 
-        .price-container { margin-bottom: 10px; }
-        .price-final { font-size: 1rem; font-weight: 800; color: var(--text-primary); display: block; }
-        .price-original { font-size: 0.75rem; color: var(--text-secondary); text-decoration: line-through; }
-
-        /* STOCK BAR */
-        .stock-wrapper { width: 100%; height: 4px; background: var(--surface-highlight); border-radius: 2px; margin-bottom: 12px; overflow: hidden; }
-        .stock-fill { height: 100%; background: var(--success); border-radius: 2px; }
-
-        /* ACTION BUTTONS (ICON ONLY) */
-        .actions { margin-top: auto; display: flex; gap: 8px; }
-        .action-btn {
-            flex: 1; height: 36px; border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-            text-decoration: none; font-size: 1.1rem; border: 1px solid transparent;
-            transition: opacity 0.2s;
+        /* Social Proof Section (Replaces Stock Bar) */
+        .rating-container {
+            display: flex; align-items: center; gap: 6px;
+            margin-bottom: 12px;
+            font-size: 0.75rem; color: var(--text-secondary);
         }
-        .action-btn:active { opacity: 0.6; }
         
-        .btn-shopee { background: rgba(238, 77, 45, 0.1); color: #ee4d2d; border-color: rgba(238, 77, 45, 0.2); }
-        .btn-tiktok { background: var(--surface-highlight); color: var(--tiktok); border-color: var(--border); }
-        .btn-tokped { background: rgba(3, 172, 14, 0.1); color: #03AC0E; border-color: rgba(3, 172, 14, 0.2); }
+        .rating-stars {
+            display: flex; gap: 1px; color: var(--rating-gold);
+        }
+        
+        .rating-label {
+            background: rgba(251, 191, 36, 0.1); 
+            color: var(--rating-gold);
+            padding: 2px 6px; border-radius: 4px;
+            font-weight: 600; font-size: 0.7rem;
+        }
 
-        /* UTILS */
-        #loading { text-align: center; padding: 50px; color: var(--text-secondary); }
-        .error-msg { color: var(--danger); text-align: center; padding: 20px; background: rgba(239,68,68,0.1); border-radius: 10px; margin: 20px; }
-        .icon { width: 18px; height: 18px; fill: currentColor; }
+        /* Pricing */
+        .price-wrapper { margin-bottom: 12px; }
+        .price-main { font-size: 1.1rem; font-weight: 800; color: var(--text-primary); }
+        .price-crossed { font-size: 0.8rem; color: var(--text-tertiary); text-decoration: line-through; margin-left: 6px; }
+
+        /* Action Area */
+        .action-row {
+            margin-top: auto;
+            display: flex; gap: 8px;
+        }
+
+        .btn-icon {
+            flex: 1; height: 38px;
+            border-radius: 8px; border: 1px solid transparent;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s ease; color: inherit;
+        }
+        
+        .btn-icon:hover { filter: brightness(1.1); }
+        .btn-icon:active { transform: scale(0.96); }
+
+        .btn-shopee { background: rgba(238, 77, 45, 0.1); color: var(--brand-shopee); border-color: rgba(238, 77, 45, 0.2); }
+        .btn-tiktok { background: var(--bg-highlight); color: var(--brand-tiktok); border-color: var(--border); }
+        .btn-tokped { background: rgba(3, 172, 14, 0.1); color: var(--brand-tokped); border-color: rgba(3, 172, 14, 0.2); }
+
+        /* Utilities */
+        .status-message { text-align: center; padding: 60px 20px; color: var(--text-secondary); }
+        .svg-icon { width: 20px; height: 20px; fill: currentColor; }
     </style>
 </head>
 <body>
 
     <nav class="navbar">
         <div class="brand">Official Store.</div>
-        <button class="theme-toggle" onclick="toggleTheme()" id="themeIcon">☀️</button>
+        <button class="theme-btn" onclick="app.toggleTheme()" id="themeBtn" aria-label="Toggle Theme">☀️</button>
     </nav>
 
-    <div class="container">
-        <div id="loading">Memuat Katalog...</div>
-        <div id="errorArea"></div>
-        <div class="grid" id="productGrid"></div>
-    </div>
+    <main class="container">
+        <div id="contentArea" class="product-grid">
+            <div class="status-message">Initializing...</div>
+        </div>
+    </main>
 
     <script>
+        /**
+         * SYSTEM CONFIGURATION
+         * Sesuaikan nama file CSV di sini.
+         */
         const CONFIG = {
-            PRODUCTS_CSV: 'pro3.csv',
-            RETRY_DELAY: 2000
+            DATA_SOURCE: 'pro2.csv',
+            CACHE_BUSTING: true,
+            DEFAULT_IMAGE: 'https://placehold.co/600x600/1e1e1e/FFF?text=No+Image'
         };
 
-        // 1. THEME ENGINE
-        function toggleTheme() {
-            const b = document.body;
-            const icon = document.getElementById('themeIcon');
-            if(b.getAttribute('data-theme') === 'light') {
-                b.removeAttribute('data-theme'); icon.innerText = '☀️';
-                localStorage.setItem('theme', 'dark');
-            } else {
-                b.setAttribute('data-theme', 'light'); icon.innerText = '🌙';
-                localStorage.setItem('theme', 'light');
-            }
-        }
-        if(localStorage.getItem('theme') === 'light') {
-            document.body.setAttribute('data-theme', 'light');
-            document.getElementById('themeIcon').innerText = '🌙';
-        }
+        /**
+         * APP CONTROLLER
+         * Mengelola logika bisnis dan rendering.
+         */
+        const app = {
+            init: function() {
+                this.setupTheme();
+                this.loadData();
+            },
 
-        // 2. CSV PARSER YANG DIPERBAIKI (SMART SPLIT)
-        function parseCSV(text) {
-            if(!text) return [];
-            // Hapus baris kosong
-            const lines = text.trim().split('\n').filter(line => line.trim().length > 0);
-            if(lines.length < 2) return [];
-            
-            return lines.slice(1).map(line => {
-                // TEKNIK BARU: Pisahkan koma, TAPI abaikan koma di dalam tanda kutip
-                // Ini menjaga Nama Produk yang mengandung spasi agar TIDAK terpotong
-                const regex = /,(?=(?:(?:[^"]*"){2})*[^"]*$)/;
-                const cols = line.split(regex);
+            // --- Theme Management ---
+            setupTheme: function() {
+                const saved = localStorage.getItem('app_theme');
+                const btn = document.getElementById('themeBtn');
+                if (saved === 'light') {
+                    document.body.setAttribute('data-theme', 'light');
+                    btn.innerText = '🌙';
+                }
+            },
+
+            toggleTheme: function() {
+                const body = document.body;
+                const btn = document.getElementById('themeBtn');
+                const isLight = body.getAttribute('data-theme') === 'light';
                 
-                // Bersihkan setiap kolom dari tanda kutip & spasi berlebih di ujung
-                return cols.map(col => col.trim().replace(/^"|"$/g, ''));
-            });
-        }
+                if (isLight) {
+                    body.removeAttribute('data-theme');
+                    btn.innerText = '☀️';
+                    localStorage.setItem('app_theme', 'dark');
+                } else {
+                    body.setAttribute('data-theme', 'light');
+                    btn.innerText = '🌙';
+                    localStorage.setItem('app_theme', 'light');
+                }
+            },
 
-        // 3. FORMATTER
-        function fmtPrice(num) { return new Intl.NumberFormat('id-ID').format(num); }
-        function isValid(url) { return url && url.length > 5 && !url.includes('kosong'); }
-
-        // 4. LOAD SHOP
-        async function loadShop() {
-            try {
-                const res = await fetch(CONFIG.PRODUCTS_CSV + '?t=' + Date.now());
-                if(!res.ok) throw new Error("Gagal baca CSV.");
+            // --- Data Fetching & Parsing ---
+            loadData: async function() {
+                const container = document.getElementById('contentArea');
+                const timestamp = CONFIG.CACHE_BUSTING ? `?t=${Date.now()}` : '';
                 
-                const text = await res.text();
-                const data = parseCSV(text);
-                const grid = document.getElementById('productGrid');
-                
-                document.getElementById('loading').style.display = 'none';
+                try {
+                    const response = await fetch(`${CONFIG.DATA_SOURCE}${timestamp}`);
+                    if (!response.ok) throw new Error("Database connection failed.");
+                    
+                    const text = await response.text();
+                    const data = this.parseCSV(text);
+                    
+                    this.render(data, container);
+                    
+                } catch (error) {
+                    console.error(error);
+                    container.innerHTML = `
+                        <div class="status-message" style="grid-column:1/-1; color:#ef4444;">
+                            Gagal memuat data. Pastikan file <b>${CONFIG.DATA_SOURCE}</b> tersedia.
+                        </div>`;
+                }
+            },
 
-                if(data.length === 0) {
-                    grid.innerHTML = `<div style="text-align:center; grid-column:1/-1;">Belum ada produk.</div>`;
+            parseCSV: function(text) {
+                // Smart Split: Memisahkan koma, mengabaikan koma dalam tanda kutip
+                if (!text) return [];
+                const lines = text.trim().split('\n').filter(l => l.trim().length > 0);
+                
+                // Skip header jika ada (Baris pertama)
+                const startIndex = lines[0].toLowerCase().includes('id') ? 1 : 0;
+
+                return lines.slice(startIndex).map(line => {
+                    const regex = /(".*?"|[^",\s]+)(?=\s*,|\s*$)/g;
+                    const matches = line.match(regex);
+                    return matches ? matches.map(col => col.replace(/^"|"$/g, '').trim()) : null;
+                }).filter(row => row !== null);
+            },
+
+            // --- Helper Functions ---
+            formatRupiah: function(num) {
+                return new Intl.NumberFormat('id-ID').format(num);
+            },
+
+            isValidLink: function(url) {
+                return url && url.length > 5 && !url.toLowerCase().includes('kosong');
+            },
+
+            // --- Rendering Logic ---
+            render: function(data, container) {
+                if (data.length === 0) {
+                    container.innerHTML = `<div class="status-message">Belum ada produk.</div>`;
                     return;
                 }
 
+                container.innerHTML = ''; // Clear loading state
+
                 data.forEach(row => {
-                    // MAPPING KOLOM (Pastikan urutan di CSV sesuai)
-                    // 0:id, 1:name, 2:price, 3:promo, 4:shopee, 5:tiktok, 6:tokped, 7:stock, 8:tag, 9:image
+                    // Mapping Column Index (Sesuaikan jika CSV berubah)
+                    // 0:id, 1:name, 2:price, 3:promo, 4:shopee, 5:tiktok, 6:tokped, 7:popularity, 8:tag, 9:img
                     
-                    // Ambil Data dengan Aman (Gunakan index Array)
-                    const name = row[1] || "Produk Tanpa Nama"; 
-                    const price = parseInt(row[2]) || 0;
-                    const promo = parseInt(row[3]) || 0;
-                    const link_shopee = row[4];
-                    const link_tiktok = row[5];
-                    const link_tokped = row[6];
-                    const stock = parseInt(row[7]) || 0;
-                    const tag = row[8];
-                    const img = row[9]; // Kolom ke-10 adalah Gambar
+                    if (row.length < 5) return; // Skip invalid rows
 
-                    // Gambar Fallback jika kosong
-                    const finalImg = (img && img.length > 10) ? img : 'https://placehold.co/400x400/222/FFF?text=No+Image';
-                    
-                    // Warna Stok
-                    const stockColor = stock < 20 ? '#ef4444' : '#22c55e';
+                    const item = {
+                        name: row[1] || 'Produk Tanpa Nama',
+                        price: parseInt(row[2]) || 0,
+                        promo: parseInt(row[3]) || 0,
+                        links: {
+                            shopee: row[4],
+                            tiktok: row[5],
+                            tokped: row[6]
+                        },
+                        score: parseInt(row[7]) || 50, // Popularity Score (0-100)
+                        tag: row[8],
+                        img: (row[9] && row[9].length > 10) ? row[9] : CONFIG.DEFAULT_IMAGE
+                    };
 
-                    // Tombol Logic
-                    let btns = '';
-                    // Shopee Icon
-                    if(isValid(link_shopee)) btns += `<a href="${link_shopee}" class="action-btn btn-shopee"><svg class="icon" viewBox="0 0 24 24"><path d="M12.04 2.5c-5.3 0-9.6 3.73-9.6 8.33 0 2.75 1.53 5.22 3.92 6.77-.33 1.15-1.2 2.7-1.2 2.7 0 0 3.16.23 5.6-1.5.41.06.84.09 1.28.09 5.3 0 9.6-3.73 9.6-8.33s-4.3-8.33-9.6-8.33z"/></svg></a>`;
-                    // TikTok Icon
-                    if(isValid(link_tiktok)) btns += `<a href="${link_tiktok}" class="action-btn btn-tiktok"><svg class="icon" viewBox="0 0 24 24"><path d="M12.5 0v16.3c0 2.6-2.1 4.7-4.7 4.7s-4.7-2.1-4.7-4.7 2.1-4.7 4.7-4.7v3c-.9 0-1.7.8-1.7 1.7s.8 1.7 1.7 1.7 1.7-.8 1.7-1.7V4h3c0 2.2 1.8 4 4 4v-3c-.6 0-1 0-1-1V0h-3z"/></svg></a>`;
-                    // Tokped Icon
-                    if(isValid(link_tokped)) btns += `<a href="${link_tokped}" class="action-btn btn-tokped"><svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 14c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/></svg></a>`;
+                    // Logic Social Proof (Rating)
+                    let ratingUI = { stars: 4, num: '4.7', label: 'Recommended' };
+                    if (item.score >= 80) {
+                        ratingUI = { stars: 5, num: '4.9', label: '🔥 Viral' };
+                    } else if (item.score >= 60) {
+                        ratingUI = { stars: 5, num: '4.8', label: '⭐ Best Seller' };
+                    }
 
-                    if(btns === '') btns = `<div style="font-size:0.8rem; color:var(--text-secondary); margin:auto;">Stok Habis</div>`;
+                    // Generate Stars HTML
+                    const starSvg = `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>`;
+                    let starsHtml = '';
+                    for(let i=0; i<ratingUI.stars; i++) starsHtml += starSvg;
 
-                    // Render HTML
-                    const html = `
-                        <div class="card-img-wrapper">
-                            ${tag ? `<div class="tag">${tag}</div>` : ''}
-                            <img src="${finalImg}" class="card-img" alt="${name}" loading="lazy" onerror="this.src='https://placehold.co/400x400/333/FFF?text=Error'">
+                    // Generate Buttons
+                    let buttonsHtml = '';
+                    if (this.isValidLink(item.links.shopee)) buttonsHtml += `<a href="${item.links.shopee}" class="btn-icon btn-shopee" aria-label="Shopee"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12.04 2.5c-5.3 0-9.6 3.73-9.6 8.33 0 2.75 1.53 5.22 3.92 6.77-.33 1.15-1.2 2.7-1.2 2.7 0 0 3.16.23 5.6-1.5.41.06.84.09 1.28.09 5.3 0 9.6-3.73 9.6-8.33s-4.3-8.33-9.6-8.33z"/></svg></a>`;
+                    if (this.isValidLink(item.links.tiktok)) buttonsHtml += `<a href="${item.links.tiktok}" class="btn-icon btn-tiktok" aria-label="TikTok"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12.5 0v16.3c0 2.6-2.1 4.7-4.7 4.7s-4.7-2.1-4.7-4.7 2.1-4.7 4.7-4.7v3c-.9 0-1.7.8-1.7 1.7s.8 1.7 1.7 1.7 1.7-.8 1.7-1.7V4h3c0 2.2 1.8 4 4 4v-3c-.6 0-1 0-1-1V0h-3z"/></svg></a>`;
+                    if (this.isValidLink(item.links.tokped)) buttonsHtml += `<a href="${item.links.tokped}" class="btn-icon btn-tokped" aria-label="Tokopedia"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 14c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/></svg></a>`;
+
+                    if (buttonsHtml === '') buttonsHtml = `<div style="font-size:0.8rem; color:var(--text-tertiary); margin:auto;">Stok Habis</div>`;
+
+                    // HTML Template
+                    const cardHTML = `
+                        <div class="card-media">
+                            ${item.tag ? `<div class="card-tag">${item.tag}</div>` : ''}
+                            <img src="${item.img}" class="card-img" alt="${item.name}" loading="lazy">
                         </div>
-                        <div class="card-content">
-                            <div class="card-title">${name}</div>
-                            <div class="price-container">
-                                <span class="price-final">Rp ${fmtPrice(promo)}</span>
-                                <span class="price-original">Rp ${fmtPrice(price)}</span>
+                        <div class="card-body">
+                            <div class="card-title">${item.name}</div>
+                            
+                            <div class="rating-container">
+                                <div class="rating-stars">${starsHtml}</div>
+                                <span>(${ratingUI.num})</span>
+                                <span class="rating-label">${ratingUI.label}</span>
                             </div>
-                            <div class="stock-wrapper">
-                                <div class="stock-fill" style="width:${stock}%; background:${stockColor}"></div>
+
+                            <div class="price-wrapper">
+                                <span class="price-main">Rp ${this.formatRupiah(item.promo)}</span>
+                                <span class="price-crossed">Rp ${this.formatRupiah(item.price)}</span>
                             </div>
-                            <div class="actions">
-                                ${btns}
+
+                            <div class="action-row">
+                                ${buttonsHtml}
                             </div>
                         </div>
                     `;
 
-                    const el = document.createElement('article');
-                    el.className = 'card';
-                    el.innerHTML = html;
-                    grid.appendChild(el);
+                    const cardElement = document.createElement('article');
+                    cardElement.className = 'card';
+                    cardElement.innerHTML = cardHTML;
+                    container.appendChild(cardElement);
                 });
-
-            } catch (err) {
-                document.getElementById('errorArea').innerHTML = `<div class="error-msg">Gagal memuat data. Pastikan pro2.csv tersedia dan formatnya benar.</div>`;
-                document.getElementById('loading').style.display = 'none';
-                console.error(err);
             }
-        }
+        };
 
-        window.onload = loadShop;
+        // Start App
+        document.addEventListener('DOMContentLoaded', () => app.init());
+
     </script>
 </body>
 </html>
