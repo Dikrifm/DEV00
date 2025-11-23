@@ -512,8 +512,8 @@
     <script>
         // ==================== KONFIGURASI YANG LEBIH ROBUST ====================
         const CONFIG = {
-            PAGE_CSV: 'page.csv',
-            PRODUCTS_CSV: 'pro.csv',
+            PAGE_CSV: 'page.csv?=' + new Date().getTime(),
+            PRODUCTS_CSV: 'pro.csv?=' + new Date().getTime(),
             NOTIFICATION_INTERVAL: 15000,
             FALLBACK_TIMER: 7200, // 2 jam dalam detik
             RETRY_DELAY: 3000
