@@ -469,6 +469,87 @@
             border-radius: 8px;
             font-size: 0.7em;
         }
+        /* === GLOBAL SECTIONS === */
+.hero-section {
+    background: linear-gradient(135deg, var(--banner-bg-1), var(--banner-bg-2));
+    color: white;
+    padding: 25px 20px;
+    border-radius: 16px;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.headline {
+    font-size: 1.4em;
+    font-weight: 900;
+    margin-bottom: 10px;
+    line-height: 1.3;
+}
+
+.subheadline {
+    font-size: 0.95em;
+    opacity: 0.9;
+    line-height: 1.4;
+}
+
+.trust-badge {
+    background: rgba(255,255,255,0.2);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    margin-top: 10px;
+    display: inline-block;
+    backdrop-filter: blur(10px);
+}
+
+/* === FAQ SECTION === */
+.faq-section {
+    margin: 40px 0 20px 0;
+    padding: 0 10px;
+}
+
+.faq-title {
+    font-size: 1.3em;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 25px;
+    color: var(--text);
+}
+
+.faq-grid {
+    display: grid;
+    gap: 15px;
+}
+
+.faq-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.faq-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px var(--shadow);
+}
+
+.faq-question {
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--text);
+    font-size: 0.95em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.faq-answer {
+    color: var(--text-sec);
+    font-size: 0.85em;
+    line-height: 1.6;
+    padding-left: 26px; /* Untuk align dengan icon question */
+}
     </style>
 </head>
 <body>
@@ -511,6 +592,8 @@
 
         <!-- Products Will Appear Here -->
         <div id="product-list"></div>
+        
+<div id="faq-container"></div>
     </div>
 
     <!-- FOOTER -->
@@ -714,38 +797,75 @@
                 }
             }
 
-            // Global Sections
-            const globalContainer = document.getElementById('global-sections');
-            if (globalContainer) {
-                let html = '';
-                
-                // Hero Section
-                if (settings.headline) {
-                    html += `
-                        <div class="hero-section">
-                            <div class="headline">${settings.headline}</div>
-                            ${settings.subheadline ? `<div class="subheadline">${settings.subheadline}</div>` : ''}
+            // GLOBAL SECTIONS - FIXED VERSION
+const globalContainer = document.getElementById('global-sections');
+if (globalContainer) {
+    let html = '';
+    
+    // Hero Section
+    if (settings.headline) {
+        html += `
+            <div class="hero-section">
+                <div class="headline">${settings.headline}</div>
+                ${settings.subheadline ? `<div class="subheadline">${settings.subheadline}</div>` : ''}
+                ${settings.trust_message ? `<div class="trust-badge">${settings.trust_message}</div>` : ''}
+            </div>
+        `;
+    }
+    
+    globalContainer.innerHTML = html;
+}
+
+// FAQ SECTION - FIXED VERSION (SETELAH PRODUCTS)
+const faqContainer = document.getElementById('faq-container');
+if (faqContainer) {
+    // Cek apakah ada minimal satu FAQ yang lengkap (punya detail)
+    const hasValidFAQ = (
+        (settings.faq_garansi && settings.faq_garansi_detail) ||
+        (settings.faq_pengembalian && settings.faq_pengembalian_detail) ||
+        (settings.faq_kompatibilitas && settings.faq_kompatibilitas_detail) ||
+        (settings.faq_ongkir && settings.faq_ongkir_detail)
+    );
+    
+    if (hasValidFAQ) {
+        faqContainer.innerHTML = `
+            <div class="faq-section">
+                <div class="faq-title">❓ PERTANYAAN UMUM</div>
+                <div class="faq-grid">
+                    ${settings.faq_garansi && settings.faq_garansi_detail ? `
+                        <div class="faq-item">
+                            <div class="faq-question">${settings.faq_garansi}</div>
+                            <div class="faq-answer">${settings.faq_garansi_detail}</div>
                         </div>
-                    `;
-                }
-                
-                // FAQ Section
-                if (settings.faq_garansi || settings.faq_pengembalian || settings.faq_kompatibilitas || settings.faq_ongkir) {
-                    html += `
-                        <div class="faq-section">
-                            <div class="faq-title">❓ PERTANYAAN UMUM</div>
-                            <div class="faq-grid">
-                                ${settings.faq_garansi ? `<div class="faq-item">${settings.faq_garansi}</div>` : ''}
-                                ${settings.faq_pengembalian ? `<div class="faq-item">${settings.faq_pengembalian}</div>` : ''}
-                                ${settings.faq_kompatibilitas ? `<div class="faq-item">${settings.faq_kompatibilitas}</div>` : ''}
-                                ${settings.faq_ongkir ? `<div class="faq-item">${settings.faq_ongkir}</div>` : ''}
-                            </div>
+                    ` : ''}
+                    
+                    ${settings.faq_pengembalian && settings.faq_pengembalian_detail ? `
+                        <div class="faq-item">
+                            <div class="faq-question">${settings.faq_pengembalian}</div>
+                            <div class="faq-answer">${settings.faq_pengembalian_detail}</div>
                         </div>
-                    `;
-                }
-                
-                globalContainer.innerHTML = html;
-            }
+                    ` : ''}
+                    
+                    ${settings.faq_kompatibilitas && settings.faq_kompatibilitas_detail ? `
+                        <div class="faq-item">
+                            <div class="faq-question">${settings.faq_kompatibilitas}</div>
+                            <div class="faq-answer">${settings.faq_kompatibilitas_detail}</div>
+                        </div>
+                    ` : ''}
+                    
+                    ${settings.faq_ongkir && settings.faq_ongkir_detail ? `
+                        <div class="faq-item">
+                            <div class="faq-question">${settings.faq_ongkir}</div>
+                            <div class="faq-answer">${settings.faq_ongkir_detail}</div>
+                        </div>
+                    ` : ''}
+                </div>
+            </div>
+        `;
+    } else {
+        faqContainer.innerHTML = ''; // Kosongkan jika tidak ada FAQ valid
+    }
+}
             
             startAuthenticTimer();
         }
