@@ -1,0 +1,25 @@
+key,value,type
+site_title,FLASH SALE MEGA DISKON 🔥,text
+header_text,⏰ BURUAN! PROMO HABIS DALAM:,text
+footer_text,© 2024 Flash Sale Premium<br><small>Harga spesial hanya untuk hari ini!</small>,text
+timer_duration,7200,number
+header_bg_1,#dc2626,color
+header_bg_2,#b91c1c,color
+banner_text,🤑 DISKON HINGGA 80%!,text
+banner_subtext,Gratis ongkir seluruh Indonesia + Garansi resmi,text
+banner_bg_1,#6366f1,color
+banner_bg_2,#8b5cf6,color
+section_titles,PRODUK PREMIUM TERLARIS|GADGET TERBAIK 2024,text
+headline,🚀 REVOLUSI TEKNOLOGI 2024!,text
+subheadline,Temukan gadget canggih dengan harga spesial - Limited Stock!,text
+faq_garansi,🛡️ GARANSI RESMI 1-2 TAHUN,text
+faq_garansi_detail,Semua produk bergaransi resmi distributor. Servis gratis selama masa garansi.,text
+faq_pengembalian,📦 RETUR 30 HARI TANPA RIBET,text
+faq_pengembalian_detail,Uang kembali 100% jika barang tidak sesuai atau cacat. Proses cepat & mudah.,text
+faq_kompatibilitas,📱 KOMPATIBEL SEMUA DEVICE,text
+faq_kompatibilitas_detail,Bekerja dengan iOS, Android, Windows, Mac. Auto-sync dengan smartphone Anda.,text
+faq_ongkir,🚚 GRATIS ONGKIR SELURUH INDONESIA,text
+faq_ongkir_detail,Gratis ongkir ke seluruh Indonesia tanpa minimum pembelian. Estimasi 2-5 hari.,text
+notification_message,🔥 LUAR BIASA! Produk ini dibeli 5x dalam 10 menit terakhir!,text
+urgency_message,🛑 STOK HAMPIR HABIS! Segera klik BELI sebelum kehabisan!,text
+trust_message,⭐ RATING 4.8/5 dari 5.000+ pembeli,text
