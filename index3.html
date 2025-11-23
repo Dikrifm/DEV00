@@ -15,11 +15,11 @@
             --border: #334155;
             --price-now: #4ade80;
             --shadow: rgba(0,0,0,0.5);
-            
+
             /* HEADER - DARK MODE DEFAULT */
             --header-bg-1: #dc2626;
             --header-bg-2: #b91c1c;
-            
+
             /* BANNER - DARK MODE DEFAULT */
             --banner-bg-1: #6366f1;
             --banner-bg-2: #8b5cf6;
@@ -34,11 +34,11 @@
             --border: #e2e8f0;
             --price-now: #16a34a;
             --shadow: rgba(0,0,0,0.1);
-            
+
             /* HEADER - LIGHT MODE */
             --header-bg-1: #ef4444;
             --header-bg-2: #dc2626;
-            
+
             /* BANNER - LIGHT MODE */
             --banner-bg-1: #4f46e5;
             --banner-bg-2: #7c3aed;
@@ -433,7 +433,8 @@
         const CONFIG = {
             PAGE_CSV: 'page.csv?v='+ new Date().getTime(),
             PRODUCTS_CSV: 'pro.csv?v='+ new Date().getTime(),
-            NOTIFICATION_INTERVAL: 15000
+            NOTIFICATIONS_CSV: 'notifications.csv',  // FILE BARU
+    NOTIFICATION_INTERVAL: 15000
         };
 
         // ==================== GLOBAL STATE ====================
@@ -444,11 +445,11 @@
         // **PERBAIKAN UTAMA: Theme di-load SEBELUM page settings**
         function initializeTheme() {
             console.log('🔄 Initializing theme system...');
-            
+
             // Cek saved theme atau system preference
             const savedTheme = localStorage.getItem('theme');
             const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            
+
             let initialTheme = 'dark'; // Default ke dark
             if (savedTheme) {
                 initialTheme = savedTheme;
@@ -459,16 +460,16 @@
             } else {
                 console.log('🌙 Using default dark theme');
             }
-            
+
             applyTheme(initialTheme);
         }
 
         function applyTheme(theme) {
             console.log('🎨 Applying theme:', theme);
-            
+
             // Set attribute di body
             document.body.setAttribute('data-theme', theme);
-            
+
             // Update button icon - PASTIKAN INI DIEKSEKUSI
             const themeBtn = document.getElementById('themeBtn');
             if (themeBtn) {
@@ -477,7 +478,7 @@
             } else {
                 console.log('❌ Theme button not found!');
             }
-            
+
             // Save preference
             localStorage.setItem('theme', theme);
             console.log('💾 Theme saved to localStorage');
@@ -528,18 +529,18 @@
             try {
                 console.log('📄 Loading page settings from:', CONFIG.PAGE_CSV);
                 const response = await fetch(CONFIG.PAGE_CSV);
-                
+
                 if (!response.ok) {
                     throw new Error(`File ${CONFIG.PAGE_CSV} tidak ditemukan`);
                 }
-                
+
                 const csvText = await response.text();
                 const settings = parsePageCSV(csvText);
-                
+
                 // **PERBAIKAN: Apply page settings SETELAH theme sudah di-set**
                 applyPageSettings(settings);
                 console.log('✅ Page settings applied:', settings);
-                
+
             } catch (error) {
                 console.error('❌ Error loading page settings:', error);
                 applyDefaultPageSettings();
@@ -549,13 +550,13 @@
         function parsePageCSV(csvText) {
             const settings = {};
             const lines = csvText.trim().split('\n');
-            
+
             for (let i = 1; i < lines.length; i++) {
                 const line = lines[i].trim();
                 if (!line) continue;
-                
+
                 const [key, value, type = 'text'] = line.split(',').map(field => field.trim());
-                
+
                 if (key && value) {
                     switch(type.toLowerCase()) {
                         case 'number':
@@ -572,32 +573,32 @@
                     }
                 }
             }
-            
+
             return settings;
         }
 
         function applyPageSettings(settings) {
             pageSettings = settings;
-            
+
             // Apply individual settings - TANPA GANGGU THEME
             if (settings.site_title) {
                 document.title = settings.site_title;
             }
-            
+
             if (settings.header_text) {
                 const headerText = document.getElementById('headerText');
                 if (headerText) headerText.innerHTML = settings.header_text;
             }
-            
+
             if (settings.footer_text) {
                 const footerText = document.getElementById('footerText');
                 if (footerText) footerText.innerHTML = settings.footer_text;
             }
-            
+
             if (settings.timer_duration) {
                 currentTimerDuration = settings.timer_duration;
             }
-            
+
             // **PERBAIKAN: Header colors HANYA jika belum di-set oleh theme**
             // Biarkan CSS variables dari theme yang mengatur, kecuali ada override spesifik
             if (settings.header_bg_1 && settings.header_bg_2) {
@@ -605,11 +606,11 @@
                 document.documentElement.style.setProperty('--header-bg-1', settings.header_bg_1);
                 document.documentElement.style.setProperty('--header-bg-2', settings.header_bg_2);
             }
-            
+
             if (settings.banner_text && settings.banner_bg_1 && settings.banner_bg_2) {
                 document.documentElement.style.setProperty('--banner-bg-1', settings.banner_bg_1);
                 document.documentElement.style.setProperty('--banner-bg-2', settings.banner_bg_2);
-                
+
                 const bannerContainer = document.getElementById('banner-container');
                 if (bannerContainer) {
                     bannerContainer.innerHTML = `
@@ -626,7 +627,7 @@
                     `;
                 }
             }
-            
+
             if (settings.section_titles) {
                 const titles = settings.section_titles.split('|');
                 const container = document.getElementById('section-titles-container');
@@ -636,7 +637,7 @@
                     ).join('');
                 }
             }
-            
+
             startTimer();
         }
 
@@ -647,32 +648,32 @@
                 footer_text: '© 2024 Flash Sale - Update Terbaru<br><small>Harga dan stok dapat berubah sewaktu-waktu</small>',
                 timer_duration: 7200
             };
-            
+
             applyPageSettings(defaultSettings);
         }
 
         // ==================== TIMER ====================
         function startTimer() {
             const endTime = Date.now() + (currentTimerDuration * 1000);
-            
+
             function updateTimer() {
                 const now = Date.now();
                 const distance = endTime - now;
-                
+
                 if (distance <= 0) {
                     document.getElementById('timer').textContent = "PROMO BERAKHIR";
                     document.getElementById('timer').classList.remove('pulse');
                     return;
                 }
-                
+
                 const hours = Math.floor(distance / (1000 * 60 * 60));
                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                
+
                 document.getElementById('timer').textContent = 
                     `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
             }
-            
+
             updateTimer();
             setInterval(updateTimer, 1000);
         }
@@ -682,32 +683,32 @@
             const loadingElement = document.getElementById('loading');
             const errorElement = document.getElementById('error');
             const productList = document.getElementById('product-list');
-            
+
             try {
                 loadingElement.style.display = 'block';
                 errorElement.style.display = 'none';
                 productList.innerHTML = '';
-                
+
                 console.log('📦 Loading products from:', CONFIG.PRODUCTS_CSV);
                 const response = await fetch(CONFIG.PRODUCTS_CSV);
-                
+
                 if (!response.ok) {
                     throw new Error(`File ${CONFIG.PRODUCTS_CSV} tidak ditemukan`);
                 }
-                
+
                 const csvText = await response.text();
                 console.log('✅ Products CSV loaded successfully');
-                
+
                 const products = parseProductsCSV(csvText);
                 console.log('📊 Parsed products:', products);
-                
+
                 if (products.length === 0) {
                     throw new Error('Tidak ada produk ditemukan dalam CSV');
                 }
-                
+
                 renderProducts(products);
                 loadingElement.style.display = 'none';
-                
+
             } catch (error) {
                 console.error('❌ Error loading products:', error);
                 loadingElement.style.display = 'none';
@@ -718,13 +719,13 @@
         function parseProductsCSV(csvText) {
             const lines = csvText.trim().split('\n');
             const products = [];
-            
+
             for (let i = 1; i < lines.length; i++) {
                 const line = lines[i].trim();
                 if (!line) continue;
-                
+
                 const fields = line.split(',').map(field => field.trim());
-                
+
                 if (fields.length >= 8) {
                     const product = {
                         id: fields[0] || i,
@@ -739,29 +740,29 @@
                         badge2: fields[9] || '',
                         badge3: fields[10] || ''
                     };
-                    
+
                     if (product.nama && product.harga_promo > 0) {
                         products.push(product);
                     }
                 }
             }
-            
+
             return products;
         }
 
         function renderProducts(products) {
             const productList = document.getElementById('product-list');
             productList.innerHTML = '';
-            
+
             products.forEach((product, index) => {
                 const discount = calculateDiscount(product.harga_asli, product.harga_promo);
                 const discountBadge = discount > 0 ? 
                     `<span class="discount-badge">-${discount}%</span>` : '';
-                
+
                 let badgesHtml = '';
                 if (product.badge1 || product.badge2 || product.badge3) {
                     badgesHtml = '<div class="badges-container">';
-                    
+
                     if (product.badge1) {
                         badgesHtml += `<span class="badge badge-primary">${product.badge1}</span>`;
                     }
@@ -771,12 +772,12 @@
                     if (product.badge3) {
                         badgesHtml += `<span class="badge badge-success">${product.badge3}</span>`;
                     }
-                    
+
                     badgesHtml += '</div>';
                 }
-                
+
                 let buttonsHtml = '';
-                
+
                 if (isValidUrl(product.link_shopee)) {
                     buttonsHtml += `
                         <button class="btn btn-shopee" onclick="safeRedirect('${product.link_shopee}', '${product.nama.replace(/'/g, "\\'")}')">
@@ -784,7 +785,7 @@
                         </button>
                     `;
                 }
-                
+
                 if (isValidUrl(product.link_tiktok)) {
                     buttonsHtml += `
                         <button class="btn btn-tiktok" onclick="safeRedirect('${product.link_tiktok}', '${product.nama.replace(/'/g, "\\'")}')">
@@ -792,7 +793,7 @@
                         </button>
                     `;
                 }
-                
+
                 if (isValidUrl(product.link_tokped)) {
                     buttonsHtml += `
                         <button class="btn btn-tokped" onclick="safeRedirect('${product.link_tokped}', '${product.nama.replace(/'/g, "\\'")}')">
@@ -800,7 +801,7 @@
                         </button>
                     `;
                 }
-                
+
                 if (!buttonsHtml) {
                     buttonsHtml = `
                         <button class="btn" style="background: var(--text-sec); color: white;" disabled>
@@ -808,14 +809,14 @@
                         </button>
                     `;
                 }
-                
+
                 const stockWarning = product.stok_persen < 20 ? '🛑' : 
                                    product.stok_persen < 50 ? '⚠️' : '✅';
-                
+
                 const stockText = product.stok_persen < 10 ? 
                     `🛑 HAMPIR HABIS! Sisa ${product.stok_persen}% stok!` : 
                     `${stockWarning} Stok tersisa ${product.stok_persen}%`;
-                
+
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.innerHTML = `
@@ -832,7 +833,7 @@
                     <span class="stock-text">${stockText}</span>
                     ${buttonsHtml}
                 `;
-                
+
                 productList.appendChild(card);
             });
         }
@@ -852,57 +853,138 @@
             errorElement.style.display = 'block';
         }
 
-        // ==================== NOTIFICATIONS ====================
-        function startNotifications() {
-            const names = ['Andi', 'Siti', 'Budi', 'Rina', 'Eko', 'Dewi'];
-            const cities = ['Jakarta', 'Bandung', 'Surabaya', 'Medan', 'Makassar'];
+// ==================== NOTIFICATIONS ====================
+async function startNotifications() {
+    try {
+        console.log('🔔 Loading notifications...');
+        const response = await fetch(CONFIG.NOTIFICATIONS_CSV);
+        
+        if (!response.ok) {
+            throw new Error('File notifications.csv tidak ditemukan');
+        }
+        
+        const csvText = await response.text();
+        const notifications = parseNotificationsCSV(csvText);
+        
+        console.log('✅ Notifications loaded:', notifications.length);
+        
+        if (notifications.length === 0) {
+            throw new Error('Tidak ada data notifikasi');
+        }
+        
+        let currentIndex = 0;
+        
+        function showNextNotification() {
+            const notif = document.getElementById('notification');
+            const notification = notifications[currentIndex];
             
-            function showNotification() {
-                const notif = document.getElementById('notification');
-                const randomName = names[Math.floor(Math.random() * names.length)];
-                const randomCity = cities[Math.floor(Math.random() * cities.length)];
-                
-                document.getElementById('notifName').textContent = `${randomName} dari ${randomCity}`;
-                document.getElementById('notifProduct').textContent = 'Baru saja membeli produk premium';
-                document.getElementById('notifTime').textContent = 'Beberapa menit lalu';
-                document.getElementById('notifImg').src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${randomName}`;
-                
-                notif.classList.add('show');
-                
-                setTimeout(() => {
-                    notif.classList.remove('show');
-                }, 4000);
-            }
+            document.getElementById('notifName').textContent = `${notification.name} dari ${notification.city}`;
+            document.getElementById('notifProduct').textContent = `Baru saja membeli ${notification.product}`;
+            document.getElementById('notifTime').textContent = notification.time;
+            document.getElementById('notifImg').src = notification.image;
+            
+            notif.classList.add('show');
             
             setTimeout(() => {
-                showNotification();
-                setInterval(showNotification, CONFIG.NOTIFICATION_INTERVAL);
-            }, 5000);
+                notif.classList.remove('show');
+            }, 4000);
+            
+            // Next notification (cycle)
+            currentIndex = (currentIndex + 1) % notifications.length;
         }
+        
+        // Start after 3 seconds, then every interval
+        setTimeout(() => {
+            showNextNotification();
+            setInterval(showNextNotification, CONFIG.NOTIFICATION_INTERVAL);
+        }, 3000);
+        
+    } catch (error) {
+        console.error('❌ Error loading notifications, using fallback:', error);
+        startFallbackNotifications();
+    }
+}
+
+function parseNotificationsCSV(csvText) {
+    const lines = csvText.trim().split('\n');
+    const notifications = [];
+    
+    for (let i = 1; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line) continue;
+        
+        const [name, city, product, time, image] = line.split(',').map(field => field.trim());
+        
+        if (name && city && product) {
+            notifications.push({
+                name,
+                city, 
+                product,
+                time: time || 'Beberapa menit lalu',
+                image: image || `https://api.dicebear.com/7.x/avataaars/svg?seed=${name}`
+            });
+        }
+    }
+    
+    return notifications;
+}
+
+function startFallbackNotifications() {
+    const fallbackNotifs = [
+        { name: 'Budi', city: 'Surabaya', product: 'Smart Watch', time: '2 menit lalu' },
+        { name: 'Siti', city: 'Jakarta', product: 'Wireless Earbuds', time: '5 menit lalu' },
+        { name: 'Andi', city: 'Bandung', product: 'Power Bank', time: '7 menit lalu' }
+    ];
+    
+    let currentIndex = 0;
+    
+    function showFallbackNotification() {
+        const notif = document.getElementById('notification');
+        const notification = fallbackNotifs[currentIndex];
+        
+        document.getElementById('notifName').textContent = `${notification.name} dari ${notification.city}`;
+        document.getElementById('notifProduct').textContent = `Baru saja membeli ${notification.product}`;
+        document.getElementById('notifTime').textContent = notification.time;
+        document.getElementById('notifImg').src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${notification.name}`;
+        
+        notif.classList.add('show');
+        
+        setTimeout(() => {
+            notif.classList.remove('show');
+        }, 4000);
+        
+        currentIndex = (currentIndex + 1) % fallbackNotifs.length;
+    }
+    
+    setTimeout(() => {
+        showFallbackNotification();
+        setInterval(showFallbackNotification, CONFIG.NOTIFICATION_INTERVAL);
+    }, 3000);
+}
 
         // ==================== INITIALIZATION ====================
         async function initializeApp() {
             console.log('🚀 Starting application initialization...');
-            
+
             try {
                 // **PERBAIKAN KRITIS: Theme HARUS di-load PERTAMA**
                 console.log('1. Initializing theme...');
                 initializeTheme();
-                
+
                 // Tunggu sebentar untuk memastikan theme ter-applied
                 await new Promise(resolve => setTimeout(resolve, 100));
-                
+
                 console.log('2. Loading page settings...');
                 await loadPageSettings();
-                
+
                 console.log('3. Loading products...');
                 await loadProducts();
-                
+
                 console.log('4. Starting notifications...');
                 startNotifications();
-                
+
                 console.log('✅ Application initialized successfully!');
-                
+
             } catch (error) {
                 console.error('❌ Initialization error:', error);
                 showError('Gagal memuat halaman: ' + error.message);
