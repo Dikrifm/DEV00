@@ -409,6 +409,17 @@
     border-radius: 8px;
 }
 
+/* TRUST BADGE */
+.trust-badge {
+    background: rgba(255,255,255,0.2);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    margin-top: 10px;
+    display: inline-block;
+    backdrop-filter: blur(10px);
+}
+
     </style>
 </head>
 <body>
@@ -521,7 +532,7 @@
     <script>
         // ==================== KONFIGURASI ====================
         const CONFIG = {
-            PAGE_CSV: 'page.csv',
+            PAGE_CSV: 'page2.csv',
             PRODUCTS_CSV: 'pro2.csv',
             NOTIFICATIONS_CSV: 'notif.csv',  // FILE BARU
     NOTIFICATION_INTERVAL: 15000
@@ -638,100 +649,139 @@
         }
 
         function parsePageCSV(csvText) {
-            const settings = {};
-            const lines = csvText.trim().split('\n');
-
-            for (let i = 1; i < lines.length; i++) {
-                const line = lines[i].trim();
-                if (!line) continue;
-
-                const [key, value, type = 'text'] = line.split(',').map(field => field.trim());
-
-                if (key && value) {
-                    switch(type.toLowerCase()) {
-                        case 'number':
-                            settings[key] = parseInt(value) || 0;
-                            break;
-                        case 'boolean':
-                            settings[key] = value.toLowerCase() === 'true';
-                            break;
-                        case 'color':
-                            settings[key] = value;
-                            break;
-                        default:
-                            settings[key] = value;
-                    }
-                }
+    const settings = {};
+    const lines = csvText.trim().split('\n');
+    
+    for (let i = 1; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line) continue;
+        
+        const [key, value, type = 'text'] = line.split(',').map(field => field.trim());
+        
+        if (key && value) {
+            switch(type.toLowerCase()) {
+                case 'number':
+                    settings[key] = parseInt(value) || 0;
+                    break;
+                case 'boolean':
+                    settings[key] = value.toLowerCase() === 'true';
+                    break;
+                case 'color':
+                    settings[key] = value;
+                    break;
+                default:
+                    settings[key] = value;
             }
-
-            return settings;
         }
+    }
+    
+    return settings;
+}
 
         function applyPageSettings(settings) {
-            pageSettings = settings;
-
-            // Apply individual settings - TANPA GANGGU THEME
-            if (settings.site_title) {
-                document.title = settings.site_title;
-            }
-
-            if (settings.header_text) {
-                const headerText = document.getElementById('headerText');
-                if (headerText) headerText.innerHTML = settings.header_text;
-            }
-
-            if (settings.footer_text) {
-                const footerText = document.getElementById('footerText');
-                if (footerText) footerText.innerHTML = settings.footer_text;
-            }
-
-            if (settings.timer_duration) {
-                currentTimerDuration = settings.timer_duration;
-            }
-
-            // **PERBAIKAN: Header colors HANYA jika belum di-set oleh theme**
-            // Biarkan CSS variables dari theme yang mengatur, kecuali ada override spesifik
-            if (settings.header_bg_1 && settings.header_bg_2) {
-                console.log('🎨 Applying custom header colors from page.csv');
-                document.documentElement.style.setProperty('--header-bg-1', settings.header_bg_1);
-                document.documentElement.style.setProperty('--header-bg-2', settings.header_bg_2);
-            }
-
-            if (settings.banner_text && settings.banner_bg_1 && settings.banner_bg_2) {
-                document.documentElement.style.setProperty('--banner-bg-1', settings.banner_bg_1);
-                document.documentElement.style.setProperty('--banner-bg-2', settings.banner_bg_2);
-
-                const bannerContainer = document.getElementById('banner-container');
-                if (bannerContainer) {
-                    bannerContainer.innerHTML = `
-                        <div class="banner">
-                            <div style="font-size: 1.1em; font-weight: bold; margin-bottom: 8px;">
-                                ${settings.banner_text}
-                            </div>
-                            ${settings.banner_subtext ? `
-                                <div style="font-size: 0.9em; opacity: 0.9;">
-                                    ${settings.banner_subtext}
-                                </div>
-                            ` : ''}
+    pageSettings = settings;
+    
+    // Basic settings
+    if (settings.site_title) document.title = settings.site_title;
+    if (settings.header_text) {
+        const headerText = document.getElementById('headerText');
+        if (headerText) headerText.innerHTML = settings.header_text;
+    }
+    if (settings.footer_text) {
+        const footerText = document.getElementById('footerText');
+        if (footerText) footerText.innerHTML = settings.footer_text;
+    }
+    if (settings.timer_duration) currentTimerDuration = settings.timer_duration;
+    
+    // Header colors
+    if (settings.header_bg_1 && settings.header_bg_2) {
+        document.documentElement.style.setProperty('--header-bg-1', settings.header_bg_1);
+        document.documentElement.style.setProperty('--header-bg-2', settings.header_bg_2);
+    }
+    
+    // Banner
+    if (settings.banner_text) {
+        document.documentElement.style.setProperty('--banner-bg-1', settings.banner_bg_1 || '#6366f1');
+        document.documentElement.style.setProperty('--banner-bg-2', settings.banner_bg_2 || '#8b5cf6');
+        
+        const bannerContainer = document.getElementById('banner-container');
+        if (bannerContainer) {
+            bannerContainer.innerHTML = `
+                <div class="banner">
+                    <div style="font-size: 1.1em; font-weight: bold; margin-bottom: 8px;">
+                        ${settings.banner_text}
+                    </div>
+                    ${settings.banner_subtext ? `
+                        <div style="font-size: 0.9em; opacity: 0.9;">
+                            ${settings.banner_subtext}
                         </div>
-                    `;
-                }
-            }
-
-            if (settings.section_titles) {
-                const titles = settings.section_titles.split('|');
-                const container = document.getElementById('section-titles-container');
-                if (container) {
-                    container.innerHTML = titles.map(title => 
-                        `<div class="section-title">${title}</div>`
-                    ).join('');
-                }
-            }
-            
-            renderGlobalSections(settings);
-            startTimer();
+                    ` : ''}
+                </div>
+            `;
         }
-
+    }
+    
+    // Section titles
+    if (settings.section_titles) {
+        const titles = settings.section_titles.split('|');
+        const container = document.getElementById('section-titles-container');
+        if (container) {
+            container.innerHTML = titles.map(title => 
+                `<div class="section-title">${title}</div>`
+            ).join('');
+        }
+    }
+    
+    // GLOBAL HERO SECTION
+    const heroContainer = document.getElementById('hero-container');
+    if (heroContainer && settings.headline) {
+        heroContainer.innerHTML = `
+            <div class="hero-section">
+                <div class="headline">${settings.headline}</div>
+                ${settings.subheadline ? `<div class="subheadline">${settings.subheadline}</div>` : ''}
+                ${settings.trust_message ? `<div class="trust-badge">${settings.trust_message}</div>` : ''}
+            </div>
+        `;
+    }
+    
+    // GLOBAL FAQ SECTION  
+    const faqContainer = document.getElementById('faq-global-container');
+    if (faqContainer && (settings.faq_garansi || settings.faq_pengembalian || settings.faq_kompatibilitas || settings.faq_ongkir)) {
+        faqContainer.innerHTML = `
+            <div class="faq-section">
+                <div class="faq-title">❓ PERTANYAAN UMUM</div>
+                <div class="faq-grid">
+                    ${settings.faq_garansi ? `
+                        <div class="faq-item">
+                            <div class="faq-question">${settings.faq_garansi}</div>
+                            <div class="faq-answer">${settings.faq_garansi_detail || 'Garansi resmi tersedia'}</div>
+                        </div>
+                    ` : ''}
+                    ${settings.faq_pengembalian ? `
+                        <div class="faq-item">
+                            <div class="faq-question">${settings.faq_pengembalian}</div>
+                            <div class="faq-answer">${settings.faq_pengembalian_detail || 'Kebijakan pengembalian mudah'}</div>
+                        </div>
+                    ` : ''}
+                    ${settings.faq_kompatibilitas ? `
+                        <div class="faq-item">
+                            <div class="faq-question">${settings.faq_kompatibilitas}</div>
+                            <div class="faq-answer">${settings.faq_kompatibilitas_detail || 'Kompatibel dengan berbagai device'}</div>
+                        </div>
+                    ` : ''}
+                    ${settings.faq_ongkir ? `
+                        <div class="faq-item">
+                            <div class="faq-question">${settings.faq_ongkir}</div>
+                            <div class="faq-answer">${settings.faq_ongkir_detail || 'Gratis ongkir ke seluruh Indonesia'}</div>
+                        </div>
+                    ` : ''}
+                </div>
+            </div>
+        `;
+    }
+    
+    startTimer();
+}
         function applyDefaultPageSettings() {
             const defaultSettings = {
                 site_title: 'FLASH SALE 🔥',
@@ -858,55 +908,48 @@
         if (product.badge1 || product.badge2 || product.badge3) {
             badgesHtml = '<div class="badges-container">';
             
-            if (product.badge1) {
-                badgesHtml += `<span class="badge badge-primary">${product.badge1}</span>`;
-            }
-            if (product.badge2) {
-                badgesHtml += `<span class="badge badge-secondary">${product.badge2}</span>`;
-            }
-            if (product.badge3) {
-                badgesHtml += `<span class="badge badge-success">${product.badge3}</span>`;
-            }
+            if (product.badge1) badgesHtml += `<span class="badge badge-primary">${product.badge1}</span>`;
+            if (product.badge2) badgesHtml += `<span class="badge badge-secondary">${product.badge2}</span>`;
+            if (product.badge3) badgesHtml += `<span class="badge badge-success">${product.badge3}</span>`;
             
             badgesHtml += '</div>';
         }
         
-        // **GAMBAR PRODUK - Ratio 9:16**
+        // PRODUCT IMAGE
         const imageHtml = product.gambar ? 
             `<div class="product-image-container">
                 <img src="${product.gambar}" alt="${product.nama}" class="product-image" 
                      onerror="this.style.display='none'">
             </div>` : '';
         
-        // **BUTTON DENGAN NAMA TOKO**
+        // BUTTONS WITH STORE INFO
         let buttonsHtml = '';
+        const stores = [
+            { platform: 'shopee', link: product.link_shopee, store: product.nama_toko_shopee, rating: product.rating_shopee, sales: product.terjual_shopee },
+            { platform: 'tiktok', link: product.link_tiktok, store: product.nama_toko_tiktok, rating: product.rating_tiktok, sales: product.terjual_tiktok },
+            { platform: 'tokped', link: product.link_tokped, store: product.nama_toko_tokped, rating: product.rating_tokped, sales: product.terjual_tokped }
+        ];
         
-        if (isValidUrl(product.link_shopee)) {
-            const shopeeStore = product.nama_toko_shopee ? `<br><small>${product.nama_toko_shopee}</small>` : '';
-            buttonsHtml += `
-                <button class="btn btn-shopee" onclick="safeRedirect('${product.link_shopee}', '${product.nama.replace(/'/g, "\\'")}')">
-                    🛒 BELI DI SHOPEE ${shopeeStore}
-                </button>
-            `;
-        }
-        
-        if (isValidUrl(product.link_tiktok)) {
-            const tiktokStore = product.nama_toko_tiktok ? `<br><small>${product.nama_toko_tiktok}</small>` : '';
-            buttonsHtml += `
-                <button class="btn btn-tiktok" onclick="safeRedirect('${product.link_tiktok}', '${product.nama.replace(/'/g, "\\'")}')">
-                    🎵 BELI DI TIKTOK ${tiktokStore}
-                </button>
-            `;
-        }
-        
-        if (isValidUrl(product.link_tokped)) {
-            const tokpedStore = product.nama_toko_tokped ? `<br><small>${product.nama_toko_tokped}</small>` : '';
-            buttonsHtml += `
-                <button class="btn btn-tokped" onclick="safeRedirect('${product.link_tokped}', '${product.nama.replace(/'/g, "\\'")}')">
-                    🦅 BELI DI TOKOPEDIA ${tokpedStore}
-                </button>
-            `;
-        }
+        stores.forEach(store => {
+            if (isValidUrl(store.link)) {
+                const storeInfo = store.rating ? `
+                    <div class="store-info">
+                        <div class="rating">
+                            <span class="star">⭐</span> ${store.rating}
+                        </div>
+                        ${store.sales ? `<div class="sales">${formatNumber(store.sales)} terjual</div>` : ''}
+                    </div>
+                ` : '';
+                
+                buttonsHtml += `
+                    <button class="btn btn-${store.platform}" onclick="safeRedirect('${store.link}', '${product.nama.replace(/'/g, "\\'")}')">
+                        ${getPlatformIcon(store.platform)} BELI DI ${store.platform.toUpperCase()}
+                        ${store.store ? `<br><small>${store.store}</small>` : ''}
+                        ${storeInfo}
+                    </button>
+                `;
+            }
+        });
         
         if (!buttonsHtml) {
             buttonsHtml = `
@@ -916,12 +959,16 @@
             `;
         }
         
+        // URGENCY MESSAGES
         const stockWarning = product.stok_persen < 20 ? '🛑' : 
                            product.stok_persen < 50 ? '⚠️' : '✅';
         
-        const stockText = product.stok_persen < 10 ? 
-            `🛑 HAMPIR HABIS! Sisa ${product.stok_persen}% stok!` : 
-            `${stockWarning} Stok tersisa ${product.stok_persen}%`;
+        let stockText = '';
+        if (product.stok_persen < 10) {
+            stockText = `<span style="color: #ef4444; font-weight: bold;">${pageSettings.urgency_message || '🛑 HAMPIR HABIS! Segera beli!'}</span>`;
+        } else {
+            stockText = `${stockWarning} Stok tersisa ${product.stok_persen}%`;
+        }
         
         const card = document.createElement('div');
         card.className = 'card';
@@ -945,6 +992,14 @@
     });
 }
 
+function getPlatformIcon(platform) {
+    const icons = {
+        shopee: '🛒',
+        tiktok: '🎵', 
+        tokped: '🦅'
+    };
+    return icons[platform] || '🛍️';
+}
         function showError(message) {
             const errorElement = document.getElementById('error');
             errorElement.innerHTML = `
