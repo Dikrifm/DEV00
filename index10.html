@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Official Store</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* === 1. DESIGN SYSTEM (THEME ENGINE) === */
+        :root {
+            /* Modern Dark Theme (Default) */
+            --bg: #0a0a0a;
+            --surface: #171717;
+            --surface-highlight: #262626;
+            --border: #333;
+            --text-primary: #ededed;
+            --text-secondary: #a1a1a1;
+            --accent: #3b82f6; /* Electric Blue */
+            --danger: #ef4444;
+            --success: #22c55e;
+            --shopee: #ee4d2d;
+            --tiktok: #ffffff;
+            --tokped: #03AC0E;
+        }
+
+        [data-theme="light"] {
+            --bg: #f5f5f7; /* Apple Grey */
+            --surface: #ffffff;
+            --surface-highlight: #f0f0f0;
+            --border: #e5e5e5;
+            --text-primary: #1d1d1f;
+            --text-secondary: #86868b;
+            --accent: #0071e3;
+            --tiktok: #000000;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-primary);
+            padding-bottom: 80px;
+            transition: background 0.3s ease;
+        }
+
+        /* === 2. HEADER & NAVIGATION === */
+        .navbar {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(var(--bg), 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 15px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .brand {
+            font-weight: 800; font-size: 1.2rem; letter-spacing: -0.5px;
+            background: linear-gradient(45deg, var(--text-primary), var(--text-secondary));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .theme-toggle {
+            width: 36px; height: 36px; border-radius: 12px;
+            background: var(--surface-highlight); border: none;
+            color: var(--text-primary); cursor: pointer;
+            display: grid; place-items: center; font-size: 1.1rem;
+            transition: transform 0.2s;
+        }
+        .theme-toggle:active { transform: scale(0.9); }
+
+        /* === 3. PRODUCT GRID (LAYOUT MODERN) === */
+        .container {
+            max-width: 1000px; margin: 0 auto; padding: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* Responsive Grid */
+            gap: 16px;
+        }
+
+        /* === 4. PRODUCT CARD (THE STAR) === */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            display: flex; flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border-color: var(--accent);
+        }
+
+        /* Image Area */
+        .card-img-wrapper {
+            width: 100%; padding-top: 100%; /* 1:1 Aspect Ratio */
+            position: relative;
+            background: var(--surface-highlight);
+            overflow: hidden;
+        }
+
+        .card-img {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; transition: transform 0.5s ease;
+        }
+        
+        .card:hover .card-img { transform: scale(1.05); }
+
+        /* Badge Tag */
+        .tag {
+            position: absolute; top: 10px; left: 10px;
+            background: rgba(0,0,0,0.7); color: white;
+            font-size: 0.6rem; font-weight: 700;
+            padding: 4px 8px; border-radius: 6px;
+            backdrop-filter: blur(4px); text-transform: uppercase;
+        }
+
+        /* Content Area */
+        .card-content { padding: 12px; flex-grow: 1; display: flex; flex-direction: column; }
+
+        .card-title {
+            font-size: 0.9rem; font-weight: 600; margin-bottom: 8px;
+            line-height: 1.4;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+            overflow: hidden; height: 2.8em; /* Limit 2 lines */
+        }
+
+        .price-container { margin-bottom: 10px; }
+        .price-final { font-size: 1.1rem; font-weight: 800; color: var(--text-primary); }
+        .price-original { font-size: 0.75rem; color: var(--text-secondary); text-decoration: line-through; margin-left: 6px; }
+        
+        /* Stock Indicator (Minimalist) */
+        .stock-bar { height: 3px; background: var(--surface-highlight); width: 100%; border-radius: 2px; margin-bottom: 12px; overflow: hidden; }
+        .stock-fill { height: 100%; background: var(--success); border-radius: 2px; width: 50%; }
+
+        /* Marketplace Icons (The Game Changer) */
+        .actions {
+            margin-top: auto; /* Push to bottom */
+            display: flex; gap: 8px;
+        }
+
+        .action-btn {
+            flex: 1; height: 36px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            text-decoration: none; font-size: 1.1rem;
+            transition: opacity 0.2s; border: 1px solid transparent;
+        }
+        .action-btn:active { opacity: 0.7; transform: scale(0.95); }
+
+        .btn-shopee { background: rgba(238, 77, 45, 0.1); color: #ee4d2d; border-color: rgba(238, 77, 45, 0.2); }
+        .btn-tiktok { background: var(--surface-highlight); color: var(--tiktok); border-color: var(--border); }
+        .btn-tokped { background: rgba(3, 172, 14, 0.1); color: #03AC0E; border-color: rgba(3, 172, 14, 0.2); }
+
+        /* === 5. UTILITIES === */
+        #loading {
+            text-align: center; padding: 50px; color: var(--text-secondary);
+            font-size: 0.9rem; animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+
+        .error-msg {
+            text-align: center; padding: 20px;
+            background: rgba(239, 68, 68, 0.1); color: var(--danger);
+            border-radius: 12px; margin: 20px; font-size: 0.9rem;
+        }
+
+        /* SVG Icons */
+        .icon { width: 20px; height: 20px; fill: currentColor; }
+
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="brand">Recommended.</div>
+        <button class="theme-toggle" onclick="toggleTheme()" id="themeIcon">☀️</button>
+    </nav>
+
+    <div class="container">
+        <div id="loading">Memuat Katalog Premium...</div>
+        <div id="errorArea"></div>
+        <div class="grid" id="productGrid">
+            </div>
+    </div>
+
+    <script>
+        // === CONFIG ===
+        const CONFIG = {
+            PRODUCTS_CSV: 'pro3.csv', // Gunakan file CSV baru yang sudah diedit
+            RETRY_DELAY: 2000
+        };
+
+        // 1. THEME ENGINE
+        function toggleTheme() {
+            const b = document.body;
+            const icon = document.getElementById('themeIcon');
+            if(b.getAttribute('data-theme') === 'light') {
+                b.removeAttribute('data-theme'); 
+                icon.innerText = '☀️';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                b.setAttribute('data-theme', 'light'); 
+                icon.innerText = '🌙';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+        if(localStorage.getItem('theme') === 'light') {
+            document.body.setAttribute('data-theme', 'light');
+            document.getElementById('themeIcon').innerText = '🌙';
+        }
+
+        // 2. ROBUST CSV PARSER (With Quote Handling)
+        function parseCSV(text) {
+            if(!text) return [];
+            const lines = text.trim().split('\n');
+            if(lines.length < 2) return [];
+            
+            // Logika Regex untuk menangani koma dalam "kutip"
+            return lines.slice(1).map(line => {
+                const regex = /(".*?"|[^",\s]+)(?=\s*,|\s*$)/g;
+                const matches = line.match(regex);
+                return matches ? matches.map(col => col.replace(/^"|"$/g, '').trim()) : null;
+            }).filter(r => r !== null);
+        }
+
+        // 3. CURRENCY FORMATTER
+        function fmtPrice(num) {
+            return new Intl.NumberFormat('id-ID').format(num);
+        }
+
+        // 4. LINK VALIDATOR
+        function isValid(url) {
+            return url && url.length > 5 && !url.includes('kosong');
+        }
+
+        // 5. RENDER LOGIC
+        async function loadShop() {
+            try {
+                // Cache Buster agar data selalu fresh
+                const res = await fetch(CONFIG.PRODUCTS_CSV + '?t=' + Date.now());
+                if(!res.ok) throw new Error("Gagal terhubung ke database.");
+                
+                const text = await res.text();
+                const data = parseCSV(text);
+                const grid = document.getElementById('productGrid');
+                
+                document.getElementById('loading').style.display = 'none';
+
+                if(data.length === 0) {
+                    grid.innerHTML = `<div style="text-align:center; grid-column:1/-1;">Belum ada produk.</div>`;
+                    return;
+                }
+
+                data.forEach(row => {
+                    // MAPPING SESUAI HEADER CSV BARU:
+                    // id, name, price, price_promo, shopee, tiktok, tokped, stock, tag, image_url
+                    // 0   1     2      3            4       5       6       7      8    9
+                    
+                    if(row.length < 5) return;
+
+                    const [id, name, price, promo, link_shopee, link_tiktok, link_tokped, stock, tag, img] = row;
+                    
+                    // Fallback Image jika kosong
+                    const finalImg = (img && img.length > 10) ? img : 'https://placehold.co/400x400/1e1e1e/FFF?text=No+Image';
+                    
+                    const stockVal = parseInt(stock) || 0;
+                    const stockColor = stockVal < 20 ? '#ef4444' : '#22c55e'; // Merah jika < 20%
+
+                    // Buttons Logic (Icon Only)
+                    let btns = '';
+                    if(isValid(link_shopee)) btns += `<a href="${link_shopee}" class="action-btn btn-shopee" aria-label="Shopee"><svg class="icon" viewBox="0 0 24 24"><path d="M12.04 2.5c-5.3 0-9.6 3.73-9.6 8.33 0 2.75 1.53 5.22 3.92 6.77-.33 1.15-1.2 2.7-1.2 2.7 0 0 3.16.23 5.6-1.5.41.06.84.09 1.28.09 5.3 0 9.6-3.73 9.6-8.33s-4.3-8.33-9.6-8.33z"/></svg></a>`;
+                    if(isValid(link_tiktok)) btns += `<a href="${link_tiktok}" class="action-btn btn-tiktok" aria-label="TikTok"><svg class="icon" viewBox="0 0 24 24"><path d="M12.5 0v16.3c0 2.6-2.1 4.7-4.7 4.7s-4.7-2.1-4.7-4.7 2.1-4.7 4.7-4.7v3c-.9 0-1.7.8-1.7 1.7s.8 1.7 1.7 1.7 1.7-.8 1.7-1.7V4h3c0 2.2 1.8 4 4 4v-3c-.6 0-1 0-1-1V0h-3z"/></svg></a>`;
+                    if(isValid(link_tokped)) btns += `<a href="${link_tokped}" class="action-btn btn-tokped" aria-label="Tokopedia"><svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 14c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/></svg></a>`;
+
+                    // Jika semua link kosong
+                    if(btns === '') btns = `<div style="font-size:0.8rem; color:var(--text-secondary); margin:auto;">Stok Habis</div>`;
+
+                    const html = `
+                        <div class="card-img-wrapper">
+                            ${tag ? `<div class="tag">${tag}</div>` : ''}
+                            <img src="${finalImg}" class="card-img" alt="${name}" loading="lazy">
+                        </div>
+                        <div class="card-content">
+                            <div class="card-title">${name}</div>
+                            <div class="price-container">
+                                <span class="price-final">Rp ${fmtPrice(promo)}</span>
+                                <span class="price-original">Rp ${fmtPrice(price)}</span>
+                            </div>
+                            <div class="stock-bar">
+                                <div class="stock-fill" style="width:${stockVal}%; background:${stockColor}"></div>
+                            </div>
+                            <div class="actions">
+                                ${btns}
+                            </div>
+                        </div>
+                    `;
+
+                    const el = document.createElement('article');
+                    el.className = 'card';
+                    el.innerHTML = html;
+                    grid.appendChild(el);
+                });
+
+            } catch (err) {
+                console.error(err);
+                document.getElementById('errorArea').innerHTML = `<div class="error-msg">Gagal memuat data. Pastikan file <b>pro2.csv</b> tersedia dan formatnya benar.</div>`;
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+
+        // Init
+        window.onload = loadShop;
+
+    </script>
+</body>
+</html>
