@@ -234,7 +234,17 @@
             align-items: center;
             gap: 8px;
             transition: all 0.2s ease;
+            position: relative;
+    line-height: 1.3;
         }
+        
+        .btn small {
+    font-size: 0.7em;
+    opacity: 0.8;
+    font-weight: normal;
+    display: block;
+    margin-top: 2px;
+}
 
         .btn:active {
             opacity: 0.8;
@@ -381,6 +391,24 @@
             text-align: center;
             color: var(--text);
         }
+        
+        /* === PRODUCT IMAGE === */
+.product-image-container {
+    width: 100%;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    overflow: hidden;
+    aspect-ratio: 9/16; /* Ratio 9:16 */
+    max-height: 300px;
+}
+
+.product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
     </style>
 </head>
 <body>
@@ -717,126 +745,142 @@
         }
 
         function parseProductsCSV(csvText) {
-            const lines = csvText.trim().split('\n');
-            const products = [];
-
-            for (let i = 1; i < lines.length; i++) {
-                const line = lines[i].trim();
-                if (!line) continue;
-
-                const fields = line.split(',').map(field => field.trim());
-
-                if (fields.length >= 8) {
-                    const product = {
-                        id: fields[0] || i,
-                        nama: fields[1] || 'Produk',
-                        harga_asli: parseInt(fields[2]) || 0,
-                        harga_promo: parseInt(fields[3]) || 0,
-                        link_shopee: fields[4] || '',
-                        link_tiktok: fields[5] || '',
-                        link_tokped: fields[6] || '',
-                        stok_persen: parseInt(fields[7]) || 50,
-                        badge1: fields[8] || '',
-                        badge2: fields[9] || '',
-                        badge3: fields[10] || ''
-                    };
-
-                    if (product.nama && product.harga_promo > 0) {
-                        products.push(product);
-                    }
-                }
+    const lines = csvText.trim().split('\n');
+    const products = [];
+    
+    for (let i = 1; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line) continue;
+        
+        const fields = line.split(',').map(field => field.trim());
+        
+        if (fields.length >= 15) {
+            const product = {
+                id: fields[0] || i,
+                nama: fields[1] || 'Produk',
+                harga_asli: parseInt(fields[2]) || 0,
+                harga_promo: parseInt(fields[3]) || 0,
+                link_shopee: fields[4] || '',
+                nama_toko_shopee: fields[5] || '',
+                link_tiktok: fields[6] || '',
+                nama_toko_tiktok: fields[7] || '',
+                link_tokped: fields[8] || '',
+                nama_toko_tokped: fields[9] || '',
+                stok_persen: parseInt(fields[10]) || 50,
+                badge1: fields[11] || '',
+                badge2: fields[12] || '',
+                badge3: fields[13] || '',
+                gambar: fields[14] || ''
+            };
+            
+            if (product.nama && product.harga_promo > 0) {
+                products.push(product);
             }
-
-            return products;
         }
+    }
+    
+    return products;
+}
 
         function renderProducts(products) {
-            const productList = document.getElementById('product-list');
-            productList.innerHTML = '';
-
-            products.forEach((product, index) => {
-                const discount = calculateDiscount(product.harga_asli, product.harga_promo);
-                const discountBadge = discount > 0 ? 
-                    `<span class="discount-badge">-${discount}%</span>` : '';
-
-                let badgesHtml = '';
-                if (product.badge1 || product.badge2 || product.badge3) {
-                    badgesHtml = '<div class="badges-container">';
-
-                    if (product.badge1) {
-                        badgesHtml += `<span class="badge badge-primary">${product.badge1}</span>`;
-                    }
-                    if (product.badge2) {
-                        badgesHtml += `<span class="badge badge-secondary">${product.badge2}</span>`;
-                    }
-                    if (product.badge3) {
-                        badgesHtml += `<span class="badge badge-success">${product.badge3}</span>`;
-                    }
-
-                    badgesHtml += '</div>';
-                }
-
-                let buttonsHtml = '';
-
-                if (isValidUrl(product.link_shopee)) {
-                    buttonsHtml += `
-                        <button class="btn btn-shopee" onclick="safeRedirect('${product.link_shopee}', '${product.nama.replace(/'/g, "\\'")}')">
-                            🛒 BELI DI SHOPEE
-                        </button>
-                    `;
-                }
-
-                if (isValidUrl(product.link_tiktok)) {
-                    buttonsHtml += `
-                        <button class="btn btn-tiktok" onclick="safeRedirect('${product.link_tiktok}', '${product.nama.replace(/'/g, "\\'")}')">
-                            🎵 BELI DI TIKTOK
-                        </button>
-                    `;
-                }
-
-                if (isValidUrl(product.link_tokped)) {
-                    buttonsHtml += `
-                        <button class="btn btn-tokped" onclick="safeRedirect('${product.link_tokped}', '${product.nama.replace(/'/g, "\\'")}')">
-                            🦅 BELI DI TOKOPEDIA
-                        </button>
-                    `;
-                }
-
-                if (!buttonsHtml) {
-                    buttonsHtml = `
-                        <button class="btn" style="background: var(--text-sec); color: white;" disabled>
-                            🔒 LINK SEDANG TIDAK TERSEDIA
-                        </button>
-                    `;
-                }
-
-                const stockWarning = product.stok_persen < 20 ? '🛑' : 
-                                   product.stok_persen < 50 ? '⚠️' : '✅';
-
-                const stockText = product.stok_persen < 10 ? 
-                    `🛑 HAMPIR HABIS! Sisa ${product.stok_persen}% stok!` : 
-                    `${stockWarning} Stok tersisa ${product.stok_persen}%`;
-
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML = `
-                    <div class="product-title">${product.nama}</div>
-                    ${badgesHtml}
-                    <div class="price-box">
-                        <span class="price-now">${formatRupiah(product.harga_promo)}</span>
-                        <span class="price-coret">${formatRupiah(product.harga_asli)}</span>
-                        ${discountBadge}
-                    </div>
-                    <div class="stock-bg">
-                        <div class="stock-fill" style="width: ${product.stok_persen}%"></div>
-                    </div>
-                    <span class="stock-text">${stockText}</span>
-                    ${buttonsHtml}
-                `;
-
-                productList.appendChild(card);
-            });
+    const productList = document.getElementById('product-list');
+    productList.innerHTML = '';
+    
+    products.forEach((product, index) => {
+        const discount = calculateDiscount(product.harga_asli, product.harga_promo);
+        const discountBadge = discount > 0 ? 
+            `<span class="discount-badge">-${discount}%</span>` : '';
+        
+        let badgesHtml = '';
+        if (product.badge1 || product.badge2 || product.badge3) {
+            badgesHtml = '<div class="badges-container">';
+            
+            if (product.badge1) {
+                badgesHtml += `<span class="badge badge-primary">${product.badge1}</span>`;
+            }
+            if (product.badge2) {
+                badgesHtml += `<span class="badge badge-secondary">${product.badge2}</span>`;
+            }
+            if (product.badge3) {
+                badgesHtml += `<span class="badge badge-success">${product.badge3}</span>`;
+            }
+            
+            badgesHtml += '</div>';
         }
+        
+        // **GAMBAR PRODUK - Ratio 9:16**
+        const imageHtml = product.gambar ? 
+            `<div class="product-image-container">
+                <img src="${product.gambar}" alt="${product.nama}" class="product-image" 
+                     onerror="this.style.display='none'">
+            </div>` : '';
+        
+        // **BUTTON DENGAN NAMA TOKO**
+        let buttonsHtml = '';
+        
+        if (isValidUrl(product.link_shopee)) {
+            const shopeeStore = product.nama_toko_shopee ? `<br><small>${product.nama_toko_shopee}</small>` : '';
+            buttonsHtml += `
+                <button class="btn btn-shopee" onclick="safeRedirect('${product.link_shopee}', '${product.nama.replace(/'/g, "\\'")}')">
+                    🛒 BELI DI SHOPEE ${shopeeStore}
+                </button>
+            `;
+        }
+        
+        if (isValidUrl(product.link_tiktok)) {
+            const tiktokStore = product.nama_toko_tiktok ? `<br><small>${product.nama_toko_tiktok}</small>` : '';
+            buttonsHtml += `
+                <button class="btn btn-tiktok" onclick="safeRedirect('${product.link_tiktok}', '${product.nama.replace(/'/g, "\\'")}')">
+                    🎵 BELI DI TIKTOK ${tiktokStore}
+                </button>
+            `;
+        }
+        
+        if (isValidUrl(product.link_tokped)) {
+            const tokpedStore = product.nama_toko_tokped ? `<br><small>${product.nama_toko_tokped}</small>` : '';
+            buttonsHtml += `
+                <button class="btn btn-tokped" onclick="safeRedirect('${product.link_tokped}', '${product.nama.replace(/'/g, "\\'")}')">
+                    🦅 BELI DI TOKOPEDIA ${tokpedStore}
+                </button>
+            `;
+        }
+        
+        if (!buttonsHtml) {
+            buttonsHtml = `
+                <button class="btn" style="background: var(--text-sec); color: white;" disabled>
+                    🔒 LINK SEDANG TIDAK TERSEDIA
+                </button>
+            `;
+        }
+        
+        const stockWarning = product.stok_persen < 20 ? '🛑' : 
+                           product.stok_persen < 50 ? '⚠️' : '✅';
+        
+        const stockText = product.stok_persen < 10 ? 
+            `🛑 HAMPIR HABIS! Sisa ${product.stok_persen}% stok!` : 
+            `${stockWarning} Stok tersisa ${product.stok_persen}%`;
+        
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+            ${imageHtml}
+            <div class="product-title">${product.nama}</div>
+            ${badgesHtml}
+            <div class="price-box">
+                <span class="price-now">${formatRupiah(product.harga_promo)}</span>
+                <span class="price-coret">${formatRupiah(product.harga_asli)}</span>
+                ${discountBadge}
+            </div>
+            <div class="stock-bg">
+                <div class="stock-fill" style="width: ${product.stok_persen}%"></div>
+            </div>
+            <span class="stock-text">${stockText}</span>
+            ${buttonsHtml}
+        `;
+        
+        productList.appendChild(card);
+    });
+}
 
         function showError(message) {
             const errorElement = document.getElementById('error');
