@@ -106,7 +106,7 @@
 
         /* === 3. HERO SECTION === */
         .hero-section {
-            background: linear-gradient(135deg, var(--banner-bg-1), var(--banner-bg-2));
+            background: linear-gradient(135deg, var(--banner-bg-1), var(--banner-bg_2));
             color: white;
             padding: 25px 20px;
             border-radius: 16px;
@@ -339,168 +339,222 @@
             margin-bottom: 12px;
         }
 
-        /* === 7. REVOLUTIONARY MARKETPLACE BUTTONS === */
-        .marketplace-section {
+        /* === 7. MODERN ACCORDION MARKETPLACE === */
+        .marketplace-accordion {
             margin-top: auto;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            background: var(--surface);
         }
 
-        .section-label {
+        .accordion-header {
+            padding: 14px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--surface-highlight);
+            user-select: none;
+        }
+
+        .accordion-header:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .store-count {
+            background: var(--accent);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
             font-size: 0.7rem;
-            color: var(--text-secondary);
-            margin-bottom: 8px;
-            display: block;
+            font-weight: 700;
         }
 
-        .marketplace-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
-            gap: 8px;
+        .accordion-icon {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.9rem;
+            will-change: transform;
         }
 
-        .marketplace-btn {
+        .accordion.open .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--surface);
+        }
+
+        .accordion.open .accordion-content {
+            max-height: 300px;
+        }
+
+        .store-options {
             display: flex;
             flex-direction: column;
+            padding: 8px;
+            gap: 6px;
+        }
+
+        .store-option {
+            display: flex;
             align-items: center;
-            justify-content: center;
-            padding: 10px 6px;
+            padding: 12px 14px;
             border-radius: 10px;
             border: 1px solid transparent;
             background: var(--surface-highlight);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
             cursor: pointer;
             text-decoration: none;
+            color: inherit;
             position: relative;
             overflow: hidden;
         }
 
-        .marketplace-btn::before {
+        .store-option::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            height: 2px;
-            background: currentColor;
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
+            width: 3px;
+            height: 100%;
+            transition: width 0.3s ease;
         }
 
-        .marketplace-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        .store-option:hover::before {
+            width: 6px;
         }
 
-        .marketplace-btn:hover::before {
-            transform: scaleX(1);
-        }
-
-        .marketplace-btn:active {
-            transform: translateY(0);
-        }
-
-        /* Platform-specific styles */
-        .marketplace-btn.shopee {
-            color: #ee4d2d;
-            border-color: rgba(238, 77, 45, 0.3);
-        }
-
-        .marketplace-btn.shopee:hover {
-            background: rgba(238, 77, 45, 0.1);
-        }
-
-        .marketplace-btn.tiktok {
-            color: #000000;
-            border-color: rgba(0, 0, 0, 0.3);
-        }
-
-        [data-theme="dark"] .marketplace-btn.tiktok {
-            color: #ffffff;
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .marketplace-btn.tiktok:hover {
-            background: rgba(0, 0, 0, 0.1);
-        }
-
-        [data-theme="dark"] .marketplace-btn.tiktok:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .marketplace-btn.tokped {
-            color: #03AC0E;
-            border-color: rgba(3, 172, 14, 0.3);
-        }
-
-        .marketplace-btn.tokped:hover {
-            background: rgba(3, 172, 14, 0.1);
+        .store-option:hover {
+            transform: translateX(4px);
+            border-color: var(--border);
         }
 
         .platform-icon {
             font-size: 1.4rem;
-            margin-bottom: 4px;
+            width: 32px;
+            text-align: center;
+            margin-right: 12px;
             transition: transform 0.3s ease;
         }
 
-        .marketplace-btn:hover .platform-icon {
+        .store-option:hover .platform-icon {
             transform: scale(1.1);
         }
 
-        .platform-name {
-            font-size: 0.65rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
         .store-info {
+            flex: 1;
             display: flex;
-            align-items: center;
-            gap: 6px;
-            margin-top: 4px;
-            font-size: 0.6rem;
-            color: var(--text-secondary);
+            flex-direction: column;
+            gap: 4px;
         }
 
-        .rating {
+        .store-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .store-name {
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .store-rating {
             display: flex;
             align-items: center;
-            gap: 2px;
+            gap: 4px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
         }
 
         .star {
             color: #fbbf24;
-            font-size: 0.5rem;
         }
 
-        .sales {
+        .store-details {
+            display: flex;
+            gap: 12px;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        .store-sales {
             background: rgba(255,255,255,0.1);
-            padding: 1px 4px;
-            border-radius: 6px;
+            padding: 2px 6px;
+            border-radius: 8px;
         }
 
-        /* Single button state */
-        .single-button {
-            grid-column: 1 / -1;
-            padding: 12px;
+        .external-icon {
+            opacity: 0;
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+            margin-left: 8px;
         }
 
-        .single-button .platform-icon {
-            font-size: 1.6rem;
-            margin-bottom: 6px;
+        .store-option:hover .external-icon {
+            opacity: 1;
+            transform: translateX(2px);
         }
 
-        .single-button .platform-name {
-            font-size: 0.75rem;
+        /* Platform-specific colors */
+        .store-option.shopee::before {
+            background: #ee4d2d;
         }
 
-        /* Two buttons state */
-        .two-buttons {
-            grid-template-columns: 1fr 1fr;
+        .store-option.shopee:hover {
+            background: rgba(238, 77, 45, 0.05);
         }
 
-        /* Three buttons state */
-        .three-buttons {
-            grid-template-columns: 1fr 1fr 1fr;
+        .store-option.tiktok::before {
+            background: #000000;
+        }
+
+        [data-theme="dark"] .store-option.tiktok::before {
+            background: #ffffff;
+        }
+
+        .store-option.tiktok:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        [data-theme="dark"] .store-option.tiktok:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .store-option.tokped::before {
+            background: #03AC0E;
+        }
+
+        .store-option.tokped:hover {
+            background: rgba(3, 172, 14, 0.05);
+        }
+
+        /* No stores available */
+        .no-stores {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .no-stores-icon {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            opacity: 0.7;
         }
 
         /* === 8. FAQ SECTION === */
@@ -619,7 +673,7 @@
         }
 
         /* Performance optimizations */
-        .card, .marketplace-btn {
+        .card, .store-option {
             will-change: transform;
             backface-visibility: hidden;
         }
@@ -820,7 +874,7 @@
             // Header colors
             if (settings.header_bg_1 && settings.header_bg_2) {
                 document.documentElement.style.setProperty('--header-bg-1', settings.header_bg_1);
-                document.documentElement.style.setProperty('--header-bg_2', settings.header_bg_2);
+                document.documentElement.style.setProperty('--header-bg-2', settings.header_bg_2);
             }
             
             // Banner
@@ -1006,7 +1060,7 @@
                         badgesHtml += '</div>';
                     }
 
-                    // Store options for new marketplace design
+                    // Store options for accordion
                     const stores = [
                         { 
                             platform: 'shopee', 
@@ -1034,50 +1088,57 @@
                     // Filter stores yang memiliki link valid
                     const validStores = stores.filter(store => isValidUrl(store.link));
                     
-                    let marketplaceHtml = '';
+                    let accordionHtml = '';
                     if (validStores.length > 0) {
-                        const storeButtons = validStores.map(store => {
+                        const storeOptions = validStores.map(store => {
                             const storeIcon = getPlatformIcon(store.platform);
-                            const hasInfo = store.rating > 0 || store.sales > 0;
+                            const platformName = store.platform.charAt(0).toUpperCase() + store.platform.slice(1);
                             
                             return `
-                                <button class="marketplace-btn ${store.platform}" onclick="safeRedirect('${store.link}', '${nama.replace(/'/g, "\\'")}')">
+                                <button class="store-option ${store.platform}" onclick="safeRedirect('${store.link}', '${nama.replace(/'/g, "\\'")}')">
                                     <div class="platform-icon">${storeIcon}</div>
-                                    <div class="platform-name">${store.platform}</div>
-                                    ${hasInfo ? `
-                                        <div class="store-info">
+                                    <div class="store-info">
+                                        <div class="store-main">
+                                            <span class="store-name">${platformName}</span>
                                             ${store.rating > 0 ? `
-                                                <div class="rating">
+                                                <div class="store-rating">
                                                     <span class="star">⭐</span> ${store.rating}
                                                 </div>
                                             ` : ''}
+                                        </div>
+                                        <div class="store-details">
+                                            ${store.store ? `<span>${store.store}</span>` : ''}
                                             ${store.sales > 0 ? `
-                                                <div class="sales">${formatNumber(store.sales)}</div>
+                                                <span class="store-sales">${formatNumber(store.sales)} terjual</span>
                                             ` : ''}
                                         </div>
-                                    ` : ''}
+                                    </div>
+                                    <div class="external-icon">↗</div>
                                 </button>
                             `;
                         }).join('');
 
-                        // Determine grid class based on number of stores
-                        let gridClass = '';
-                        if (validStores.length === 1) gridClass = 'single-button';
-                        else if (validStores.length === 2) gridClass = 'two-buttons';
-                        else gridClass = 'three-buttons';
-
-                        marketplaceHtml = `
-                            <div class="marketplace-section">
-                                <span class="section-label">Beli di:</span>
-                                <div class="marketplace-grid ${gridClass}">
-                                    ${storeButtons}
+                        accordionHtml = `
+                            <div class="marketplace-accordion accordion" id="accordion-${id}">
+                                <div class="accordion-header" onclick="toggleAccordion('accordion-${id}')">
+                                    <div class="header-content">
+                                        <span>🛒 Marketplace Tersedia</span>
+                                        <span class="store-count">${validStores.length}</span>
+                                    </div>
+                                    <div class="accordion-icon">▼</div>
+                                </div>
+                                <div class="accordion-content">
+                                    <div class="store-options">
+                                        ${storeOptions}
+                                    </div>
                                 </div>
                             </div>
                         `;
                     } else {
-                        marketplaceHtml = `
-                            <div style="text-align:center; padding:12px; color:var(--text-secondary); font-size:0.8rem;">
-                                🔒 Stok sedang habis
+                        accordionHtml = `
+                            <div class="no-stores">
+                                <div class="no-stores-icon">🔒</div>
+                                <div>Stok sedang habis</div>
                             </div>
                         `;
                     }
@@ -1104,7 +1165,7 @@
                                 <div class="stock-fill" style="width:${stockVal}%; background:${stockColor}"></div>
                             </div>
                             <span class="stock-text">${stockText}</span>
-                            ${marketplaceHtml}
+                            ${accordionHtml}
                         </div>
                     `;
 
@@ -1121,7 +1182,15 @@
             }
         }
 
-        // === 7. NOTIFICATIONS ===
+        // === 7. ACCORDION FUNCTIONALITY ===
+        function toggleAccordion(accordionId) {
+            const accordion = document.getElementById(accordionId);
+            if (accordion) {
+                accordion.classList.toggle('open');
+            }
+        }
+
+        // === 8. NOTIFICATIONS ===
         async function startNotifications() {
             try {
                 const response = await fetch(CONFIG.NOTIFICATIONS_CSV);
@@ -1211,7 +1280,7 @@
             }, 3000);
         }
 
-        // === 8. INITIALIZATION ===
+        // === 9. INITIALIZATION ===
         async function initializeApp() {
             try {
                 await loadPageSettings();
@@ -1230,6 +1299,7 @@
         // Global functions
         window.toggleTheme = toggleTheme;
         window.safeRedirect = safeRedirect;
+        window.toggleAccordion = toggleAccordion;
     </script>
 </body>
 </html>
