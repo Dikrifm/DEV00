@@ -339,7 +339,7 @@
             margin-bottom: 12px;
         }
 
-        /* === 7. ACCORDION MARKETPLACE BUTTONS (OPTIMIZED) === */
+        /* === 7. ACCORDION MARKETPLACE BUTTONS (PROFESSIONAL DESIGN) === */
         .accordion {
             margin-top: auto;
             border-radius: 12px;
@@ -354,7 +354,7 @@
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
-            transition: background 0.2s ease;
+            transition: all 0.2s ease;
             user-select: none;
         }
 
@@ -401,7 +401,7 @@
 
         .store-option {
             background: var(--surface);
-            padding: 12px 16px;
+            padding: 14px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -414,23 +414,26 @@
             overflow: hidden;
         }
 
-        .store-option::before {
-            content: '';
+        .store-option::after {
+            content: '→';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: left 0.5s ease;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: all 0.2s ease;
+            font-weight: bold;
+            color: inherit;
         }
 
-        .store-option:hover::before {
-            left: 100%;
+        .store-option:hover::after {
+            opacity: 1;
+            transform: translateY(-50%) translateX(4px);
         }
 
         .store-option:hover {
-            transform: translateX(4px);
+            padding-right: 36px;
+            transform: translateX(2px);
         }
 
         .store-info {
@@ -443,9 +446,15 @@
         .store-platform {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             font-weight: 600;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
+        }
+
+        .platform-icon {
+            font-size: 1.1rem;
+            width: 24px;
+            text-align: center;
         }
 
         .store-details {
@@ -453,6 +462,7 @@
             gap: 12px;
             font-size: 0.7rem;
             color: var(--text-secondary);
+            margin-left: 34px;
         }
 
         .store-rating {
@@ -467,52 +477,41 @@
             border-radius: 8px;
         }
 
-        .store-action {
-            font-size: 0.75rem;
-            font-weight: 600;
-            padding: 4px 8px;
-            border-radius: 6px;
-            transition: all 0.2s ease;
-        }
-
-        /* Platform-specific colors - UPDATED */
+        /* Platform-specific colors - PROFESSIONAL DESIGN */
         .store-option[data-platform="shopee"] {
-            border-left: 3px solid #ee4d2d;
-        }
-
-        .store-option[data-platform="shopee"] .store-action {
-            color: white;
-            background: #ee4d2d;
+            border-left: 4px solid #ee4d2d;
+            color: #ee4d2d;
         }
 
         .store-option[data-platform="shopee"]:hover {
-            background: rgba(238, 77, 45, 0.05);
+            background: rgba(238, 77, 45, 0.08);
         }
 
         .store-option[data-platform="tiktok"] {
-            border-left: 3px solid #000000;
+            border-left: 4px solid #000000;
+            color: #000000;
         }
 
-        .store-option[data-platform="tiktok"] .store-action {
-            color: white;
-            background: #000000;
+        [data-theme="dark"] .store-option[data-platform="tiktok"] {
+            color: #ffffff;
+            border-left-color: #ffffff;
         }
 
         .store-option[data-platform="tiktok"]:hover {
-            background: rgba(0, 0, 0, 0.05);
+            background: rgba(0, 0, 0, 0.08);
+        }
+
+        [data-theme="dark"] .store-option[data-platform="tiktok"]:hover {
+            background: rgba(255, 255, 255, 0.08);
         }
 
         .store-option[data-platform="tokped"] {
-            border-left: 3px solid #03AC0E;
-        }
-
-        .store-option[data-platform="tokped"] .store-action {
-            color: white;
-            background: #03AC0E;
+            border-left: 4px solid #03AC0E;
+            color: #03AC0E;
         }
 
         .store-option[data-platform="tokped"]:hover {
-            background: rgba(3, 172, 14, 0.05);
+            background: rgba(3, 172, 14, 0.08);
         }
 
         /* === 8. FAQ SECTION === */
@@ -628,13 +627,6 @@
             font-size: 0.8em;
             border-top: 1px solid var(--border);
             margin-top: 20px;
-        }
-
-        /* SVG Icons */
-        .icon { 
-            width: 16px; 
-            height: 16px; 
-            fill: currentColor; 
         }
 
         /* Performance optimizations */
@@ -1061,7 +1053,8 @@
                                 <button class="store-option" data-platform="${store.platform}" onclick="safeRedirect('${store.link}', '${nama.replace(/'/g, "\\'")}')">
                                     <div class="store-info">
                                         <div class="store-platform">
-                                            ${storeIcon} ${store.platform.toUpperCase()}
+                                            <span class="platform-icon">${storeIcon}</span>
+                                            ${store.platform.toUpperCase()}
                                             ${store.store ? `• ${store.store}` : ''}
                                         </div>
                                         <div class="store-details">
@@ -1076,9 +1069,6 @@
                                                 </div>
                                             ` : ''}
                                         </div>
-                                    </div>
-                                    <div class="store-action">
-                                        BELI
                                     </div>
                                 </button>
                             `;
