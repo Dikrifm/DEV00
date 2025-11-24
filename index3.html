@@ -308,15 +308,49 @@
             gap: 0.75rem;
         }
 
+        /* PERBAIKAN: Tampilan Nama Produk */
         .card-title {
             font-size: 1rem; 
             font-weight: 600; 
             line-height: 1.4;
-            display: -webkit-box; 
-            -webkit-line-camp: 2; 
-            -webkit-box-orient: vertical;
-            overflow: hidden;
             color: var(--text-primary);
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            max-height: 2.8em;
+            min-height: 2.8em;
+        }
+
+        /* Solusi alternatif untuk browser yang tidak support line-clamp */
+        .card-title-fallback {
+            display: none;
+        }
+
+        @supports not (-webkit-line-clamp: 2) {
+            .card-title {
+                display: none;
+            }
+            .card-title-fallback {
+                display: block;
+                font-size: 1rem; 
+                font-weight: 600; 
+                line-height: 1.4;
+                color: var(--text-primary);
+                overflow: hidden;
+                max-height: 2.8em;
+                position: relative;
+            }
+            .card-title-fallback::after {
+                content: "...";
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                background: var(--surface-elevated);
+                padding-left: 0.25rem;
+            }
         }
 
         .price-container { 
@@ -1502,6 +1536,7 @@
                         </div>
                     `;
 
+                    // PERBAIKAN: Menambahkan fallback untuk nama produk
                     const html = `
                         <div class="card">
                             <div class="card-img-wrapper">
@@ -1510,6 +1545,7 @@
                             </div>
                             <div class="card-content">
                                 <div class="card-title">${nama}</div>
+                                <div class="card-title-fallback">${nama}</div>
                                 ${badgesHtml}
                                 <div class="price-container">
                                     <span class="price-final">Rp ${formatPrice(harga_promo)}</span>
