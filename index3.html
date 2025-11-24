@@ -1027,12 +1027,12 @@
     <!-- AUTHENTIC URGENCY TIMER -->
     <div class="authentic-urgency">
         <div class="urgency-badge">🔥 EDISI KHUSUS</div>
-        <div class="story-headline">Setiap produk punya cerita. Dan cerita ini hampir berakhir.</div>
+        <div class="story-headline">Penawaran spesial ini berakhir hari ini! Jangan sampai kehabisan!</div>
         <div class="timeline">
             <div class="timeline-progress" id="timelineProgress"></div>
             <div class="timeline-text" id="timelineText">
-                <span>⏰ Perjalanan: <strong id="authenticTimer">02:00:00</strong></span>
-                <span>🛒 <span id="soldCount">47</span> orang sudah menemukan cerita mereka</span>
+                <span>⏰ Berakhir dalam: <strong id="authenticTimer">00:00:00</strong></span>
+                <span>🛒 <span id="soldCount">47</span> produk sudah ditemukan</span>
             </div>
         </div>
     </div>
@@ -1083,7 +1083,6 @@
 
         // === GLOBAL STATE ===
         let pageSettings = {};
-        let currentTimerDuration = 2 * 60 * 60;
 
         // === THEME MANAGEMENT ===
         function toggleTheme() {
@@ -1191,6 +1190,49 @@
             }
         }
 
+        // === MIDNIGHT COUNTDOWN TIMER ===
+        function startMidnightCountdown() {
+            let genuineSalesCount = 47;
+            
+            function updateMidnightCountdown() {
+                const now = new Date();
+                const tomorrow = new Date(now);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                tomorrow.setHours(0, 0, 0, 0); // Set to midnight tomorrow
+                
+                const distance = tomorrow - now;
+                
+                if (distance <= 0) {
+                    document.getElementById('authenticTimer').textContent = "PENAWARAN BERAKHIR";
+                    document.getElementById('timelineProgress').style.width = "100%";
+                    return;
+                }
+                
+                const hours = Math.floor(distance / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                // Update timer
+                document.getElementById('authenticTimer').textContent = 
+                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                // Update progress bar (percentage of day passed)
+                const startOfDay = new Date(now);
+                startOfDay.setHours(0, 0, 0, 0);
+                const dayProgress = (now - startOfDay) / (24 * 60 * 60 * 1000) * 100;
+                document.getElementById('timelineProgress').style.width = `${dayProgress}%`;
+                
+                // Occasional genuine sales update
+                if (Math.random() < 0.02) {
+                    genuineSalesCount++;
+                    document.getElementById('soldCount').textContent = genuineSalesCount;
+                }
+            }
+            
+            updateMidnightCountdown();
+            setInterval(updateMidnightCountdown, 1000);
+        }
+
         // === CSV PARSER ===
         function parseCSV(text) {
             if(!text) return [];
@@ -1251,7 +1293,6 @@
                 const footerText = document.getElementById('footerText');
                 if (footerText) footerText.innerHTML = settings.footer_text;
             }
-            if (settings.timer_duration) currentTimerDuration = settings.timer_duration;
             
             // Header colors
             if (settings.header_bg_1 && settings.header_bg_2) {
@@ -1321,54 +1362,15 @@
                 }
             }
             
-            startAuthenticTimer();
+            startMidnightCountdown();
         }
 
         function applyDefaultPageSettings() {
             const defaultSettings = {
                 site_title: 'Premium Store',
-                footer_text: '© 2024 Premium Store<br><small>Harga dan stok dapat berubah sewaktu-waktu</small>',
-                timer_duration: 7200
+                footer_text: '© 2024 Premium Store<br><small>Harga dan stok dapat berubah sewaktu-waktu</small>'
             };
             applyPageSettings(defaultSettings);
-        }
-
-        // === AUTHENTIC TIMER ===
-        function startAuthenticTimer() {
-            let genuineSalesCount = 47;
-            const endTime = Date.now() + (currentTimerDuration * 1000);
-            
-            function updateAuthenticTimer() {
-                const now = Date.now();
-                const distance = endTime - now;
-                
-                if (distance <= 0) {
-                    document.getElementById('authenticTimer').textContent = "TUTUP";
-                    document.getElementById('timelineProgress').style.width = "100%";
-                    return;
-                }
-                
-                const hours = Math.floor(distance / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                
-                // Update timer
-                document.getElementById('authenticTimer').textContent = 
-                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                
-                // Update progress bar
-                const progress = 100 - (distance / (currentTimerDuration * 1000) * 100);
-                document.getElementById('timelineProgress').style.width = `${progress}%`;
-                
-                // Occasional genuine sales update
-                if (Math.random() < 0.02) {
-                    genuineSalesCount++;
-                    document.getElementById('soldCount').textContent = genuineSalesCount;
-                }
-            }
-            
-            updateAuthenticTimer();
-            setInterval(updateAuthenticTimer, 1000);
         }
 
         // === PRODUCTS MANAGEMENT ===
@@ -1561,8 +1563,6 @@
                     const el = document.createElement('div');
                     el.innerHTML = html;
                     grid.appendChild(el);
-                    
-                    
                 });
 
             } catch (err) {
