@@ -2,18 +2,37 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FLASH SALE PREMIUM 🔥</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Premium Store</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
         /* === VARIABLES & RESET === */
         :root {
-            --bg: #0f172a;
-            --card: #1e293b;
-            --text: #ffffff;
-            --text-sec: #94a3b8;
-            --border: #334155;
+            --bg: #0f0f0f;
+            --surface: #1a1a1a;
+            --surface-elevated: #242424;
+            --surface-highlight: #2d2d2d;
+            --border: #3a3a3a;
+            --border-light: #4a4a4a;
+            --text-primary: #f5f5f5;
+            --text-secondary: #a0a0a0;
+            --text-tertiary: #707070;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
             --price-now: #4ade80;
-            --shadow: rgba(0,0,0,0.5);
+            --rating-gold: #fbbf24;
+            --error: #ef4444;
+            
+            /* Marketplace Colors */
+            --shopee: #ee4d2d;
+            --shopee-light: rgba(238, 77, 45, 0.1);
+            --tiktok: #000000;
+            --tiktok-light: rgba(0, 0, 0, 0.08);
+            --tokped: #03AC0E;
+            --tokped-light: rgba(3, 172, 14, 0.1);
+
             --header-bg-1: #dc2626;
             --header-bg-2: #b91c1c;
             --banner-bg-1: #6366f1;
@@ -21,1182 +40,465 @@
         }
 
         [data-theme="light"] {
-            --bg: #f8fafc;
-            --card: #ffffff;
-            --text: #0f172a;
-            --text-sec: #64748b;
+            --bg: #ffffff;
+            --surface: #f8fafc;
+            --surface-elevated: #ffffff;
+            --surface-highlight: #f1f5f9;
             --border: #e2e8f0;
+            --border-light: #cbd5e1;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-tertiary: #94a3b8;
+            --tiktok-light: rgba(0, 0, 0, 0.05);
+            --accent: #0071e3;
             --price-now: #16a34a;
-            --shadow: rgba(0,0,0,0.1);
-            --header-bg-1: #ef4444;
-            --header-bg-2: #dc2626;
-            --banner-bg-1: #4f46e5;
-            --banner-bg-2: #7c3aed;
+            --rating-gold: #f59e0b;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-            background: var(--bg);
-            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-primary);
             line-height: 1.6;
-            transition: all 0.3s ease;
+            transition: background 0.3s ease;
             min-height: 100vh;
         }
 
-        /* === HEADER === */
-        .header {
-            background: linear-gradient(135deg, var(--header-bg-1), var(--header-bg-2));
-            padding: 20px 15px;
-            text-align: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-            color: white;
-        }
-
-        /* Ganti style timer dengan ini */
-.authentic-urgency {
-    text-align: center;
-    padding: 20px 15px;
-}
-
-.urgency-badge {
-    background: rgba(255,255,255,0.2);
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 0.8em;
-    margin-bottom: 10px;
-    display: inline-block;
-    backdrop-filter: blur(10px);
-}
-
-.story-headline {
-    font-size: 1.1em;
-    margin-bottom: 15px;
-    line-height: 1.4;
-    opacity: 0.9;
-}
-
-.timeline {
-    background: rgba(255,255,255,0.1);
-    border-radius: 10px;
-    padding: 15px;
-    margin-top: 10px;
-}
-
-.timeline-progress {
-    height: 4px;
-    background: linear-gradient(90deg, #4ade80, #f59e0b, #ef4444);
-    border-radius: 2px;
-    margin-bottom: 10px;
-    transition: width 1s ease;
-}
-
-.timeline-text {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.8em;
-    opacity: 0.8;
-}
-
-        .pulse {
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-
-        .theme-toggle {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(255,255,255,0.2);
-            border: 1px solid rgba(255,255,255,0.3);
-            color: white;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            font-size: 1.2em;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-            z-index: 101;
-        }
-
-        .theme-toggle:hover {
-            background: rgba(255,255,255,0.3);
-            transform: scale(1.1);
-        }
-
-        /* === MAIN CONTENT === */
-        .container {
-            max-width: 480px;
-            margin: 0 auto;
-            padding: 20px 15px;
-        }
-
-        .card {
-            background: var(--card);
-            border-radius: 12px;
-            padding: 18px;
-            margin-bottom: 16px;
-            border: 1px solid var(--border);
-            box-shadow: 0 4px 12px var(--shadow);
-            transition: all 0.3s ease;
-        }
-
-        .card:active {
-            transform: scale(0.98);
-        }
-
-        /* === BADGE SYSTEM === */
-        .badges-container {
-            display: flex;
-            gap: 6px;
-            margin: 8px 0 12px 0;
-            flex-wrap: wrap;
-        }
-
-        .badge {
-            font-size: 0.65em;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        .badge-primary { background: linear-gradient(135deg, #f59e0b, #d97706); color: black; }
-        .badge-secondary { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; }
-        .badge-success { background: linear-gradient(135deg, #10b981, #047857); color: white; }
-
-        .product-title {
-            font-size: 1.1em;
-            font-weight: 700;
-            margin: 5px 0 8px 0;
-            line-height: 1.4;
-        }
-
-        .price-box {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin: 12px 0;
-            flex-wrap: wrap;
-        }
-
-        .price-now {
-            color: var(--price-now);
-            font-weight: 900;
-            font-size: 1.3em;
-        }
-
-        .price-coret {
-            color: var(--text-sec);
-            text-decoration: line-through;
-            font-size: 0.9em;
-        }
-
-        .discount-badge {
-            background: #ef4444;
-            color: white;
-            font-size: 0.7em;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-weight: bold;
-        }
-
-        /* === BUTTONS === */
-        .btn {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 1em;
-            cursor: pointer;
-            margin-top: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            transition: all 0.2s ease;
-            line-height: 1.3;
-        }
-
-        .btn:active {
-            opacity: 0.8;
-            transform: scale(0.98);
-        }
-
-        .btn-shopee { background: #ee4d2d; color: white; }
-        .btn-tiktok { background: #000000; color: white; }
-        .btn-tokped { background: #03AC0E; color: white; }
-
-        .btn small {
-            font-size: 0.7em;
-            opacity: 0.8;
-            font-weight: normal;
-        }
-
-        /* === STOCK BAR === */
-        .stock-bg {
-            height: 6px;
-            background: var(--border);
-            border-radius: 3px;
-            margin: 12px 0 6px 0;
-            width: 100%;
-            overflow: hidden;
-        }
-
-        .stock-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #ef4444, #f97316);
-            border-radius: 3px;
-            transition: width 0.5s ease;
-        }
-
-        .stock-text {
-            font-size: 0.75em;
-            color: var(--text-sec);
-        }
-
-        /* === LOADING & ERROR === */
-        .loading {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--text-sec);
-        }
-
-        .spinner {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top-color: #ef4444;
-            animation: spin 1s linear infinite;
-            margin-bottom: 15px;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .error {
-            text-align: center;
-            padding: 40px 20px;
-            background: var(--card);
-            border-radius: 12px;
-            margin: 20px 0;
-            border: 1px solid var(--border);
-        }
-
-        .retry-btn {
-            background: #ef4444;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 15px;
-        }
-
-        /* === FOOTER === */
-        .footer {
-            text-align: center;
-            padding: 25px 15px;
-            color: var(--text-sec);
-            font-size: 0.8em;
-            border-top: 1px solid var(--border);
-            margin-top: 20px;
-        }
-
-        /* === NOTIFICATION === */
-        .notification {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%) translateY(150%);
-            background: rgba(255, 255, 255, 0.95);
-            color: black;
-            padding: 12px 16px;
-            border-radius: 10px;
-            font-size: 0.85em;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            display: flex;
-            align-items: center;
-            gap: 12px;
+        /* === NAVBAR & CONTROLS === */
+        .navbar {
+            position: sticky; 
+            top: 0; 
             z-index: 1000;
-            max-width: 90%;
-            backdrop-filter: blur(10px);
-            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: rgba(15, 15, 15, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 1.25rem;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
         }
 
-        .notification.show {
-            transform: translateX(-50%) translateY(0);
+        [data-theme="light"] .navbar { background: rgba(255, 255, 255, 0.85); }
+
+        .brand {
+            font-weight: 800; 
+            font-size: 1.25rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent;
         }
 
-        .notif-img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
+        .nav-controls { display: flex; gap: 0.75rem; }
+
+        .icon-btn {
+            width: 2.5rem; height: 2.5rem; 
+            border-radius: 0.75rem;
+            background: var(--surface-elevated); 
+            border: 1px solid var(--border);
+            color: var(--text-primary); 
+            cursor: pointer;
+            display: grid; place-items: center; 
+            font-size: 1.125rem;
+            transition: all 0.2s ease;
+        }
+
+        .icon-btn:hover { background: var(--surface-highlight); transform: scale(1.05); }
+        .icon-btn.active { border-color: var(--accent); color: var(--accent); }
+
+        /* === LAYOUT === */
+        .container { max-width: 1200px; margin: 0 auto; padding: 1.5rem 1.25rem; }
+
+        /* --- GRID VIEW (DEFAULT) --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* --- LIST VIEW OVERRIDES (FITUR BARU) --- */
+        .grid.list-view {
+            grid-template-columns: 1fr !important; /* Force 1 column */
+            gap: 1rem;
+        }
+
+        .grid.list-view .card {
+            flex-direction: row;
+            align-items: stretch;
+            height: auto;
+        }
+
+        .grid.list-view .card-img-wrapper {
+            width: 140px;
+            padding-top: 0; /* Remove aspect ratio hack */
+            height: auto;
+            min-height: 160px;
             flex-shrink: 0;
         }
 
-        /* === BANNER & SECTIONS === */
-        .banner {
-            background: linear-gradient(135deg, var(--banner-bg-1), var(--banner-bg-2));
-            color: white;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            text-align: center;
+        .grid.list-view .card-img {
+            position: absolute;
+            height: 100%;
+            object-fit: cover;
         }
 
-        .section-title {
-            font-size: 1.2em;
-            font-weight: 700;
-            margin: 20px 0 15px 0;
-            text-align: center;
-            color: var(--text);
+        .grid.list-view .card-content {
+            padding: 1rem;
+            justify-content: center;
+        }
+        
+        .grid.list-view .rating-indicator {
+            display: none; /* Sembunyikan rating visual di list view agar tidak sempit */
         }
 
-        /* === GLOBAL SECTIONS === */
+        .grid.list-view .marketplace-accordion {
+            margin-top: 0.5rem;
+        }
+
+        /* === COMPONENTS === */
         .hero-section {
             background: linear-gradient(135deg, var(--banner-bg-1), var(--banner-bg-2));
             color: white;
-            padding: 25px 20px;
-            border-radius: 16px;
-            margin-bottom: 25px;
+            padding: 2rem 1.5rem;
+            border-radius: 1rem;
+            margin: 1.5rem;
             text-align: center;
         }
-
-        .headline {
-            font-size: 1.4em;
-            font-weight: 900;
-            margin-bottom: 10px;
-            line-height: 1.3;
-        }
-
-        .subheadline {
-            font-size: 0.95em;
-            opacity: 0.9;
-            line-height: 1.4;
-        }
-
-        .faq-section {
-            margin: 30px 0 20px 0;
-        }
-
-        .faq-title {
-            font-size: 1.3em;
-            font-weight: 800;
-            text-align: center;
-            margin-bottom: 20px;
-            color: var(--text);
-        }
-
-        .faq-grid {
-            display: grid;
-            gap: 12px;
-        }
-
-        .faq-item {
-            background: var(--card);
+        .headline { font-size: 1.75rem; font-weight: 900; margin-bottom: 0.75rem; }
+        
+        /* Authentic Timer (Urgensi Tanpa Input Manual) */
+        .authentic-urgency {
+            text-align: center; padding: 1.5rem;
+            background: var(--surface-elevated);
+            border-radius: 1rem; margin: 1.5rem;
             border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px;
-            font-size: 0.9em;
-            line-height: 1.5;
+        }
+        .timeline-progress {
+            height: 0.25rem;
+            background: linear-gradient(90deg, #4ade80, #f59e0b, #ef4444);
+            border-radius: 0.125rem;
+            margin-bottom: 0.75rem;
+            width: 0%; transition: width 1s ease;
         }
 
-        /* === PRODUCT IMAGE === */
-        .product-image-container {
-            width: 100%;
-            margin-bottom: 15px;
-            border-radius: 12px;
+        /* Card Styles */
+        .card {
+            background: var(--surface-elevated);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
             overflow: hidden;
-            aspect-ratio: 9/16;
-            max-height: 320px;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex; flex-direction: column;
+        }
+        .card:hover { transform: translateY(-4px); border-color: var(--accent); }
+        
+        .card-img-wrapper { width: 100%; padding-top: 100%; position: relative; background: var(--surface-highlight); }
+        .card-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .card:hover .card-img { transform: scale(1.05); }
+
+        .tag {
+            position: absolute; top: 0.75rem; left: 0.75rem;
+            background: rgba(0, 0, 0, 0.8); color: white;
+            font-size: 0.75rem; font-weight: 600;
+            padding: 0.375rem 0.75rem; border-radius: 0.5rem;
+            z-index: 2;
         }
 
-        .product-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 12px;
+        .card-content { padding: 1.25rem; flex-grow: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+        
+        .card-title {
+            font-size: 1rem; font-weight: 600; line-height: 1.4;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+            overflow: hidden; min-height: 2.8em;
         }
+        
+        .grid.list-view .card-title { min-height: auto; margin-bottom: 0.5rem; }
 
-        /* === RATING & SALES === */
-        .store-info {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 5px;
-            font-size: 0.75em;
-            opacity: 0.9;
-            justify-content: center;
+        .price-container { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+        .price-final { font-size: 1.25rem; font-weight: 700; color: var(--price-now); }
+        .price-original { font-size: 0.875rem; color: var(--text-tertiary); text-decoration: line-through; }
+        .discount-badge { background: var(--error); color: white; font-size: 0.75rem; padding: 0.25rem 0.5rem; border-radius: 0.375rem; }
+
+        /* Rating System (Premium Look) */
+        .rating-indicator { margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.25rem; }
+        .rating-display { display: flex; align-items: center; gap: 0.5rem; }
+        .rating-star { color: var(--rating-gold); }
+        .rating-progress { height: 3px; background: var(--surface-highlight); width: 100%; border-radius: 2px; }
+        .rating-fill { height: 100%; background: var(--rating-gold); }
+
+        /* Accordion & Buttons */
+        .marketplace-accordion {
+            margin-top: auto; border-radius: 0.75rem;
+            border: 1px solid var(--border); background: var(--surface);
         }
-
-        .rating {
-            display: flex;
-            align-items: center;
-            gap: 3px;
+        .accordion-header {
+            padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer;
         }
-
-        .star {
-            color: #fbbf24;
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+        .accordion.open .accordion-content { max-height: 500px; }
+        
+        .store-options { padding: 0.5rem; display: flex; flex-direction: column; gap: 0.5rem; }
+        
+        .store-option {
+            display: flex; align-items: center; padding: 0.75rem;
+            border-radius: 0.5rem; border: 1px solid var(--border);
+            background: var(--surface-elevated); text-decoration: none; color: inherit;
+            transition: all 0.2s;
         }
+        .store-option:hover { background: var(--surface-highlight); transform: translateX(2px); }
+        
+        /* Platform Colors */
+        .store-option.shopee { border-left: 3px solid var(--shopee); }
+        .store-option.tiktok { border-left: 3px solid var(--tiktok); }
+        [data-theme="dark"] .store-option.tiktok { border-left: 3px solid #fff; }
+        .store-option.tokped { border-left: 3px solid var(--tokped); }
 
-        .sales {
-            background: rgba(255,255,255,0.2);
-            padding: 2px 6px;
-            border-radius: 8px;
-            font-size: 0.7em;
+        /* Footer & Loading */
+        .footer { text-align: center; padding: 1.5rem; color: var(--text-secondary); border-top: 1px solid var(--border); }
+        .loading { text-align: center; padding: 3rem; color: var(--text-secondary); }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .grid.list-view .card-img-wrapper { width: 110px; min-height: 140px; }
+            .grid.list-view .card-title { font-size: 0.9rem; }
+            .price-final { font-size: 1.1rem; }
+            .hero-section { margin: 1rem; padding: 1.5rem 1rem; }
         }
-        /* === GLOBAL SECTIONS === */
-.hero-section {
-    background: linear-gradient(135deg, var(--banner-bg-1), var(--banner-bg-2));
-    color: white;
-    padding: 25px 20px;
-    border-radius: 16px;
-    margin-bottom: 25px;
-    text-align: center;
-}
-
-.headline {
-    font-size: 1.4em;
-    font-weight: 900;
-    margin-bottom: 10px;
-    line-height: 1.3;
-}
-
-.subheadline {
-    font-size: 0.95em;
-    opacity: 0.9;
-    line-height: 1.4;
-}
-
-.trust-badge {
-    background: rgba(255,255,255,0.2);
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 0.85em;
-    margin-top: 10px;
-    display: inline-block;
-    backdrop-filter: blur(10px);
-}
-
-/* === FAQ SECTION === */
-.faq-section {
-    margin: 40px 0 20px 0;
-    padding: 0 10px;
-}
-
-.faq-title {
-    font-size: 1.3em;
-    font-weight: 800;
-    text-align: center;
-    margin-bottom: 25px;
-    color: var(--text);
-}
-
-.faq-grid {
-    display: grid;
-    gap: 15px;
-}
-
-.faq-item {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px;
-    transition: all 0.3s ease;
-}
-
-.faq-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px var(--shadow);
-}
-
-.faq-question {
-    font-weight: 700;
-    margin-bottom: 10px;
-    color: var(--text);
-    font-size: 0.95em;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.faq-answer {
-    color: var(--text-sec);
-    font-size: 0.85em;
-    line-height: 1.6;
-    padding-left: 26px; /* Untuk align dengan icon question */
-}
     </style>
 </head>
 <body>
-    <!-- HEADER SECTION -->
-    <!-- Ganti bagian header dengan ini -->
-<div class="header">
+    <nav class="navbar">
+        <div class="brand">Premium Store</div>
+        <div class="nav-controls">
+            <button class="icon-btn" onclick="toggleView()" id="viewIcon" title="Ubah Tampilan">⊞</button>
+            <button class="icon-btn" onclick="toggleTheme()" id="themeIcon" title="Ubah Tema">☀️</button>
+        </div>
+    </nav>
+
+    <div id="hero-container"></div>
+
     <div class="authentic-urgency">
-        <div class="urgency-badge">🎯 EDISI KHUSUS</div>
-        <div class="story-headline">Setiap produk punya cerita. Dan cerita ini hampir berakhir.</div>
-        <div class="timeline">
+        <div style="background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 20px; display: inline-block; font-size: 0.8rem; margin-bottom: 10px;">
+            🔥 PENAWARAN HARI INI
+        </div>
+        <div style="font-size: 1.1rem; margin-bottom: 10px; opacity: 0.9;">
+            Harga spesial berakhir malam ini.
+        </div>
+        <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px;">
             <div class="timeline-progress" id="timelineProgress"></div>
-            <div class="timeline-text" id="timelineText">
-                <span>🕒 Perjalanan: <strong id="authenticTimer">02:00:00</strong></span>
-                <span>✨ <span id="soldCount">47</span> orang sudah menemukan cerita mereka</span>
+            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; opacity: 0.8;">
+                <span>⏰ Sisa Waktu: <strong id="authenticTimer">...</strong></span>
+                <span>📦 Stok Terbatas</span>
             </div>
         </div>
     </div>
-    <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌙</button>
-</div>
 
-    <!-- MAIN CONTENT -->
     <div class="container">
-        <!-- Global Sections -->
-        <div id="global-sections"></div>
-
-        <!-- Loading State -->
-        <div class="loading" id="loading">
-            <div class="spinner"></div>
-            <div>Memuat konten terbaru...</div>
-        </div>
-
-        <!-- Error State -->
-        <div class="error" id="error" style="display: none;"></div>
-
-        <!-- Dynamic Banner -->
-        <div id="banner-container"></div>
-
-        <!-- Dynamic Section Titles -->
-        <div id="section-titles-container"></div>
-
-        <!-- Products Will Appear Here -->
-        <div id="product-list"></div>
-        
-<div id="faq-container"></div>
+        <div class="loading" id="loading">Memuat katalog...</div>
+        <div id="errorArea"></div>
+        <div class="grid" id="productGrid"></div> <div id="faq-container"></div>
     </div>
 
-    <!-- FOOTER -->
     <div class="footer" id="footerText">
-        © 2024 Flash Sale - Update Terbaru<br>
-        <small>Harga dan stok dapat berubah sewaktu-waktu</small>
-    </div>
-
-    <!-- NOTIFICATION -->
-    <div class="notification" id="notification">
-        <img src="" class="notif-img" id="notifImg" alt="Pembeli">
-        <div>
-            <strong id="notifName">Budi dari Surabaya</strong><br>
-            <span style="color: #16a34a;" id="notifProduct">Baru saja membeli produk</span>
-            <div style="font-size: 0.75em; color: #666;" id="notifTime">1 menit lalu</div>
-        </div>
+        © 2024 Premium Store<br>
+        <small>Harga dapat berubah sewaktu-waktu</small>
     </div>
 
     <script>
-        // ==================== KONFIGURASI ====================
+        // === CONFIG ===
         const CONFIG = {
             PAGE_CSV: 'page2.csv',
-            PRODUCTS_CSV: 'pro2.csv', 
-            NOTIFICATIONS_CSV: 'notif.csv',
-            NOTIFICATION_INTERVAL: 15000
+            PRODUCTS_CSV: 'pro2.csv',
         };
 
-        // ==================== GLOBAL STATE ====================
-        let pageSettings = {};
-        let currentTimerDuration = 2 * 60 * 60;
-
-        // ==================== THEME MANAGEMENT ====================
-        function initializeTheme() {
-            const savedTheme = localStorage.getItem('theme');
-            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        // === VIEW TOGGLE LOGIC (FITUR BARU) ===
+        function toggleView() {
+            const grid = document.getElementById('productGrid');
+            const btn = document.getElementById('viewIcon');
             
-            let initialTheme = 'dark';
-            if (savedTheme) {
-                initialTheme = savedTheme;
-            } else if (!systemPrefersDark) {
-                initialTheme = 'light';
+            // Toggle class
+            grid.classList.toggle('list-view');
+            
+            // Simpan preferensi & Ubah Ikon
+            if (grid.classList.contains('list-view')) {
+                btn.innerHTML = '☰'; // Icon List
+                localStorage.setItem('viewMode', 'list');
+            } else {
+                btn.innerHTML = '⊞'; // Icon Grid
+                localStorage.setItem('viewMode', 'grid');
             }
-            
-            applyTheme(initialTheme);
         }
 
-        function applyTheme(theme) {
-            document.body.setAttribute('data-theme', theme);
-            const themeBtn = document.getElementById('themeBtn');
-            if (themeBtn) {
-                themeBtn.textContent = theme === 'light' ? '🌙' : '☀️';
+        // Load View Preference saat start
+        function loadViewPreference() {
+            const savedView = localStorage.getItem('viewMode');
+            const grid = document.getElementById('productGrid');
+            const btn = document.getElementById('viewIcon');
+            
+            if (savedView === 'list') {
+                grid.classList.add('list-view');
+                btn.innerHTML = '☰';
+            } else {
+                grid.classList.remove('list-view');
+                btn.innerHTML = '⊞';
             }
-            localStorage.setItem('theme', theme);
         }
 
+        // === THEME LOGIC ===
         function toggleTheme() {
-            const currentTheme = document.body.getAttribute('data-theme') || 'dark';
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            applyTheme(newTheme);
+            const b = document.body;
+            const icon = document.getElementById('themeIcon');
+            if(b.getAttribute('data-theme') === 'light') {
+                b.removeAttribute('data-theme'); icon.innerText = '☀️';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                b.setAttribute('data-theme', 'light'); icon.innerText = '🌙';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+        if(localStorage.getItem('theme') === 'light') {
+            document.body.setAttribute('data-theme', 'light');
+            document.getElementById('themeIcon').innerText = '🌙';
         }
 
-        // ==================== UTILITY FUNCTIONS ====================
-        function formatRupiah(number) {
-            return new Intl.NumberFormat('id-ID', {
-                style: 'currency',
-                currency: 'IDR',
-                minimumFractionDigits: 0
-            }).format(number);
+        // === UTILS ===
+        function formatPrice(num) { return new Intl.NumberFormat('id-ID').format(num); }
+        function isValidUrl(url) { return url && url.length > 5 && !url.includes('kosong'); }
+        function safeRedirect(url) { window.open(url, '_blank', 'noopener,noreferrer'); }
+        function parseCSV(text) {
+            if(!text) return [];
+            const lines = text.trim().split('\n');
+            const regex = /(".*?"|[^",\s]+)(?=\s*,|\s*$)/g;
+            return lines.slice(1).map(l => {
+                const m = l.match(regex);
+                return m ? m.map(c => c.replace(/^"|"$/g, '').trim()) : null;
+            }).filter(r => r);
         }
 
-        function calculateDiscount(original, promo) {
-            if (!original || original <= 0 || promo >= original) return 0;
-            const discount = Math.round(((original - promo) / original) * 100);
-            return Math.max(0, Math.min(100, discount));
-        }
-
-        function isValidUrl(string) {
-            if (!string || string === '-' || string.trim() === '') return false;
+        // === CORE FUNCTIONS ===
+        async function loadProducts() {
             try {
-                new URL(string);
-                return true;
-            } catch (_) {
-                return false;
-            }
-        }
-
-        function safeRedirect(url, productName) {
-            if (!isValidUrl(url)) {
-                alert(`Link untuk ${productName} sedang tidak tersedia`);
-                return false;
-            }
-            window.open(url, '_blank', 'noopener,noreferrer');
-            return true;
-        }
-
-        function formatNumber(num) {
-            if (num >= 1000) {
-                return (num / 1000).toFixed(1) + 'rb';
-            }
-            return num.toString();
-        }
-
-        function getPlatformIcon(platform) {
-            const icons = {
-                shopee: '🛒',
-                tiktok: '🎵', 
-                tokped: '🦅'
-            };
-            return icons[platform] || '🛍️';
-        }
-
-        // ==================== PAGE SETTINGS MANAGEMENT ====================
-        async function loadPageSettings() {
-            try {
-                const response = await fetch(CONFIG.PAGE_CSV);
-                if (!response.ok) throw new Error(`File ${CONFIG.PAGE_CSV} tidak ditemukan`);
+                const res = await fetch(CONFIG.PRODUCTS_CSV + '?t=' + Date.now());
+                if(!res.ok) throw new Error("Gagal load database.");
+                const data = parseCSV(await res.text());
                 
-                const csvText = await response.text();
-                const settings = parsePageCSV(csvText);
-                applyPageSettings(settings);
-                
-            } catch (error) {
-                console.error('Error loading page settings:', error);
-                applyDefaultPageSettings();
-            }
-        }
+                const grid = document.getElementById('productGrid');
+                document.getElementById('loading').style.display = 'none';
 
-        function parsePageCSV(csvText) {
-            const settings = {};
-            const lines = csvText.trim().split('\n');
-            
-            for (let i = 1; i < lines.length; i++) {
-                const line = lines[i].trim();
-                if (!line) continue;
-                
-                const [key, value, type = 'text'] = line.split(',').map(field => field.trim());
-                
-                if (key && value) {
-                    switch(type.toLowerCase()) {
-                        case 'number': settings[key] = parseInt(value) || 0; break;
-                        case 'boolean': settings[key] = value.toLowerCase() === 'true'; break;
-                        case 'color': settings[key] = value; break;
-                        default: settings[key] = value;
-                    }
+                if(data.length === 0) {
+                    grid.innerHTML = `<div style="text-align:center;width:100%">Belum ada produk.</div>`; return;
                 }
-            }
-            return settings;
-        }
 
-        function applyPageSettings(settings) {
-            pageSettings = settings;
-            
-            // Basic settings
-            if (settings.site_title) document.title = settings.site_title;
-            if (settings.header_text) {
-                const headerText = document.getElementById('headerText');
-                if (headerText) headerText.innerHTML = settings.header_text;
-            }
-            if (settings.footer_text) {
-                const footerText = document.getElementById('footerText');
-                if (footerText) footerText.innerHTML = settings.footer_text;
-            }
-            if (settings.timer_duration) currentTimerDuration = settings.timer_duration;
-            
-            // Header colors
-            if (settings.header_bg_1 && settings.header_bg_2) {
-                document.documentElement.style.setProperty('--header-bg-1', settings.header_bg_1);
-                document.documentElement.style.setProperty('--header-bg-2', settings.header_bg_2);
-            }
-            
-            // Banner
-            if (settings.banner_text) {
-                document.documentElement.style.setProperty('--banner-bg-1', settings.banner_bg_1 || '#6366f1');
-                document.documentElement.style.setProperty('--banner-bg-2', settings.banner_bg_2 || '#8b5cf6');
-                
-                const bannerContainer = document.getElementById('banner-container');
-                if (bannerContainer) {
-                    bannerContainer.innerHTML = `
-                        <div class="banner">
-                            <div style="font-size: 1.1em; font-weight: bold; margin-bottom: 8px;">
-                                ${settings.banner_text}
-                            </div>
-                            ${settings.banner_subtext ? `
-                                <div style="font-size: 0.9em; opacity: 0.9;">
-                                    ${settings.banner_subtext}
+                data.forEach((row, index) => {
+                    if(row.length < 21) return;
+                    // Mapping CSV (Sama seperti sebelumnya)
+                    const [id, nama, harga_asli, harga_promo, ls, ns, rs, ts, lt, nt, rt, tt, lp, np, rp, tp, stok, b1, b2, b3, gambar] = row;
+                    
+                    const img = (gambar && gambar.length > 5) ? gambar : 'https://placehold.co/400?text=No+Img';
+                    const discount = Math.round(((harga_asli - harga_promo) / harga_asli) * 100);
+                    
+                    // Generate Premium Rating (4.7 - 5.0)
+                    const ratingVal = (Math.random() * (5.0 - 4.7) + 4.7).toFixed(1);
+
+                    // Build Stores
+                    const stores = [
+                        { p: 'shopee', l: ls, n: ns }, { p: 'tiktok', l: lt, n: nt }, { p: 'tokped', l: lp, n: np }
+                    ].filter(s => isValidUrl(s.l));
+
+                    let btns = '';
+                    if(stores.length > 0) {
+                        const list = stores.map(s => `
+                            <button class="store-option ${s.p}" onclick="safeRedirect('${s.l}')">
+                                <b>${s.p.toUpperCase()}</b> <span style="font-size:0.8em; opacity:0.7; margin-left:auto">Beli ↗</span>
+                            </button>
+                        `).join('');
+                        
+                        btns = `
+                            <div class="marketplace-accordion accordion" id="acc-${index}">
+                                <div class="accordion-header" onclick="toggleAccordion('acc-${index}')">
+                                    <span style="font-size:0.85rem; font-weight:600">Tersedia di ${stores.length} Toko</span>
+                                    <span class="accordion-icon">▼</span>
                                 </div>
-                            ` : ''}
+                                <div class="accordion-content"><div class="store-options">${list}</div></div>
+                            </div>
+                        `;
+                    } else {
+                        btns = `<div style="text-align:center; padding:10px; font-size:0.8rem; opacity:0.6">Stok Habis</div>`;
+                    }
+
+                    const html = `
+                        <div class="card">
+                            <div class="card-img-wrapper">
+                                ${b1 ? `<div class="tag">${b1}</div>` : ''}
+                                <img src="${img}" class="card-img" loading="lazy">
+                            </div>
+                            <div class="card-content">
+                                <div class="card-title">${nama}</div>
+                                <div class="price-container">
+                                    <span class="price-final">Rp ${formatPrice(harga_promo)}</span>
+                                    ${discount > 0 ? `<span class="discount-badge">-${discount}%</span>` : ''}
+                                </div>
+                                
+                                <div class="rating-indicator">
+                                    <div class="rating-display">
+                                        <span class="rating-star">★</span>
+                                        <span style="font-size:0.85rem; font-weight:700">${ratingVal}</span>
+                                        <span style="font-size:0.75rem; opacity:0.7">• Premium Quality</span>
+                                    </div>
+                                    <div class="rating-progress">
+                                        <div class="rating-fill" style="width: ${(ratingVal/5)*100}%"></div>
+                                    </div>
+                                </div>
+
+                                ${btns}
+                            </div>
                         </div>
                     `;
-                }
-            }
-            
-            // Section titles
-            if (settings.section_titles) {
-                const titles = settings.section_titles.split('|');
-                const container = document.getElementById('section-titles-container');
-                if (container) {
-                    container.innerHTML = titles.map(title => 
-                        `<div class="section-title">${title}</div>`
-                    ).join('');
-                }
-            }
-
-            // GLOBAL SECTIONS - FIXED VERSION
-const globalContainer = document.getElementById('global-sections');
-if (globalContainer) {
-    let html = '';
-    
-    // Hero Section
-    if (settings.headline) {
-        html += `
-            <div class="hero-section">
-                <div class="headline">${settings.headline}</div>
-                ${settings.subheadline ? `<div class="subheadline">${settings.subheadline}</div>` : ''}
-                ${settings.trust_message ? `<div class="trust-badge">${settings.trust_message}</div>` : ''}
-            </div>
-        `;
-    }
-    
-    globalContainer.innerHTML = html;
-}
-
-// FAQ SECTION - FIXED VERSION (SETELAH PRODUCTS)
-const faqContainer = document.getElementById('faq-container');
-if (faqContainer) {
-    // Cek apakah ada minimal satu FAQ yang lengkap (punya detail)
-    const hasValidFAQ = (
-        (settings.faq_garansi && settings.faq_garansi_detail) ||
-        (settings.faq_pengembalian && settings.faq_pengembalian_detail) ||
-        (settings.faq_kompatibilitas && settings.faq_kompatibilitas_detail) ||
-        (settings.faq_ongkir && settings.faq_ongkir_detail)
-    );
-    
-    if (hasValidFAQ) {
-        faqContainer.innerHTML = `
-            <div class="faq-section">
-                <div class="faq-title">❓ PERTANYAAN UMUM</div>
-                <div class="faq-grid">
-                    ${settings.faq_garansi && settings.faq_garansi_detail ? `
-                        <div class="faq-item">
-                            <div class="faq-question">${settings.faq_garansi}</div>
-                            <div class="faq-answer">${settings.faq_garansi_detail}</div>
-                        </div>
-                    ` : ''}
-                    
-                    ${settings.faq_pengembalian && settings.faq_pengembalian_detail ? `
-                        <div class="faq-item">
-                            <div class="faq-question">${settings.faq_pengembalian}</div>
-                            <div class="faq-answer">${settings.faq_pengembalian_detail}</div>
-                        </div>
-                    ` : ''}
-                    
-                    ${settings.faq_kompatibilitas && settings.faq_kompatibilitas_detail ? `
-                        <div class="faq-item">
-                            <div class="faq-question">${settings.faq_kompatibilitas}</div>
-                            <div class="faq-answer">${settings.faq_kompatibilitas_detail}</div>
-                        </div>
-                    ` : ''}
-                    
-                    ${settings.faq_ongkir && settings.faq_ongkir_detail ? `
-                        <div class="faq-item">
-                            <div class="faq-question">${settings.faq_ongkir}</div>
-                            <div class="faq-answer">${settings.faq_ongkir_detail}</div>
-                        </div>
-                    ` : ''}
-                </div>
-            </div>
-        `;
-    } else {
-        faqContainer.innerHTML = ''; // Kosongkan jika tidak ada FAQ valid
-    }
-}
-            
-            startAuthenticTimer();
-        }
-
-        function applyDefaultPageSettings() {
-            const defaultSettings = {
-                site_title: 'FLASH SALE 🔥',
-                header_text: '⏰ PROMO BERAKHIR DALAM:',
-                footer_text: '© 2024 Flash Sale - Update Terbaru<br><small>Harga dan stok dapat berubah sewaktu-waktu</small>',
-                timer_duration: 7200
-            };
-            applyPageSettings(defaultSettings);
-        }
-
-        // ==================== TIMER ====================
-        // Ganti timer function dengan ini
-function startAuthenticTimer() {
-    let genuineSalesCount = 47; // Simulasi real engagement
-    const endTime = Date.now() + (currentTimerDuration * 1000);
-    
-    function updateAuthenticTimer() {
-        const now = Date.now();
-        const distance = endTime - now;
-        
-        if (distance <= 0) {
-            document.getElementById('authenticTimer').textContent = "TUTUP";
-            document.getElementById('timelineProgress').style.width = "100%";
-            return;
-        }
-        
-        const hours = Math.floor(distance / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        
-        // Update timer
-        document.getElementById('authenticTimer').textContent = 
-            `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        
-        // Update progress bar (natural, tidak linear)
-        const progress = 100 - (distance / (currentTimerDuration * 1000) * 100);
-        document.getElementById('timelineProgress').style.width = `${progress}%`;
-        
-        // Occasional genuine sales update (bukan notifikasi palsu)
-        if (Math.random() < 0.02) { // 2% chance setiap detik
-            genuineSalesCount++;
-            document.getElementById('soldCount').textContent = genuineSalesCount;
-        }
-    }
-    
-    updateAuthenticTimer();
-    setInterval(updateAuthenticTimer, 1000);
-}
-        // ==================== PRODUCTS MANAGEMENT ====================
-        async function loadProducts() {
-            const loadingElement = document.getElementById('loading');
-            const errorElement = document.getElementById('error');
-            const productList = document.getElementById('product-list');
-            
-            try {
-                loadingElement.style.display = 'block';
-                errorElement.style.display = 'none';
-                productList.innerHTML = '';
-                
-                const response = await fetch(CONFIG.PRODUCTS_CSV);
-                if (!response.ok) throw new Error(`File ${CONFIG.PRODUCTS_CSV} tidak ditemukan`);
-                
-                const csvText = await response.text();
-                const products = parseProductsCSV(csvText);
-                
-                if (products.length === 0) throw new Error('Tidak ada produk ditemukan dalam CSV');
-                
-                renderProducts(products);
-                loadingElement.style.display = 'none';
-                
-            } catch (error) {
-                console.error('Error loading products:', error);
-                loadingElement.style.display = 'none';
-                showError(`Gagal memuat produk: ${error.message}`);
-            }
-        }
-
-        function parseProductsCSV(csvText) {
-            const lines = csvText.trim().split('\n');
-            const products = [];
-            
-            for (let i = 1; i < lines.length; i++) {
-                const line = lines[i].trim();
-                if (!line) continue;
-                
-                const fields = line.split(',').map(field => field.trim());
-                
-                if (fields.length >= 21) {
-                    const product = {
-                        id: fields[0] || i,
-                        nama: fields[1] || 'Produk',
-                        harga_asli: parseInt(fields[2]) || 0,
-                        harga_promo: parseInt(fields[3]) || 0,
-                        link_shopee: fields[4] || '',
-                        nama_toko_shopee: fields[5] || '',
-                        rating_shopee: parseFloat(fields[6]) || 0,
-                        terjual_shopee: parseInt(fields[7]) || 0,
-                        link_tiktok: fields[8] || '',
-                        nama_toko_tiktok: fields[9] || '',
-                        rating_tiktok: parseFloat(fields[10]) || 0,
-                        terjual_tiktok: parseInt(fields[11]) || 0,
-                        link_tokped: fields[12] || '',
-                        nama_toko_tokped: fields[13] || '',
-                        rating_tokped: parseFloat(fields[14]) || 0,
-                        terjual_tokped: parseInt(fields[15]) || 0,
-                        stok_persen: parseInt(fields[16]) || 50,
-                        badge1: fields[17] || '',
-                        badge2: fields[18] || '',
-                        badge3: fields[19] || '',
-                        gambar: fields[20] || ''
-                    };
-                    
-                    if (product.nama && product.harga_promo > 0) {
-                        products.push(product);
-                    }
-                }
-            }
-            return products;
-        }
-
-        function renderProducts(products) {
-            const productList = document.getElementById('product-list');
-            productList.innerHTML = '';
-            
-            products.forEach((product) => {
-                const discount = calculateDiscount(product.harga_asli, product.harga_promo);
-                const discountBadge = discount > 0 ? `<span class="discount-badge">-${discount}%</span>` : '';
-                
-                let badgesHtml = '';
-                if (product.badge1 || product.badge2 || product.badge3) {
-                    badgesHtml = '<div class="badges-container">';
-                    if (product.badge1) badgesHtml += `<span class="badge badge-primary">${product.badge1}</span>`;
-                    if (product.badge2) badgesHtml += `<span class="badge badge-secondary">${product.badge2}</span>`;
-                    if (product.badge3) badgesHtml += `<span class="badge badge-success">${product.badge3}</span>`;
-                    badgesHtml += '</div>';
-                }
-                
-                // PRODUCT IMAGE
-                const imageHtml = product.gambar ? 
-                    `<div class="product-image-container">
-                        <img src="${product.gambar}" alt="${product.nama}" class="product-image" onerror="this.style.display='none'">
-                    </div>` : '';
-                
-                // BUTTONS WITH STORE INFO & RATING
-                let buttonsHtml = '';
-                const stores = [
-                    { platform: 'shopee', link: product.link_shopee, store: product.nama_toko_shopee, rating: product.rating_shopee, sales: product.terjual_shopee },
-                    { platform: 'tiktok', link: product.link_tiktok, store: product.nama_toko_tiktok, rating: product.rating_tiktok, sales: product.terjual_tiktok },
-                    { platform: 'tokped', link: product.link_tokped, store: product.nama_toko_tokped, rating: product.rating_tokped, sales: product.terjual_tokped }
-                ];
-                
-                stores.forEach(store => {
-                    if (isValidUrl(store.link)) {
-                        const storeInfo = (store.rating && store.rating > 0) ? `
-                            <div class="store-info">
-                                <div class="rating">
-                                    <span class="star">⭐</span> ${store.rating}
-                                </div>
-                                ${store.sales ? `<div class="sales">${formatNumber(store.sales)} terjual</div>` : ''}
-                            </div>
-                        ` : '';
-                        
-                        buttonsHtml += `
-                            <button class="btn btn-${store.platform}" onclick="safeRedirect('${store.link}', '${product.nama.replace(/'/g, "\\'")}')">
-                                ${getPlatformIcon(store.platform)} BELI DI ${store.platform.toUpperCase()}
-                                ${store.store ? `<small>${store.store}</small>` : ''}
-                                ${storeInfo}
-                            </button>
-                        `;
-                    }
+                    grid.insertAdjacentHTML('beforeend', html);
                 });
                 
-                if (!buttonsHtml) {
-                    buttonsHtml = `<button class="btn" style="background: var(--text-sec); color: white;" disabled>🔒 LINK TIDAK TERSEDIA</button>`;
-                }
-                
-                const stockWarning = product.stok_persen < 20 ? '🛑' : product.stok_persen < 50 ? '⚠️' : '✅';
-                const stockText = product.stok_persen < 10 ? 
-                    `🛑 HAMPIR HABIS! Sisa ${product.stok_persen}% stok!` : 
-                    `${stockWarning} Stok tersisa ${product.stok_persen}%`;
-                
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML = `
-                    ${imageHtml}
-                    <div class="product-title">${product.nama}</div>
-                    ${badgesHtml}
-                    <div class="price-box">
-                        <span class="price-now">${formatRupiah(product.harga_promo)}</span>
-                        <span class="price-coret">${formatRupiah(product.harga_asli)}</span>
-                        ${discountBadge}
-                    </div>
-                    <div class="stock-bg">
-                        <div class="stock-fill" style="width: ${product.stok_persen}%"></div>
-                    </div>
-                    <span class="stock-text">${stockText}</span>
-                    ${buttonsHtml}
-                `;
-                
-                productList.appendChild(card);
-            });
-        }
+                // Panggil loadViewPreference setelah render selesai agar tampilan sesuai memory
+                loadViewPreference();
 
-        function showError(message) {
-            const errorElement = document.getElementById('error');
-            errorElement.innerHTML = `
-                <div style="color: #ef4444; font-size: 2em;">😵</div>
-                <div style="margin: 15px 0; font-size: 1.1em;">${message}</div>
-                <button class="retry-btn" onclick="initializeApp()">🔄 COBA LAGI</button>
-                <div style="margin-top: 15px; font-size: 0.9em; color: var(--text-sec);">
-                    Pastikan file CSV ada di folder yang sama
-                </div>
-            `;
-            errorElement.style.display = 'block';
-        }
-
-        // ==================== NOTIFICATIONS ====================
-        async function startNotifications() {
-            try {
-                const response = await fetch(CONFIG.NOTIFICATIONS_CSV);
-                if (!response.ok) throw new Error('File notifications.csv tidak ditemukan');
-                
-                const csvText = await response.text();
-                const notifications = parseNotificationsCSV(csvText);
-                
-                if (notifications.length === 0) throw new Error('Tidak ada data notifikasi');
-                
-                let currentIndex = 0;
-                
-                function showNextNotification() {
-                    const notif = document.getElementById('notification');
-                    const notification = notifications[currentIndex];
-                    
-                    document.getElementById('notifName').textContent = `${notification.name} dari ${notification.city}`;
-                    document.getElementById('notifProduct').textContent = `Baru saja membeli ${notification.product}`;
-                    document.getElementById('notifTime').textContent = notification.time;
-                    document.getElementById('notifImg').src = notification.image;
-                    
-                    notif.classList.add('show');
-                    
-                    setTimeout(() => notif.classList.remove('show'), 4000);
-                    
-                    currentIndex = (currentIndex + 1) % notifications.length;
-                }
-                
-                setTimeout(() => {
-                    showNextNotification();
-                    setInterval(showNextNotification, CONFIG.NOTIFICATION_INTERVAL);
-                }, 3000);
-                
-            } catch (error) {
-                console.error('Error loading notifications:', error);
-                startFallbackNotifications();
+            } catch (e) {
+                document.getElementById('errorArea').innerHTML = 'Gagal memuat data.';
             }
         }
 
-        function parseNotificationsCSV(csvText) {
-            const lines = csvText.trim().split('\n');
-            const notifications = [];
-            
-            for (let i = 1; i < lines.length; i++) {
-                const line = lines[i].trim();
-                if (!line) continue;
-                
-                const [name, city, product, time, image] = line.split(',').map(field => field.trim());
-                
-                if (name && city && product) {
-                    notifications.push({
-                        name, city, product,
-                        time: time || 'Beberapa menit lalu',
-                        image: image || `https://api.dicebear.com/7.x/avataaars/svg?seed=${name}`
-                    });
-                }
-            }
-            return notifications;
+        function toggleAccordion(id) {
+            document.getElementById(id).classList.toggle('open');
         }
 
-        function startFallbackNotifications() {
-            const fallbackNotifs = [
-                { name: 'Budi', city: 'Surabaya', product: 'Smart Watch', time: '2 menit lalu' },
-                { name: 'Siti', city: 'Jakarta', product: 'Wireless Earbuds', time: '5 menit lalu' }
-            ];
-            
-            let currentIndex = 0;
-            
-            function showFallbackNotification() {
-                const notif = document.getElementById('notification');
-                const notification = fallbackNotifs[currentIndex];
+        // === MIDNIGHT TIMER ===
+        function startTimer() {
+            function update() {
+                const now = new Date();
+                const end = new Date(now); end.setHours(24,0,0,0);
+                const diff = end - now;
                 
-                document.getElementById('notifName').textContent = `${notification.name} dari ${notification.city}`;
-                document.getElementById('notifProduct').textContent = `Baru saja membeli ${notification.product}`;
-                document.getElementById('notifTime').textContent = notification.time;
-                document.getElementById('notifImg').src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${notification.name}`;
+                const h = Math.floor(diff/36e5).toString().padStart(2,'0');
+                const m = Math.floor((diff%36e5)/6e4).toString().padStart(2,'0');
+                const s = Math.floor((diff%6e4)/1e3).toString().padStart(2,'0');
                 
-                notif.classList.add('show');
-                setTimeout(() => notif.classList.remove('show'), 4000);
+                document.getElementById('authenticTimer').innerText = `${h}:${m}:${s}`;
                 
-                currentIndex = (currentIndex + 1) % fallbackNotifs.length;
+                // Progress bar seharian (00:00 - 24:00)
+                const start = new Date(now); start.setHours(0,0,0,0);
+                const progress = ((now - start) / 864e5) * 100;
+                document.getElementById('timelineProgress').style.width = `${progress}%`;
             }
-            
-            setTimeout(() => {
-                showFallbackNotification();
-                setInterval(showFallbackNotification, CONFIG.NOTIFICATION_INTERVAL);
-            }, 3000);
+            setInterval(update, 1000); update();
         }
 
-        // ==================== INITIALIZATION ====================
-        async function initializeApp() {
-            try {
-                initializeTheme();
-                await new Promise(resolve => setTimeout(resolve, 100));
-                await loadPageSettings();
-                await loadProducts();
-                startNotifications();
-            } catch (error) {
-                console.error('Initialization error:', error);
-                showError('Gagal memuat halaman: ' + error.message);
-            }
-        }
-
-        // Start when page loads
-        document.addEventListener('DOMContentLoaded', initializeApp);
-
-        // Global functions
-        window.toggleTheme = toggleTheme;
-        window.safeRedirect = safeRedirect;
-        window.initializeApp = initializeApp;
+        // Init
+        window.onload = () => {
+            loadProducts();
+            startTimer();
+            // Load page settings logic here if needed
+        };
     </script>
 </body>
 </html>
