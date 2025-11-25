@@ -34,7 +34,7 @@
             --tokped: #03AC0E;
             --tokped-light: rgba(3, 172, 14, 0.1);
 
-            /* Dynamic Headers (Default) */
+            /* Dynamic Headers */
             --header-bg-1: #dc2626;
             --header-bg-2: #b91c1c;
             --banner-bg-1: #6366f1;
@@ -70,115 +70,114 @@
             min-height: 100vh;
         }
 
-        /* === NAVBAR & CONTROLS === */
+        /* === NAVBAR === */
         .navbar {
-            position: sticky; 
-            top: 0; 
-            z-index: 1000;
+            position: sticky; top: 0; z-index: 1000;
             background: rgba(15, 15, 15, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
             padding: 0.8rem 1.25rem;
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center;
+            display: flex; justify-content: space-between; align-items: center;
         }
-
         [data-theme="light"] .navbar { background: rgba(255, 255, 255, 0.85); }
-
+        
         .brand {
-            font-weight: 800; 
-            font-size: 1.25rem;
+            font-weight: 800; font-size: 1.25rem;
             background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
         .nav-controls { display: flex; gap: 0.75rem; }
-
         .icon-btn {
-            width: 2.5rem; height: 2.5rem; 
-            border-radius: 0.75rem;
-            background: var(--surface-elevated); 
-            border: 1px solid var(--border);
-            color: var(--text-primary); 
-            cursor: pointer;
-            display: grid; place-items: center; 
-            font-size: 1.125rem;
+            width: 2.5rem; height: 2.5rem; border-radius: 0.75rem;
+            background: var(--surface-elevated); border: 1px solid var(--border);
+            color: var(--text-primary); cursor: pointer;
+            display: grid; place-items: center; font-size: 1.125rem;
             transition: all 0.2s ease;
         }
         .icon-btn:hover { background: var(--surface-highlight); transform: scale(1.05); }
 
-        /* === HERO SECTION (DYNAMIC) === */
+        /* === HERO & TIMER === */
         .hero-section {
             background: linear-gradient(135deg, var(--banner-bg-1), var(--banner-bg-2));
-            color: white;
-            padding: 2rem 1.5rem;
-            border-radius: 1rem;
-            margin: 1.5rem auto;
-            max-width: 1200px;
-            text-align: center;
+            color: white; padding: 2rem 1.5rem; border-radius: 1rem;
+            margin: 1.5rem auto; max-width: 1200px; text-align: center;
         }
         .headline { font-size: 1.75rem; font-weight: 900; margin-bottom: 0.5rem; line-height: 1.2; }
         .subheadline { font-size: 1rem; opacity: 0.9; margin-bottom: 1rem; }
         .trust-badge { background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; display: inline-block; }
 
-        /* === TIMER === */
         .authentic-urgency {
-            text-align: center; padding: 1.5rem;
-            background: var(--surface-elevated);
-            border-radius: 1rem; margin: 1.5rem auto;
-            max-width: 1200px;
+            text-align: center; padding: 1.5rem; background: var(--surface-elevated);
+            border-radius: 1rem; margin: 1.5rem auto; max-width: 1200px;
             border: 1px solid var(--border);
         }
         .timeline-progress {
-            height: 4px;
-            background: linear-gradient(90deg, #4ade80, #f59e0b, #ef4444);
-            border-radius: 2px;
-            margin: 10px 0;
-            width: 0%; transition: width 1s ease;
+            height: 4px; background: linear-gradient(90deg, #4ade80, #f59e0b, #ef4444);
+            border-radius: 2px; margin: 10px 0; width: 0%; transition: width 1s ease;
         }
 
-        /* === LAYOUT GRID/LIST === */
+        /* === LAYOUT SYSTEM (FIXED RESPONSIVE) === */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 1.25rem 2rem 1.25rem; }
 
+        /* Default Grid View */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1.25rem;
         }
 
-        /* LIST VIEW OVERRIDES */
-        .grid.list-view { grid-template-columns: 1fr !important; gap: 1rem; }
-        
-        .grid.list-view .card { 
+        /* === LIST VIEW REVISED (RESPONSIVE FIX) === */
+        .grid.list-view {
+            display: flex; flex-direction: column; gap: 1rem;
+        }
+
+        .grid.list-view .card {
             flex-direction: row; 
-            align-items: flex-start; /* Changed from stretch to prevent huge height */
+            min-height: 160px; /* Tinggi minimum agar tidak gepeng */
+            height: auto;
         }
-        
-        .grid.list-view .card-img-wrapper { 
-            width: 130px; 
-            padding-top: 0; 
-            height: 180px; /* Fixed height for consistency */
-            flex-shrink: 0;
-        }
-        
-        .grid.list-view .card-img { position: relative; height: 100%; }
-        .grid.list-view .card-content { padding: 1rem; width: 100%; }
 
-        /* === PRODUCT CARD === */
-        .card {
-            background: var(--surface-elevated);
-            border: 1px solid var(--border);
-            border-radius: 1rem;
-            overflow: hidden;
-            transition: all 0.3s ease;
+        .grid.list-view .card-img-wrapper {
+            width: 35%; /* Menggunakan persen agar responsif */
+            max-width: 180px; /* Batas maksimum di desktop */
+            min-width: 120px; /* Batas minimum di HP */
+            padding-top: 0; /* Reset aspect ratio hack */
+            height: auto;
             position: relative;
-            display: flex; flex-direction: column;
+        }
+
+        .grid.list-view .card-img {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%; object-fit: cover;
+        }
+
+        .grid.list-view .card-content {
+            width: 65%; /* Sisa lebar */
+            padding: 1rem;
+            justify-content: center;
+        }
+
+        /* Modifikasi Elemen di List View */
+        .grid.list-view .card-title {
+            -webkit-line-clamp: 2; margin-bottom: 0.5rem; min-height: auto;
+            font-size: 1rem;
+        }
+        .grid.list-view .rating-indicator { display: none; } /* Sembunyikan rating visual di list view */
+        .grid.list-view .price-final { font-size: 1.1rem; }
+        .grid.list-view .store-options { padding: 0; gap: 4px; }
+        .grid.list-view .store-option { padding: 0.5rem; }
+        .grid.list-view .platform-icon { width: 24px; height: 24px; font-size: 1rem; margin-right: 8px; }
+
+        /* === COMPONENT STYLES === */
+        .card {
+            background: var(--surface-elevated); border: 1px solid var(--border);
+            border-radius: 1rem; overflow: hidden; transition: all 0.3s ease;
+            position: relative; display: flex; flex-direction: column;
         }
         .card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
 
+        /* Grid View Image (Square Ratio) */
         .card-img-wrapper { width: 100%; padding-top: 100%; position: relative; background: var(--surface-highlight); overflow: hidden; }
         .card-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
         .card:hover .card-img { transform: scale(1.05); }
@@ -186,9 +185,8 @@
         .tag {
             position: absolute; top: 0.75rem; left: 0.75rem;
             background: rgba(0, 0, 0, 0.85); color: white;
-            font-size: 0.7rem; font-weight: 700;
-            padding: 4px 8px; border-radius: 6px;
-            z-index: 2; text-transform: uppercase;
+            font-size: 0.7rem; font-weight: 700; padding: 4px 8px; 
+            border-radius: 6px; z-index: 2; text-transform: uppercase;
         }
 
         .card-content { padding: 1.25rem; flex-grow: 1; display: flex; flex-direction: column; gap: 0.5rem; }
@@ -196,16 +194,14 @@
         .card-title {
             font-size: 1rem; font-weight: 600; line-height: 1.4;
             display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-            overflow: hidden; min-height: 2.8em;
+            overflow: hidden; min-height: 2.8em; color: var(--text-primary);
         }
-        .grid.list-view .card-title { min-height: auto; margin-bottom: 0.25rem; -webkit-line-clamp: 1; }
 
         .price-container { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
         .price-final { font-size: 1.2rem; font-weight: 700; color: var(--price-now); }
         .price-original { font-size: 0.85rem; color: var(--text-tertiary); text-decoration: line-through; }
         .discount-badge { background: var(--error); color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
 
-        /* === PREMIUM RATING & BADGES === */
         .rating-indicator { display: flex; flex-direction: column; gap: 4px; margin-top: 4px; }
         .rating-display { display: flex; align-items: center; gap: 6px; }
         .rating-star { color: var(--rating-gold); font-size: 0.9rem; }
@@ -218,11 +214,8 @@
         .badge-primary { background: linear-gradient(135deg, #f59e0b, #d97706); color: black; }
         .badge-secondary { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; }
 
-        /* === DETAILED STORE BUTTONS (RESTORED & OPTIMIZED) === */
-        .marketplace-accordion {
-            margin-top: auto; border-radius: 0.75rem;
-            border: 1px solid var(--border); background: var(--surface);
-        }
+        /* Accordion */
+        .marketplace-accordion { margin-top: auto; border-radius: 0.75rem; border: 1px solid var(--border); background: var(--surface); }
         .accordion-header {
             padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer;
             background: var(--surface-highlight); font-size: 0.85rem; font-weight: 600;
@@ -230,47 +223,30 @@
         .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
         .accordion.open .accordion-content { max-height: 600px; }
         
-        .store-options { padding: 0.5rem; display: flex; flex-direction: column; gap: 6px; }
-
-        /* The Detailed Button Style */
         .store-option {
             display: flex; align-items: center; padding: 0.75rem;
             border-radius: 0.5rem; border: 1px solid var(--border);
             background: var(--surface-elevated); text-decoration: none; color: inherit;
-            transition: all 0.2s; position: relative; overflow: hidden;
+            transition: all 0.2s; position: relative; margin-top: 6px;
         }
         .store-option:hover { background: var(--surface-highlight); transform: translateX(2px); border-color: var(--border-light); }
-
-        .platform-icon { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 6px; margin-right: 10px; font-size: 1.2rem; flex-shrink: 0; }
         
-        .store-info { flex: 1; min-width: 0; }
+        .platform-icon { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 6px; margin-right: 10px; font-size: 1.2rem; flex-shrink: 0; }
         .store-name { font-size: 0.85rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 6px; }
         .store-meta { font-size: 0.7rem; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; margin-top: 2px; }
-        .store-rating { display: flex; align-items: center; gap: 2px; }
-        
-        /* Platform Specifics */
+
+        /* Platform Colors */
         .store-option.shopee { border-left: 3px solid var(--shopee); }
         .store-option.shopee .platform-icon { background: var(--shopee-light); color: var(--shopee); }
-        
         .store-option.tiktok { border-left: 3px solid var(--tiktok); }
         .store-option.tiktok .platform-icon { background: var(--tiktok-light); color: var(--text-primary); }
-        
         .store-option.tokped { border-left: 3px solid var(--tokped); }
         .store-option.tokped .platform-icon { background: var(--tokped-light); color: var(--tokped); }
-
-        /* === FAQ & FOOTER === */
-        .faq-section { margin-top: 3rem; }
-        .faq-title { font-size: 1.5rem; font-weight: 800; text-align: center; margin-bottom: 1.5rem; }
-        .faq-grid { display: grid; gap: 1rem; }
-        .faq-item { background: var(--surface-elevated); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.25rem; }
-        .faq-q { font-weight: 700; margin-bottom: 0.5rem; color: var(--text-primary); }
-        .faq-a { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; }
 
         .footer { text-align: center; padding: 2rem; color: var(--text-secondary); border-top: 1px solid var(--border); margin-top: 2rem; }
         .loading { text-align: center; padding: 3rem; color: var(--text-secondary); }
         .error-msg { background: rgba(239,68,68,0.1); color: var(--error); padding: 1rem; border-radius: 8px; text-align: center; margin: 1rem; }
 
-        /* === NOTIFICATION === */
         .notification {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(150%);
             background: rgba(255, 255, 255, 0.95); color: #000;
@@ -281,11 +257,14 @@
         .notification.show { transform: translateX(-50%) translateY(0); }
         .notif-img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
 
+        /* Media Query for Mobile List View */
         @media (max-width: 480px) {
-            .grid.list-view .card-img-wrapper { width: 100px; height: 160px; }
-            .store-option { padding: 0.5rem; }
-            .platform-icon { width: 28px; height: 28px; font-size: 1rem; }
-            .store-name { font-size: 0.8rem; }
+            .grid.list-view .card { min-height: 140px; }
+            .grid.list-view .card-img-wrapper { min-width: 110px; }
+            .grid.list-view .card-content { padding: 0.75rem; }
+            .grid.list-view .card-title { font-size: 0.9rem; }
+            .hero-section { padding: 1.5rem 1rem; }
+            .headline { font-size: 1.5rem; }
         }
     </style>
 </head>
@@ -340,7 +319,7 @@
     </div>
 
     <script>
-        // === CONFIGURATION ===
+        // === CONFIG ===
         const CONFIG = {
             PAGE_CSV: 'page2.csv',
             PRODUCTS_CSV: 'pro2.csv',
@@ -386,20 +365,40 @@
             document.getElementById('themeIcon').innerText = '🌙';
         }
 
-        // === HELPERS ===
+        // === UTILS ===
         const fmt = new Intl.NumberFormat('id-ID');
         function formatPrice(n) { return fmt.format(n); }
         function isValidUrl(u) { return u && u.length > 5 && !u.includes('kosong'); }
         function safeRedirect(url) { window.open(url, '_blank', 'noopener,noreferrer'); }
         
+        // --- FIXED CSV PARSER (Manual Loop for Safety) ---
+        // Ini memperbaiki bug nama produk terpotong (hanya 1 kata)
         function parseCSV(text) {
-            if(!text) return [];
+            const rows = [];
             const lines = text.trim().split('\n');
-            const regex = /(".*?"|[^",\s]+)(?=\s*,|\s*$)/g;
-            return lines.slice(1).map(l => {
-                const m = l.match(regex);
-                return m ? m.map(c => c.replace(/^"|"$/g, '').trim()) : null;
-            }).filter(r => r);
+            if (lines.length < 2) return [];
+
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i];
+                const row = [];
+                let currentVal = '';
+                let inQuotes = false;
+                
+                for (let j = 0; j < line.length; j++) {
+                    const char = line[j];
+                    if (char === '"') {
+                        inQuotes = !inQuotes;
+                    } else if (char === ',' && !inQuotes) {
+                        row.push(currentVal.trim().replace(/^"|"$/g, ''));
+                        currentVal = '';
+                    } else {
+                        currentVal += char;
+                    }
+                }
+                row.push(currentVal.trim().replace(/^"|"$/g, ''));
+                rows.push(row);
+            }
+            return rows;
         }
 
         function getPlatformIcon(p) {
@@ -409,26 +408,36 @@
             return '🔗';
         }
 
-        // === PAGE SETTINGS (RESTORED FULLY) ===
+        // Generate Pseudo-Random Rating based on ID (Agar rating tidak berubah saat refresh)
+        function getPseudoRandom(seed) {
+            let x = Math.sin(seed++) * 10000;
+            return x - Math.floor(x);
+        }
+
+        // === LOAD SETTINGS ===
         async function loadPageSettings() {
             try {
                 const res = await fetch(CONFIG.PAGE_CSV);
-                if(!res.ok) throw new Error("Gagal load page settings");
+                if(!res.ok) throw new Error("Settings Error");
                 const text = await res.text();
                 
-                // Simple Parser for Key,Value
                 const lines = text.trim().split('\n');
                 const settings = {};
+                
+                // Parse CSV settings manually
                 lines.slice(1).forEach(l => {
-                    const [k, v] = l.split(',').map(s => s.trim());
-                    if(k && v) settings[k] = v;
+                    const parts = l.split(','); // Simple split for settings is okay usually
+                    if(parts.length >= 2) {
+                        const k = parts[0].trim();
+                        // Re-join value in case it had commas
+                        const v = parts.slice(1).join(',').trim(); 
+                        if(k && v) settings[k] = v;
+                    }
                 });
 
-                // Apply Settings
                 if(settings.site_title) document.title = settings.site_title;
                 if(settings.footer_text) document.getElementById('footerText').innerHTML = settings.footer_text;
                 
-                // Dynamic Hero
                 if(settings.headline) {
                     document.getElementById('hero-container').innerHTML = `
                         <div class="hero-section">
@@ -439,16 +448,17 @@
                     `;
                 }
 
-                // Dynamic FAQ
+                // FAQ Construction
                 const faqContainer = document.getElementById('faq-container');
                 let faqHTML = '';
-                
-                // Cek manual karena struktur CSV flat
                 if(settings.faq_garansi && settings.faq_garansi_detail) {
                     faqHTML += `<div class="faq-item"><div class="faq-q">${settings.faq_garansi}</div><div class="faq-a">${settings.faq_garansi_detail}</div></div>`;
                 }
                 if(settings.faq_pengembalian && settings.faq_pengembalian_detail) {
                     faqHTML += `<div class="faq-item"><div class="faq-q">${settings.faq_pengembalian}</div><div class="faq-a">${settings.faq_pengembalian_detail}</div></div>`;
+                }
+                if(settings.faq_ongkir && settings.faq_ongkir_detail) {
+                    faqHTML += `<div class="faq-item"><div class="faq-q">${settings.faq_ongkir}</div><div class="faq-a">${settings.faq_ongkir_detail}</div></div>`;
                 }
 
                 if(faqHTML) {
@@ -461,16 +471,15 @@
                 }
 
             } catch (e) {
-                console.warn("Page settings fallback used");
                 document.getElementById('hero-container').innerHTML = `<div class="hero-section"><div class="headline">Premium Store</div></div>`;
             }
         }
 
-        // === LOAD PRODUCTS (WITH DETAILED BUTTONS) ===
+        // === LOAD PRODUCTS ===
         async function loadProducts() {
             try {
                 const res = await fetch(CONFIG.PRODUCTS_CSV + '?t=' + Date.now());
-                if(!res.ok) throw new Error("Database error");
+                if(!res.ok) throw new Error("Data Error");
                 const data = parseCSV(await res.text());
                 
                 const grid = document.getElementById('productGrid');
@@ -482,16 +491,15 @@
 
                 data.forEach((row, index) => {
                     if(row.length < 21) return;
-                    // Mapping Manual (Sesuai CSV Anda)
                     const [id, nama, harga_asli, harga_promo, ls, ns, rs, ts, lt, nt, rt, tt, lp, np, rp, tp, stok, b1, b2, b3, gambar] = row;
                     
                     const img = (gambar && gambar.length > 5) ? gambar : 'https://placehold.co/400?text=No+Img';
                     const discount = Math.round(((harga_asli - harga_promo) / harga_asli) * 100);
                     
-                    // Rating Generate
-                    const ratingVal = (Math.random() * (5.0 - 4.7) + 4.7).toFixed(1);
+                    // Consistent Random Rating
+                    const seed = parseInt(id) || index;
+                    const ratingVal = (getPseudoRandom(seed) * (5.0 - 4.6) + 4.6).toFixed(1);
 
-                    // Build Stores (Detailed)
                     const stores = [
                         { p: 'shopee', l: ls, n: ns, r: rs, s: ts },
                         { p: 'tiktok', l: lt, n: nt, r: rt, s: tt },
@@ -532,7 +540,6 @@
                         accordionHtml = `<div style="text-align:center; padding:10px; opacity:0.6; font-size:0.8rem">Stok Habis</div>`;
                     }
 
-                    // Badges
                     let badgeHtml = '';
                     if(b1) badgeHtml += `<span class="badge badge-primary">${b1}</span>`;
                     if(b2) badgeHtml += `<span class="badge badge-secondary">${b2}</span>`;
@@ -575,15 +582,15 @@
 
             } catch (e) {
                 console.error(e);
-                document.getElementById('errorArea').innerHTML = `<div class="error-msg">Gagal memuat produk. Cek file pro2.csv</div>`;
+                document.getElementById('errorArea').innerHTML = `<div class="error-msg">Gagal memuat produk.</div>`;
             }
         }
 
-        // === NOTIFICATIONS (RESTORED) ===
+        // === NOTIFICATIONS ===
         async function startNotifications() {
             try {
                 const res = await fetch(CONFIG.NOTIF_CSV);
-                if(!res.ok) return; // Silent fail if no notif file
+                if(!res.ok) return;
                 const data = parseCSV(await res.text());
                 if(data.length === 0) return;
 
@@ -608,8 +615,7 @@
                     show();
                     setInterval(show, 15000);
                 }, 5000);
-
-            } catch(e) { console.log("No notifs"); }
+            } catch(e) {}
         }
 
         // === MIDNIGHT TIMER ===
@@ -628,7 +634,6 @@
             setInterval(update, 1000); update();
         }
 
-        // === INIT ===
         window.onload = () => {
             loadPageSettings();
             loadProducts();
