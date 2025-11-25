@@ -34,7 +34,7 @@
             --tokped: #03AC0E;
             --tokped-light: rgba(3, 172, 14, 0.1);
 
-            /* Dynamic Headers */
+            /* Dynamic Headers (Default) */
             --header-bg-1: #dc2626;
             --header-bg-2: #b91c1c;
             --banner-bg-1: #6366f1;
@@ -117,59 +117,39 @@
             border-radius: 2px; margin: 10px 0; width: 0%; transition: width 1s ease;
         }
 
-        /* === LAYOUT SYSTEM (FIXED RESPONSIVE) === */
+        /* === LAYOUT SYSTEM === */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 1.25rem 2rem 1.25rem; }
 
-        /* Default Grid View */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             gap: 1.25rem;
         }
 
-        /* === LIST VIEW REVISED (RESPONSIVE FIX) === */
-        .grid.list-view {
-            display: flex; flex-direction: column; gap: 1rem;
+        /* LIST VIEW FIXED */
+        .grid.list-view { display: flex; flex-direction: column; gap: 1rem; }
+        
+        .grid.list-view .card { 
+            flex-direction: row; min-height: 160px; height: auto; 
         }
-
-        .grid.list-view .card {
-            flex-direction: row; 
-            min-height: 160px; /* Tinggi minimum agar tidak gepeng */
-            height: auto;
-        }
-
+        
         .grid.list-view .card-img-wrapper {
-            width: 35%; /* Menggunakan persen agar responsif */
-            max-width: 180px; /* Batas maksimum di desktop */
-            min-width: 120px; /* Batas minimum di HP */
-            padding-top: 0; /* Reset aspect ratio hack */
-            height: auto;
-            position: relative;
+            width: 35%; max-width: 180px; min-width: 120px;
+            padding-top: 0; height: auto; flex-shrink: 0; position: relative;
         }
-
-        .grid.list-view .card-img {
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%; object-fit: cover;
-        }
-
-        .grid.list-view .card-content {
-            width: 65%; /* Sisa lebar */
-            padding: 1rem;
-            justify-content: center;
-        }
-
-        /* Modifikasi Elemen di List View */
-        .grid.list-view .card-title {
-            -webkit-line-clamp: 2; margin-bottom: 0.5rem; min-height: auto;
-            font-size: 1rem;
-        }
-        .grid.list-view .rating-indicator { display: none; } /* Sembunyikan rating visual di list view */
+        
+        .grid.list-view .card-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+        .grid.list-view .card-content { width: 65%; padding: 1rem; justify-content: center; }
+        
+        /* List View specific adjustments */
+        .grid.list-view .card-title { -webkit-line-clamp: 2; margin-bottom: 0.5rem; min-height: auto; font-size: 1rem; }
+        .grid.list-view .rating-indicator { display: none; }
         .grid.list-view .price-final { font-size: 1.1rem; }
         .grid.list-view .store-options { padding: 0; gap: 4px; }
         .grid.list-view .store-option { padding: 0.5rem; }
         .grid.list-view .platform-icon { width: 24px; height: 24px; font-size: 1rem; margin-right: 8px; }
 
-        /* === COMPONENT STYLES === */
+        /* === CARD COMPONENT === */
         .card {
             background: var(--surface-elevated); border: 1px solid var(--border);
             border-radius: 1rem; overflow: hidden; transition: all 0.3s ease;
@@ -177,7 +157,6 @@
         }
         .card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
 
-        /* Grid View Image (Square Ratio) */
         .card-img-wrapper { width: 100%; padding-top: 100%; position: relative; background: var(--surface-highlight); overflow: hidden; }
         .card-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
         .card:hover .card-img { transform: scale(1.05); }
@@ -214,7 +193,7 @@
         .badge-primary { background: linear-gradient(135deg, #f59e0b, #d97706); color: black; }
         .badge-secondary { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; }
 
-        /* Accordion */
+        /* Accordion & Stores */
         .marketplace-accordion { margin-top: auto; border-radius: 0.75rem; border: 1px solid var(--border); background: var(--surface); }
         .accordion-header {
             padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer;
@@ -223,11 +202,13 @@
         .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
         .accordion.open .accordion-content { max-height: 600px; }
         
+        .store-options { padding: 0.5rem; display: flex; flex-direction: column; gap: 6px; }
+        
         .store-option {
             display: flex; align-items: center; padding: 0.75rem;
             border-radius: 0.5rem; border: 1px solid var(--border);
             background: var(--surface-elevated); text-decoration: none; color: inherit;
-            transition: all 0.2s; position: relative; margin-top: 6px;
+            transition: all 0.2s; position: relative;
         }
         .store-option:hover { background: var(--surface-highlight); transform: translateX(2px); border-color: var(--border-light); }
         
@@ -235,13 +216,32 @@
         .store-name { font-size: 0.85rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 6px; }
         .store-meta { font-size: 0.7rem; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; margin-top: 2px; }
 
-        /* Platform Colors */
         .store-option.shopee { border-left: 3px solid var(--shopee); }
         .store-option.shopee .platform-icon { background: var(--shopee-light); color: var(--shopee); }
         .store-option.tiktok { border-left: 3px solid var(--tiktok); }
         .store-option.tiktok .platform-icon { background: var(--tiktok-light); color: var(--text-primary); }
         .store-option.tokped { border-left: 3px solid var(--tokped); }
         .store-option.tokped .platform-icon { background: var(--tokped-light); color: var(--tokped); }
+
+        /* === FAQ SECTION (RESTORED & FIXED) === */
+        .faq-section { margin-top: 3rem; padding: 0 0.5rem; }
+        .faq-title { font-size: 1.5rem; font-weight: 800; text-align: center; margin-bottom: 1.5rem; color: var(--text-primary); }
+        .faq-grid { display: grid; gap: 1rem; }
+        
+        .faq-item {
+            background: var(--surface-elevated);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            transition: all 0.3s ease;
+        }
+        .faq-item:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+        
+        .faq-question {
+            font-weight: 700; margin-bottom: 0.75rem; color: var(--text-primary);
+            font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem;
+        }
+        .faq-answer { color: var(--text-secondary); font-size: 0.85rem; line-height: 1.6; }
 
         .footer { text-align: center; padding: 2rem; color: var(--text-secondary); border-top: 1px solid var(--border); margin-top: 2rem; }
         .loading { text-align: center; padding: 3rem; color: var(--text-secondary); }
@@ -257,7 +257,6 @@
         .notification.show { transform: translateX(-50%) translateY(0); }
         .notif-img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
 
-        /* Media Query for Mobile List View */
         @media (max-width: 480px) {
             .grid.list-view .card { min-height: 140px; }
             .grid.list-view .card-img-wrapper { min-width: 110px; }
@@ -302,12 +301,11 @@
         </div>
         <div id="errorArea"></div>
         <div class="grid" id="productGrid"></div>
+        
         <div id="faq-container"></div>
     </div>
 
-    <div class="footer" id="footerText">
-        © 2024 Premium Store
-    </div>
+    <div class="footer" id="footerText">© 2024 Premium Store</div>
 
     <div class="notification" id="notification">
         <img src="" class="notif-img" id="notifImg">
@@ -319,12 +317,7 @@
     </div>
 
     <script>
-        // === CONFIG ===
-        const CONFIG = {
-            PAGE_CSV: 'page2.csv',
-            PRODUCTS_CSV: 'pro2.csv',
-            NOTIF_CSV: 'notif.csv'
-        };
+        const CONFIG = { PAGE_CSV: 'page2.csv', PRODUCTS_CSV: 'pro2.csv', NOTIF_CSV: 'notif.csv' };
 
         // === VIEW TOGGLE ===
         function toggleView() {
@@ -333,14 +326,11 @@
             grid.classList.toggle('list-view');
             
             if (grid.classList.contains('list-view')) {
-                btn.innerHTML = '☰';
-                localStorage.setItem('viewMode', 'list');
+                btn.innerHTML = '☰'; localStorage.setItem('viewMode', 'list');
             } else {
-                btn.innerHTML = '⊞';
-                localStorage.setItem('viewMode', 'grid');
+                btn.innerHTML = '⊞'; localStorage.setItem('viewMode', 'grid');
             }
         }
-
         function loadViewPreference() {
             if (localStorage.getItem('viewMode') === 'list') {
                 document.getElementById('productGrid').classList.add('list-view');
@@ -353,11 +343,9 @@
             const b = document.body;
             const icon = document.getElementById('themeIcon');
             if(b.getAttribute('data-theme') === 'light') {
-                b.removeAttribute('data-theme'); icon.innerText = '☀️';
-                localStorage.setItem('theme', 'dark');
+                b.removeAttribute('data-theme'); icon.innerText = '☀️'; localStorage.setItem('theme', 'dark');
             } else {
-                b.setAttribute('data-theme', 'light'); icon.innerText = '🌙';
-                localStorage.setItem('theme', 'light');
+                b.setAttribute('data-theme', 'light'); icon.innerText = '🌙'; localStorage.setItem('theme', 'light');
             }
         }
         if(localStorage.getItem('theme') === 'light') {
@@ -365,14 +353,13 @@
             document.getElementById('themeIcon').innerText = '🌙';
         }
 
-        // === UTILS ===
+        // === UTILS & PARSER (FIXED) ===
         const fmt = new Intl.NumberFormat('id-ID');
         function formatPrice(n) { return fmt.format(n); }
         function isValidUrl(u) { return u && u.length > 5 && !u.includes('kosong'); }
         function safeRedirect(url) { window.open(url, '_blank', 'noopener,noreferrer'); }
         
-        // --- FIXED CSV PARSER (Manual Loop for Safety) ---
-        // Ini memperbaiki bug nama produk terpotong (hanya 1 kata)
+        // ROBUST CSV PARSER
         function parseCSV(text) {
             const rows = [];
             const lines = text.trim().split('\n');
@@ -386,14 +373,11 @@
                 
                 for (let j = 0; j < line.length; j++) {
                     const char = line[j];
-                    if (char === '"') {
-                        inQuotes = !inQuotes;
-                    } else if (char === ',' && !inQuotes) {
+                    if (char === '"') { inQuotes = !inQuotes; }
+                    else if (char === ',' && !inQuotes) {
                         row.push(currentVal.trim().replace(/^"|"$/g, ''));
                         currentVal = '';
-                    } else {
-                        currentVal += char;
-                    }
+                    } else { currentVal += char; }
                 }
                 row.push(currentVal.trim().replace(/^"|"$/g, ''));
                 rows.push(row);
@@ -407,32 +391,21 @@
             if(p === 'tokped') return '🛒';
             return '🔗';
         }
+        function getPseudoRandom(seed) { let x = Math.sin(seed++) * 10000; return x - Math.floor(x); }
 
-        // Generate Pseudo-Random Rating based on ID (Agar rating tidak berubah saat refresh)
-        function getPseudoRandom(seed) {
-            let x = Math.sin(seed++) * 10000;
-            return x - Math.floor(x);
-        }
-
-        // === LOAD SETTINGS ===
+        // === LOAD SETTINGS (FIXED) ===
         async function loadPageSettings() {
             try {
                 const res = await fetch(CONFIG.PAGE_CSV);
                 if(!res.ok) throw new Error("Settings Error");
-                const text = await res.text();
                 
-                const lines = text.trim().split('\n');
+                // Use the ROBUST parser here too!
+                const data = parseCSV(await res.text());
                 const settings = {};
                 
-                // Parse CSV settings manually
-                lines.slice(1).forEach(l => {
-                    const parts = l.split(','); // Simple split for settings is okay usually
-                    if(parts.length >= 2) {
-                        const k = parts[0].trim();
-                        // Re-join value in case it had commas
-                        const v = parts.slice(1).join(',').trim(); 
-                        if(k && v) settings[k] = v;
-                    }
+                // Convert rows back to object
+                data.forEach(row => {
+                    if(row.length >= 2) settings[row[0]] = row[1];
                 });
 
                 if(settings.site_title) document.title = settings.site_title;
@@ -448,17 +421,16 @@
                     `;
                 }
 
-                // FAQ Construction
                 const faqContainer = document.getElementById('faq-container');
                 let faqHTML = '';
                 if(settings.faq_garansi && settings.faq_garansi_detail) {
-                    faqHTML += `<div class="faq-item"><div class="faq-q">${settings.faq_garansi}</div><div class="faq-a">${settings.faq_garansi_detail}</div></div>`;
+                    faqHTML += `<div class="faq-item"><div class="faq-question">❓ ${settings.faq_garansi}</div><div class="faq-answer">${settings.faq_garansi_detail}</div></div>`;
                 }
                 if(settings.faq_pengembalian && settings.faq_pengembalian_detail) {
-                    faqHTML += `<div class="faq-item"><div class="faq-q">${settings.faq_pengembalian}</div><div class="faq-a">${settings.faq_pengembalian_detail}</div></div>`;
+                    faqHTML += `<div class="faq-item"><div class="faq-question">🔄 ${settings.faq_pengembalian}</div><div class="faq-answer">${settings.faq_pengembalian_detail}</div></div>`;
                 }
                 if(settings.faq_ongkir && settings.faq_ongkir_detail) {
-                    faqHTML += `<div class="faq-item"><div class="faq-q">${settings.faq_ongkir}</div><div class="faq-a">${settings.faq_ongkir_detail}</div></div>`;
+                    faqHTML += `<div class="faq-item"><div class="faq-question">🚚 ${settings.faq_ongkir}</div><div class="faq-answer">${settings.faq_ongkir_detail}</div></div>`;
                 }
 
                 if(faqHTML) {
@@ -471,6 +443,7 @@
                 }
 
             } catch (e) {
+                console.error("Page Settings Error:", e);
                 document.getElementById('hero-container').innerHTML = `<div class="hero-section"><div class="headline">Premium Store</div></div>`;
             }
         }
@@ -496,7 +469,6 @@
                     const img = (gambar && gambar.length > 5) ? gambar : 'https://placehold.co/400?text=No+Img';
                     const discount = Math.round(((harga_asli - harga_promo) / harga_asli) * 100);
                     
-                    // Consistent Random Rating
                     const seed = parseInt(id) || index;
                     const ratingVal = (getPseudoRandom(seed) * (5.0 - 4.6) + 4.6).toFixed(1);
 
@@ -577,23 +549,19 @@
                     `;
                     grid.insertAdjacentHTML('beforeend', html);
                 });
-                
                 loadViewPreference();
-
             } catch (e) {
-                console.error(e);
                 document.getElementById('errorArea').innerHTML = `<div class="error-msg">Gagal memuat produk.</div>`;
             }
         }
 
-        // === NOTIFICATIONS ===
+        // === NOTIF ===
         async function startNotifications() {
             try {
                 const res = await fetch(CONFIG.NOTIF_CSV);
                 if(!res.ok) return;
                 const data = parseCSV(await res.text());
                 if(data.length === 0) return;
-
                 let idx = 0;
                 function show() {
                     const row = data[idx];
@@ -603,22 +571,17 @@
                         document.getElementById('notifProduct').innerText = `Membeli ${prod}`;
                         document.getElementById('notifTime').innerText = time;
                         document.getElementById('notifImg').src = img || `https://api.dicebear.com/7.x/avataaars/svg?seed=${name}`;
-                        
                         const el = document.getElementById('notification');
                         el.classList.add('show');
                         setTimeout(() => el.classList.remove('show'), 4000);
                     }
                     idx = (idx + 1) % data.length;
                 }
-                
-                setTimeout(() => {
-                    show();
-                    setInterval(show, 15000);
-                }, 5000);
+                setTimeout(() => { show(); setInterval(show, 15000); }, 5000);
             } catch(e) {}
         }
 
-        // === MIDNIGHT TIMER ===
+        // === TIMER ===
         function startTimer() {
             function update() {
                 const now = new Date();
