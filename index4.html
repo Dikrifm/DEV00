@@ -141,7 +141,6 @@
         .grid.list-view .card-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
         .grid.list-view .card-content { width: 65%; padding: 1rem; justify-content: center; }
         
-        /* List View specific adjustments */
         .grid.list-view .card-title { -webkit-line-clamp: 2; margin-bottom: 0.5rem; min-height: auto; font-size: 1rem; }
         .grid.list-view .rating-indicator { display: none; }
         .grid.list-view .price-final { font-size: 1.1rem; }
@@ -149,7 +148,7 @@
         .grid.list-view .store-option { padding: 0.5rem; }
         .grid.list-view .platform-icon { width: 24px; height: 24px; font-size: 1rem; margin-right: 8px; }
 
-        /* === CARD COMPONENT === */
+        /* === COMPONENT STYLES === */
         .card {
             background: var(--surface-elevated); border: 1px solid var(--border);
             border-radius: 1rem; overflow: hidden; transition: all 0.3s ease;
@@ -193,7 +192,7 @@
         .badge-primary { background: linear-gradient(135deg, #f59e0b, #d97706); color: black; }
         .badge-secondary { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; }
 
-        /* Accordion & Stores */
+        /* Accordion */
         .marketplace-accordion { margin-top: auto; border-radius: 0.75rem; border: 1px solid var(--border); background: var(--surface); }
         .accordion-header {
             padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer;
@@ -223,25 +222,60 @@
         .store-option.tokped { border-left: 3px solid var(--tokped); }
         .store-option.tokped .platform-icon { background: var(--tokped-light); color: var(--tokped); }
 
-        /* === FAQ SECTION (RESTORED & FIXED) === */
-        .faq-section { margin-top: 3rem; padding: 0 0.5rem; }
-        .faq-title { font-size: 1.5rem; font-weight: 800; text-align: center; margin-bottom: 1.5rem; color: var(--text-primary); }
-        .faq-grid { display: grid; gap: 1rem; }
+        /* === FAQ SECTION (RESTORED DESIGN) === */
+        .faq-section { 
+            margin-top: 4rem; 
+            padding: 0 0.5rem; 
+        }
+        
+        .faq-title { 
+            font-size: 1.5rem; 
+            font-weight: 800; 
+            text-align: center; 
+            margin-bottom: 1.5rem; 
+            color: var(--text-primary);
+            letter-spacing: -0.025em;
+        }
+        
+        .faq-grid { 
+            display: grid; 
+            gap: 1rem; 
+            /* Responsive grid for FAQ */
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
         
         .faq-item {
             background: var(--surface-elevated);
             border: 1px solid var(--border);
-            border-radius: 0.75rem;
-            padding: 1.25rem;
+            border-radius: 1rem;
+            padding: 1.5rem;
             transition: all 0.3s ease;
+            height: 100%; /* Equal height */
+            display: flex;
+            flex-direction: column;
         }
-        .faq-item:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+        
+        .faq-item:hover { 
+            transform: translateY(-4px); 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
+            border-color: var(--accent);
+        }
         
         .faq-question {
-            font-weight: 700; margin-bottom: 0.75rem; color: var(--text-primary);
-            font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem;
+            font-weight: 700; 
+            margin-bottom: 0.75rem; 
+            color: var(--text-primary);
+            font-size: 1rem; 
+            display: flex; 
+            align-items: center; 
+            gap: 0.75rem;
         }
-        .faq-answer { color: var(--text-secondary); font-size: 0.85rem; line-height: 1.6; }
+        
+        .faq-answer { 
+            color: var(--text-secondary); 
+            font-size: 0.9rem; 
+            line-height: 1.6; 
+        }
 
         .footer { text-align: center; padding: 2rem; color: var(--text-secondary); border-top: 1px solid var(--border); margin-top: 2rem; }
         .loading { text-align: center; padding: 3rem; color: var(--text-secondary); }
@@ -264,6 +298,8 @@
             .grid.list-view .card-title { font-size: 0.9rem; }
             .hero-section { padding: 1.5rem 1rem; }
             .headline { font-size: 1.5rem; }
+            /* FAQ single column on mobile */
+            .faq-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -353,13 +389,13 @@
             document.getElementById('themeIcon').innerText = '🌙';
         }
 
-        // === UTILS & PARSER (FIXED) ===
+        // === UTILS ===
         const fmt = new Intl.NumberFormat('id-ID');
         function formatPrice(n) { return fmt.format(n); }
         function isValidUrl(u) { return u && u.length > 5 && !u.includes('kosong'); }
         function safeRedirect(url) { window.open(url, '_blank', 'noopener,noreferrer'); }
         
-        // ROBUST CSV PARSER
+        // === PARSER (Manual Logic - Supports Comma & Quotes) ===
         function parseCSV(text) {
             const rows = [];
             const lines = text.trim().split('\n');
@@ -393,17 +429,17 @@
         }
         function getPseudoRandom(seed) { let x = Math.sin(seed++) * 10000; return x - Math.floor(x); }
 
-        // === LOAD SETTINGS (FIXED) ===
+        // === LOAD SETTINGS (FIXED PARSING & RENDERING) ===
         async function loadPageSettings() {
             try {
                 const res = await fetch(CONFIG.PAGE_CSV);
                 if(!res.ok) throw new Error("Settings Error");
                 
-                // Use the ROBUST parser here too!
+                // Gunakan Manual Parser agar teks panjang/berkoma aman
                 const data = parseCSV(await res.text());
                 const settings = {};
                 
-                // Convert rows back to object
+                // Convert ke Object
                 data.forEach(row => {
                     if(row.length >= 2) settings[row[0]] = row[1];
                 });
@@ -421,16 +457,36 @@
                     `;
                 }
 
+                // --- FAQ RENDERING (FIXED) ---
                 const faqContainer = document.getElementById('faq-container');
                 let faqHTML = '';
+                
                 if(settings.faq_garansi && settings.faq_garansi_detail) {
-                    faqHTML += `<div class="faq-item"><div class="faq-question">❓ ${settings.faq_garansi}</div><div class="faq-answer">${settings.faq_garansi_detail}</div></div>`;
+                    faqHTML += `
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span style="color:var(--accent)">❓</span> ${settings.faq_garansi}
+                        </div>
+                        <div class="faq-answer">${settings.faq_garansi_detail}</div>
+                    </div>`;
                 }
                 if(settings.faq_pengembalian && settings.faq_pengembalian_detail) {
-                    faqHTML += `<div class="faq-item"><div class="faq-question">🔄 ${settings.faq_pengembalian}</div><div class="faq-answer">${settings.faq_pengembalian_detail}</div></div>`;
+                    faqHTML += `
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span style="color:var(--warning)">🔄</span> ${settings.faq_pengembalian}
+                        </div>
+                        <div class="faq-answer">${settings.faq_pengembalian_detail}</div>
+                    </div>`;
                 }
                 if(settings.faq_ongkir && settings.faq_ongkir_detail) {
-                    faqHTML += `<div class="faq-item"><div class="faq-question">🚚 ${settings.faq_ongkir}</div><div class="faq-answer">${settings.faq_ongkir_detail}</div></div>`;
+                    faqHTML += `
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span style="color:var(--success)">🚚</span> ${settings.faq_ongkir}
+                        </div>
+                        <div class="faq-answer">${settings.faq_ongkir_detail}</div>
+                    </div>`;
                 }
 
                 if(faqHTML) {
@@ -443,7 +499,6 @@
                 }
 
             } catch (e) {
-                console.error("Page Settings Error:", e);
                 document.getElementById('hero-container').innerHTML = `<div class="hero-section"><div class="headline">Premium Store</div></div>`;
             }
         }
