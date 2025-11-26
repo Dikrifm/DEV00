@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Promo Spesial - Spotec Ryu</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        :root {
+            --bg: #0f0f0f;
+            --surface: #1a1a1a;
+            --border: #333;
+            --text-primary: #f5f5f5;
+            --text-secondary: #a0a0a0;
+            --accent: #ee4d2d; /* Shopee Orange */
+            --accent-glow: rgba(238, 77, 45, 0.4);
+            --success: #10b981;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: var(--bg); color: var(--text-primary); padding-bottom: 80px; }
+
+        /* HEADER TIMER */
+        .sticky-timer {
+            position: sticky; top: 0; z-index: 100;
+            background: linear-gradient(90deg, #b91c1c, #991b1b);
+            color: white; text-align: center; padding: 10px;
+            font-weight: 600; font-size: 0.9rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        #countdown { font-family: monospace; font-size: 1.1em; background: rgba(0,0,0,0.2); padding: 2px 6px; border-radius: 4px; }
+
+        /* CONTAINER */
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+
+        /* PRODUCT CARD */
+        .product-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 16px; overflow: hidden; margin-top: 10px;
+        }
+
+        /* IMAGE AREA */
+        .img-area { position: relative; width: 100%; aspect-ratio: 1/1; background: #222; overflow: hidden;}
+        .img-area img { width: 100%; height: 100%; object-fit: cover; }
+        .badge {
+            position: absolute; top: 12px; left: 12px;
+            background: var(--accent); color: white;
+            padding: 4px 10px; border-radius: 4px;
+            font-size: 0.8rem; font-weight: 800; letter-spacing: 0.5px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        /* INFO AREA */
+        .info-area { padding: 20px; }
+        h1 { font-size: 1.5rem; line-height: 1.3; margin-bottom: 10px; }
+        
+        .price-box { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+        .price-old { text-decoration: line-through; color: var(--text-secondary); }
+        .price-new { font-size: 1.8rem; font-weight: 800; color: var(--success); }
+        .save-tag { background: rgba(16, 185, 129, 0.1); color: var(--success); padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+
+        /* FEATURES */
+        .features { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; border-top: 1px solid var(--border); padding-top: 20px; }
+        .feat-item { display: flex; gap: 10px; font-size: 0.95rem; color: var(--text-secondary); align-items: start; }
+        .feat-item i { color: var(--accent); font-size: 1.2rem; margin-top: 2px; }
+
+        /* CTA BUTTON */
+        .cta-btn {
+            display: flex; justify-content: center; align-items: center; gap: 10px;
+            background: linear-gradient(to right, #ee4d2d, #ff7337);
+            color: white; text-decoration: none;
+            width: 100%; padding: 18px; border-radius: 12px;
+            font-size: 1.1rem; font-weight: 800;
+            box-shadow: 0 0 0 0 var(--accent-glow);
+            animation: pulse 2s infinite;
+            margin-bottom: 10px;
+        }
+        .cta-btn:active { transform: scale(0.98); }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 var(--accent-glow); }
+            70% { box-shadow: 0 0 0 15px rgba(238, 77, 45, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(238, 77, 45, 0); }
+        }
+        
+        .stock-warn { text-align: center; font-size: 0.85rem; color: var(--text-secondary); }
+        .stock-warn b { color: #ef4444; }
+
+        /* FAQ */
+        .faq-section { margin-top: 40px; }
+        .faq-title { font-size: 1.2rem; margin-bottom: 15px; text-align: center; }
+        .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px; padding: 15px; }
+        .faq-q { font-weight: 600; margin-bottom: 6px; color: var(--text-primary); }
+        .faq-a { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; }
+
+        /* NOTIFICATION */
+        .notif {
+            position: fixed; bottom: 20px; left: 20px; right: 20px;
+            background: rgba(30,30,30,0.95); border-left: 4px solid var(--success);
+            padding: 12px; border-radius: 8px; display: flex; align-items: center; gap: 12px;
+            transform: translateY(150%); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(5px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 999;
+            max-width: 350px; margin: 0 auto;
+        }
+        .notif.show { transform: translateY(0); }
+        .notif-img { width: 40px; height: 40px; border-radius: 50%; background: #333; }
+        .notif-info h4 { font-size: 0.85rem; margin-bottom: 2px; }
+        .notif-info p { font-size: 0.75rem; color: var(--text-secondary); }
+
+        /* DESKTOP TWEAKS */
+        @media(min-width: 768px) {
+            .product-card { display: grid; grid-template-columns: 1fr 1fr; }
+            .notif { left: 20px; right: auto; margin: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sticky-timer">
+        🔥 Flash Sale Berakhir: <span id="countdown">00:00:00</span>
+    </div>
+
+    <div class="container">
+        
+        <div class="product-card">
+            <div class="img-area">
+                <span class="badge">DISKON 50%</span>
+<!----------- LINK FOTO PRODUK --------->
+               <!-- <img src="uptown.jpg" alt="Spotec Ryu" id="productImg"> -->
+                <img src="https://drive.google.com/file/d/1IXtcxXPJkuxDHaljx05GCWSRyJAsMk36/view?usp=drivesdk" alt="Spotec Ryu" id="productImg">
+            </div>
+
+            <div class="info-area">
+                <h1>SPOTEC RYU - Sepatu Lari Ringan & Empuk (Original)</h1>
+                
+                <div class="price-box">
+                    <span class="price-old">Rp 329.000</span>
+                    <span class="price-new">Rp 165.000</span>
+                    <span class="save-tag">Hemat 164rb</span>
+                </div>
+
+                <div class="features">
+                    <div class="feat-item">
+                        <i class="ph-fill ph-check-circle"></i>
+                        <span><strong>100% Original Spotec.</strong> Garansi uang kembali jika barang palsu.</span>
+                    </div>
+                    <div class="feat-item">
+                        <i class="ph-fill ph-feather"></i>
+                        <span><strong>Teknologi Ultralight.</strong> Ringan banget, lari jauh kaki gak pegal.</span>
+                    </div>
+                    <div class="feat-item">
+                        <i class="ph-fill ph-waves"></i>
+                        <span><strong>Sol Empuk (Cloud Foam).</strong> Meredam benturan di lutut & tumit.</span>
+                    </div>
+                    <div class="feat-item">
+                        <i class="ph-fill ph-package"></i>
+                        <span><strong>Pengiriman Aman.</strong> Double box gratis + Bubble wrap tebal.</span>
+                    </div>
+                </div>
+
+                <a href="https://s.shopee.co.id/8V1PeGRvTv" class="cta-btn">
+                    <i class="ph-fill ph-shopping-cart"></i> AMBIL PROMO DI SHOPEE
+                </a>
+                
+                <p class="stock-warn">⚠️ Sisa stok promo: <b>14 pasang</b> lagi!</p>
+            </div>
+        </div>
+
+        <div class="faq-section">
+            <h3 class="faq-title">Pertanyaan Sering Diajukan</h3>
+            <div class="faq-item">
+                <div class="faq-q">Apakah ukurannya standar?</div>
+                <div class="faq-a">Ya, menggunakan ukuran lokal Indonesia. Namun jika kaki Anda tipe lebar (wide), kami sarankan naik 1 ukuran (Upsize).</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Apakah bisa COD (Bayar di Tempat)?</div>
+                <div class="faq-a">Bisa banget! Silakan klik tombol di atas, lalu pilih metode pembayaran COD saat checkout di aplikasi Shopee.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Kapan barang dikirim?</div>
+                <div class="faq-a">Pesanan sebelum jam 15.00 WIB akan dikirim di hari yang sama. Pengiriman dari Jakarta/Bandung.</div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; color: #555; font-size: 0.8rem;">
+            &copy; 2024 Spotec Authorised Partner.
+        </div>
+
+    </div>
+
+    <div class="notif" id="notifPopup">
+        <img src="https://placehold.co/40" class="notif-img" id="notifAvatar">
+        <div class="notif-info">
+            <h4 id="notifName">Budi Santoso</h4>
+            <p>Baru saja membeli Spotec Ryu!</p>
+        </div>
+    </div>
+
+    <script>
+        // === KONFIGURASI SEDERHANA ===
+        // Tidak perlu edit script ini kecuali mau ubah nama orang di notifikasi
+        const fomoData = [
+            { name: "Budi (Jakarta)", seed: "budi" },
+            { name: "Sari (Bandung)", seed: "sari" },
+            { name: "Rizky (Surabaya)", seed: "rizky" },
+            { name: "Dewi (Medan)", seed: "dewi" },
+            { name: "Andi (Makassar)", seed: "andi" },
+            { name: "Fajar (Jogja)", seed: "fajar" }
+        ];
+
+        // 1. Logic Timer Mundur
+        function startTimer() {
+            const el = document.getElementById('countdown');
+            let h = 4, m = 59, s = 59; // Mulai dari 4 jam
+            
+            setInterval(() => {
+                s--;
+                if (s < 0) { s = 59; m--; }
+                if (m < 0) { m = 59; h--; }
+                if (h < 0) { h = 4; m = 59; s = 59; } // Reset loop
+
+                const pad = (n) => n.toString().padStart(2, '0');
+                el.innerText = `${pad(h)}:${pad(m)}:${pad(s)}`;
+            }, 1000);
+        }
+
+        // 2. Logic Notifikasi Social Proof
+        function startSocialProof() {
+            const el = document.getElementById('notifPopup');
+            const img = document.getElementById('notifAvatar');
+            const nameEl = document.getElementById('notifName');
+
+            const showNotif = () => {
+                const random = fomoData[Math.floor(Math.random() * fomoData.length)];
+                
+                // Set Data
+                nameEl.innerText = random.name;
+                img.src = `https://api.dicebear.com/7.x/initials/svg?seed=${random.seed}&backgroundColor=ee4d2d`;
+                
+                // Animasi Masuk
+                el.classList.add('show');
+                
+                // Animasi Keluar setelah 4 detik
+                setTimeout(() => {
+                    el.classList.remove('show');
+                }, 4000);
+            };
+
+            // Muncul pertama kali setelah 3 detik, lalu ulang setiap 15 detik
+            setTimeout(() => {
+                showNotif();
+                setInterval(showNotif, 15000);
+            }, 3000);
+        }
+
+        // Jalankan saat load
+        document.addEventListener('DOMContentLoaded', () => {
+            startTimer();
+            startSocialProof();
+        });
+        
+        
+    <script>
+    // === KONFIGURASI ===
+    const fomoData = [
+        { name: "Budi (Jakarta)", seed: "budi" },
+        { name: "Sari (Bandung)", seed: "sari" },
+        { name: "Rizky (Surabaya)", seed: "rizky" },
+        { name: "Dewi (Medan)", seed: "dewi" },
+        { name: "Andi (Makassar)", seed: "andi" },
+        { name: "Fajar (Jogja)", seed: "fajar" }
+    ];
+
+    document.addEventListener('DOMContentLoaded', () => {
+        startTimer();
+        startSocialProof();
+        initPersistentStock(); // <--- Fungsi baru dipanggil di sini
+    });
+
+    // 1. LOGIC STOK PERSISTEN (LocalStorage)
+    function initPersistentStock() {
+        const STORAGE_KEY = 'spotec_user_stock'; // Kunci penyimpanan di browser
+        const stockEl = document.getElementById('dynamicStock');
+        
+        // Cek apakah user ini sudah punya 'jatah' stok sebelumnya
+        let savedStock = localStorage.getItem(STORAGE_KEY);
+
+        if (!savedStock) {
+            // JIKA PENGUNJUNG BARU:
+            // Generate angka acak antara 3 sampai 9 (Stok menipis = Urgensi Tinggi)
+            savedStock = Math.floor(Math.random() * (9 - 3 + 1)) + 3;
+            
+            // Simpan ke memori browser
+            localStorage.setItem(STORAGE_KEY, savedStock);
+        }
+
+        // Tampilkan angka yang konsisten
+        stockEl.innerText = savedStock;
+        
+        // Opsional: Beri warna merah jika stok di bawah 5
+        if (savedStock <= 5) {
+            stockEl.style.color = '#ef4444';
+            stockEl.style.fontWeight = '900';
+        }
+    }
+
+    // 2. LOGIC TIMER MUNDUR
+    function startTimer() {
+        const el = document.getElementById('countdown');
+        // Cek apakah ada waktu tersimpan, jika tidak set 4 jam dari sekarang
+        let endTime = localStorage.getItem('spotec_timer_end');
+        
+        if (!endTime || new Date().getTime() > endTime) {
+            // Set timer 4 jam ke depan
+            endTime = new Date().getTime() + (4 * 60 * 60 * 1000);
+            localStorage.setItem('spotec_timer_end', endTime);
+        }
+
+        setInterval(() => {
+            const now = new Date().getTime();
+            const distance = endTime - now;
+
+            if (distance < 0) {
+                // Jika waktu habis, reset lagi biar looping (Abadi)
+                endTime = new Date().getTime() + (4 * 60 * 60 * 1000);
+                localStorage.setItem('spotec_timer_end', endTime);
+                return;
+            }
+
+            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((distance % (1000 * 60)) / 1000);
+
+            const pad = (n) => n.toString().padStart(2, '0');
+            el.innerText = `${pad(h)}:${pad(m)}:${pad(s)}`;
+        }, 1000);
+    }
+
+    // 3. LOGIC SOCIAL PROOF
+    function startSocialProof() {
+        const el = document.getElementById('notifPopup');
+        const img = document.getElementById('notifAvatar');
+        const nameEl = document.getElementById('notifName');
+
+        const showNotif = () => {
+            const random = fomoData[Math.floor(Math.random() * fomoData.length)];
+            nameEl.innerText = random.name;
+            img.src = `https://api.dicebear.com/7.x/initials/svg?seed=${random.seed}&backgroundColor=ee4d2d`;
+            
+            el.classList.add('show');
+            setTimeout(() => { el.classList.remove('show'); }, 4000);
+        };
+
+        setTimeout(() => {
+            showNotif();
+            setInterval(showNotif, 20000); // Muncul tiap 20 detik (jangan terlalu sering, mengganggu)
+        }, 3000);
+    }
+</script>
+
+
+
+    </script>
+</body>
+</html>
