@@ -9,6 +9,7 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
     <style>
+        /* === 1. DEFINISI VARIABEL WARNA (DARK MODE DEFAULT) === */
         :root {
             --bg: #0f0f0f;
             --surface: #1a1a1a;
@@ -18,20 +19,48 @@
             --accent: #ee4d2d; /* Shopee Orange */
             --accent-glow: rgba(238, 77, 45, 0.4);
             --success: #10b981;
+            --timer-bg: linear-gradient(90deg, #b91c1c, #991b1b);
+            --btn-theme-bg: rgba(255, 255, 255, 0.1);
+            --shadow: rgba(0,0,0,0.5);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        /* === 2. OVERRIDE LIGHT MODE === */
+        [data-theme="light"] {
+            --bg: #f3f4f6;
+            --surface: #ffffff;
+            --border: #e5e7eb;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --accent: #ea580c;
+            --accent-glow: rgba(234, 88, 12, 0.2);
+            --timer-bg: linear-gradient(90deg, #dc2626, #ef4444);
+            --btn-theme-bg: rgba(0, 0, 0, 0.05);
+            --shadow: rgba(0,0,0,0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; transition: background 0.3s ease, color 0.3s ease; }
         body { background: var(--bg); color: var(--text-primary); padding-bottom: 80px; }
 
         /* HEADER TIMER */
         .sticky-timer {
             position: sticky; top: 0; z-index: 100;
-            background: linear-gradient(90deg, #b91c1c, #991b1b);
+            background: var(--timer-bg);
             color: white; text-align: center; padding: 10px;
             font-weight: 600; font-size: 0.9rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 20px var(--shadow);
         }
         #countdown { font-family: monospace; font-size: 1.1em; background: rgba(0,0,0,0.2); padding: 2px 6px; border-radius: 4px; }
+
+        /* TOMBOL THEME FLOAT */
+        .theme-toggle-btn {
+            position: fixed; top: 60px; right: 20px; z-index: 90;
+            width: 40px; height: 40px; border-radius: 50%;
+            background: var(--surface); border: 1px solid var(--border);
+            color: var(--text-primary); cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 15px var(--shadow);
+            font-size: 1.2rem;
+        }
 
         /* CONTAINER */
         .container { max-width: 800px; margin: 0 auto; padding: 20px; }
@@ -40,6 +69,7 @@
         .product-card {
             background: var(--surface); border: 1px solid var(--border);
             border-radius: 16px; overflow: hidden; margin-top: 10px;
+            box-shadow: 0 10px 30px var(--shadow);
         }
 
         /* IMAGE AREA */
@@ -55,7 +85,7 @@
 
         /* INFO AREA */
         .info-area { padding: 20px; }
-        h1 { font-size: 1.5rem; line-height: 1.3; margin-bottom: 10px; }
+        h1 { font-size: 1.5rem; line-height: 1.3; margin-bottom: 10px; color: var(--text-primary); }
         
         .price-box { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
         .price-old { text-decoration: line-through; color: var(--text-secondary); }
@@ -90,7 +120,7 @@
 
         /* FAQ */
         .faq-section { margin-top: 40px; }
-        .faq-title { font-size: 1.2rem; margin-bottom: 15px; text-align: center; }
+        .faq-title { font-size: 1.2rem; margin-bottom: 15px; text-align: center; color: var(--text-primary); }
         .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px; padding: 15px; }
         .faq-q { font-weight: 600; margin-bottom: 6px; color: var(--text-primary); }
         .faq-a { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; }
@@ -98,21 +128,22 @@
         /* NOTIFICATION */
         .notif {
             position: fixed; bottom: 20px; left: 20px; right: 20px;
-            background: rgba(30,30,30,0.95); border-left: 4px solid var(--success);
+            background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--success);
             padding: 12px; border-radius: 8px; display: flex; align-items: center; gap: 12px;
             transform: translateY(150%); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            backdrop-filter: blur(5px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 999;
+            box-shadow: 0 10px 30px var(--shadow); z-index: 999;
             max-width: 350px; margin: 0 auto;
         }
         .notif.show { transform: translateY(0); }
         .notif-img { width: 40px; height: 40px; border-radius: 50%; background: #333; }
-        .notif-info h4 { font-size: 0.85rem; margin-bottom: 2px; }
+        .notif-info h4 { font-size: 0.85rem; margin-bottom: 2px; color: var(--text-primary); }
         .notif-info p { font-size: 0.75rem; color: var(--text-secondary); }
 
         /* DESKTOP TWEAKS */
         @media(min-width: 768px) {
             .product-card { display: grid; grid-template-columns: 1fr 1fr; }
             .notif { left: 20px; right: auto; margin: 0; }
+            .theme-toggle-btn { top: 20px; right: 20px; } /* Sejajar header di PC */
         }
     </style>
 </head>
@@ -122,14 +153,16 @@
         🔥 Flash Sale Berakhir: <span id="countdown">00:00:00</span>
     </div>
 
+    <button class="theme-toggle-btn" id="themeBtn" aria-label="Ganti Mode">
+        <i class="ph-fill ph-sun"></i>
+    </button>
+
     <div class="container">
         
         <div class="product-card">
             <div class="img-area">
                 <span class="badge">DISKON 50%</span>
-<!----------- LINK FOTO PRODUK --------->
-               <!-- <img src="uptown.jpg" alt="Spotec Ryu" id="productImg"> -->
-                <img src="https://drive.google.com/file/d/1IXtcxXPJkuxDHaljx05GCWSRyJAsMk36/view?usp=drivesdk" alt="Spotec Ryu" id="productImg">
+                <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1000&auto=format&fit=crop" alt="Spotec Ryu" id="productImg">
             </div>
 
             <div class="info-area">
@@ -160,11 +193,11 @@
                     </div>
                 </div>
 
-                <a href="https://s.shopee.co.id/8V1PeGRvTv" class="cta-btn">
+                <a href="LINK_AFFILIATE_SHOPEE_KAMU_DISINI" class="cta-btn">
                     <i class="ph-fill ph-shopping-cart"></i> AMBIL PROMO DI SHOPEE
                 </a>
                 
-                <p class="stock-warn">⚠️ Sisa stok promo: <b>14 pasang</b> lagi!</p>
+                <p class="stock-warn">⚠️ Sisa stok promo: <b id="dynamicStock">...</b> pasang lagi!</p>
             </div>
         </div>
 
@@ -184,7 +217,7 @@
             </div>
         </div>
 
-        <div style="text-align: center; margin-top: 40px; color: #555; font-size: 0.8rem;">
+        <div style="text-align: center; margin-top: 40px; color: var(--text-secondary); font-size: 0.8rem;">
             &copy; 2024 Spotec Authorised Partner.
         </div>
 
@@ -199,8 +232,7 @@
     </div>
 
     <script>
-        // === KONFIGURASI SEDERHANA ===
-        // Tidak perlu edit script ini kecuali mau ubah nama orang di notifikasi
+        // === KONFIGURASI ===
         const fomoData = [
             { name: "Budi (Jakarta)", seed: "budi" },
             { name: "Sari (Bandung)", seed: "sari" },
@@ -210,23 +242,96 @@
             { name: "Fajar (Jogja)", seed: "fajar" }
         ];
 
-        // 1. Logic Timer Mundur
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme(); // <--- Init Theme
+            startTimer();
+            startSocialProof();
+            initPersistentStock();
+        });
+
+        // 0. LOGIC THEME SWITCHER
+        function initTheme() {
+            const btn = document.getElementById('themeBtn');
+            const icon = btn.querySelector('i');
+            const html = document.documentElement;
+
+            // Cek LocalStorage atau Preferensi Sistem
+            const savedTheme = localStorage.getItem('theme');
+            const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+            if (savedTheme === 'light' || (!savedTheme && !systemDark)) {
+                html.setAttribute('data-theme', 'light');
+                icon.classList.replace('ph-sun', 'ph-moon'); // Ikon jadi bulan (untuk switch ke gelap)
+            } else {
+                html.removeAttribute('data-theme');
+                icon.classList.replace('ph-moon', 'ph-sun'); // Ikon jadi matahari
+            }
+
+            // Event Listener Click
+            btn.addEventListener('click', () => {
+                const currentTheme = html.getAttribute('data-theme');
+                if (currentTheme === 'light') {
+                    // Switch to Dark
+                    html.removeAttribute('data-theme');
+                    localStorage.setItem('theme', 'dark');
+                    icon.classList.replace('ph-moon', 'ph-sun');
+                } else {
+                    // Switch to Light
+                    html.setAttribute('data-theme', 'light');
+                    localStorage.setItem('theme', 'light');
+                    icon.classList.replace('ph-sun', 'ph-moon');
+                }
+            });
+        }
+
+        // 1. LOGIC STOK PERSISTEN (LocalStorage)
+        function initPersistentStock() {
+            const STORAGE_KEY = 'spotec_user_stock'; 
+            const stockEl = document.getElementById('dynamicStock');
+            let savedStock = localStorage.getItem(STORAGE_KEY);
+
+            if (!savedStock) {
+                savedStock = Math.floor(Math.random() * (9 - 3 + 1)) + 3;
+                localStorage.setItem(STORAGE_KEY, savedStock);
+            }
+
+            stockEl.innerText = savedStock;
+            if (savedStock <= 5) {
+                stockEl.style.color = '#ef4444';
+                stockEl.style.fontWeight = '900';
+            }
+        }
+
+        // 2. LOGIC TIMER MUNDUR
         function startTimer() {
             const el = document.getElementById('countdown');
-            let h = 4, m = 59, s = 59; // Mulai dari 4 jam
+            let endTime = localStorage.getItem('spotec_timer_end');
             
+            if (!endTime || new Date().getTime() > endTime) {
+                endTime = new Date().getTime() + (4 * 60 * 60 * 1000);
+                localStorage.setItem('spotec_timer_end', endTime);
+            }
+
             setInterval(() => {
-                s--;
-                if (s < 0) { s = 59; m--; }
-                if (m < 0) { m = 59; h--; }
-                if (h < 0) { h = 4; m = 59; s = 59; } // Reset loop
+                const now = new Date().getTime();
+                const distance = endTime - now;
+
+                if (distance < 0) {
+                    endTime = new Date().getTime() + (4 * 60 * 60 * 1000);
+                    localStorage.setItem('spotec_timer_end', endTime);
+                    return;
+                }
+
+                const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const s = Math.floor((distance % (1000 * 60)) / 1000);
 
                 const pad = (n) => n.toString().padStart(2, '0');
                 el.innerText = `${pad(h)}:${pad(m)}:${pad(s)}`;
             }, 1000);
         }
 
-        // 2. Logic Notifikasi Social Proof
+        // 3. LOGIC SOCIAL PROOF
         function startSocialProof() {
             const el = document.getElementById('notifPopup');
             const img = document.getElementById('notifAvatar');
@@ -234,134 +339,18 @@
 
             const showNotif = () => {
                 const random = fomoData[Math.floor(Math.random() * fomoData.length)];
-                
-                // Set Data
                 nameEl.innerText = random.name;
                 img.src = `https://api.dicebear.com/7.x/initials/svg?seed=${random.seed}&backgroundColor=ee4d2d`;
                 
-                // Animasi Masuk
                 el.classList.add('show');
-                
-                // Animasi Keluar setelah 4 detik
-                setTimeout(() => {
-                    el.classList.remove('show');
-                }, 4000);
+                setTimeout(() => { el.classList.remove('show'); }, 4000);
             };
 
-            // Muncul pertama kali setelah 3 detik, lalu ulang setiap 15 detik
             setTimeout(() => {
                 showNotif();
-                setInterval(showNotif, 15000);
+                setInterval(showNotif, 20000); 
             }, 3000);
         }
-
-        // Jalankan saat load
-        document.addEventListener('DOMContentLoaded', () => {
-            startTimer();
-            startSocialProof();
-        });
-        
-        
-    <script>
-    // === KONFIGURASI ===
-    const fomoData = [
-        { name: "Budi (Jakarta)", seed: "budi" },
-        { name: "Sari (Bandung)", seed: "sari" },
-        { name: "Rizky (Surabaya)", seed: "rizky" },
-        { name: "Dewi (Medan)", seed: "dewi" },
-        { name: "Andi (Makassar)", seed: "andi" },
-        { name: "Fajar (Jogja)", seed: "fajar" }
-    ];
-
-    document.addEventListener('DOMContentLoaded', () => {
-        startTimer();
-        startSocialProof();
-        initPersistentStock(); // <--- Fungsi baru dipanggil di sini
-    });
-
-    // 1. LOGIC STOK PERSISTEN (LocalStorage)
-    function initPersistentStock() {
-        const STORAGE_KEY = 'spotec_user_stock'; // Kunci penyimpanan di browser
-        const stockEl = document.getElementById('dynamicStock');
-        
-        // Cek apakah user ini sudah punya 'jatah' stok sebelumnya
-        let savedStock = localStorage.getItem(STORAGE_KEY);
-
-        if (!savedStock) {
-            // JIKA PENGUNJUNG BARU:
-            // Generate angka acak antara 3 sampai 9 (Stok menipis = Urgensi Tinggi)
-            savedStock = Math.floor(Math.random() * (9 - 3 + 1)) + 3;
-            
-            // Simpan ke memori browser
-            localStorage.setItem(STORAGE_KEY, savedStock);
-        }
-
-        // Tampilkan angka yang konsisten
-        stockEl.innerText = savedStock;
-        
-        // Opsional: Beri warna merah jika stok di bawah 5
-        if (savedStock <= 5) {
-            stockEl.style.color = '#ef4444';
-            stockEl.style.fontWeight = '900';
-        }
-    }
-
-    // 2. LOGIC TIMER MUNDUR
-    function startTimer() {
-        const el = document.getElementById('countdown');
-        // Cek apakah ada waktu tersimpan, jika tidak set 4 jam dari sekarang
-        let endTime = localStorage.getItem('spotec_timer_end');
-        
-        if (!endTime || new Date().getTime() > endTime) {
-            // Set timer 4 jam ke depan
-            endTime = new Date().getTime() + (4 * 60 * 60 * 1000);
-            localStorage.setItem('spotec_timer_end', endTime);
-        }
-
-        setInterval(() => {
-            const now = new Date().getTime();
-            const distance = endTime - now;
-
-            if (distance < 0) {
-                // Jika waktu habis, reset lagi biar looping (Abadi)
-                endTime = new Date().getTime() + (4 * 60 * 60 * 1000);
-                localStorage.setItem('spotec_timer_end', endTime);
-                return;
-            }
-
-            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((distance % (1000 * 60)) / 1000);
-
-            const pad = (n) => n.toString().padStart(2, '0');
-            el.innerText = `${pad(h)}:${pad(m)}:${pad(s)}`;
-        }, 1000);
-    }
-
-    // 3. LOGIC SOCIAL PROOF
-    function startSocialProof() {
-        const el = document.getElementById('notifPopup');
-        const img = document.getElementById('notifAvatar');
-        const nameEl = document.getElementById('notifName');
-
-        const showNotif = () => {
-            const random = fomoData[Math.floor(Math.random() * fomoData.length)];
-            nameEl.innerText = random.name;
-            img.src = `https://api.dicebear.com/7.x/initials/svg?seed=${random.seed}&backgroundColor=ee4d2d`;
-            
-            el.classList.add('show');
-            setTimeout(() => { el.classList.remove('show'); }, 4000);
-        };
-
-        setTimeout(() => {
-            showNotif();
-            setInterval(showNotif, 20000); // Muncul tiap 20 detik (jangan terlalu sering, mengganggu)
-        }, 3000);
-    }
-</script>
-
-
-
     </script>
 </body>
 </html>
